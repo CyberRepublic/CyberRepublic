@@ -2301,6 +2301,7 @@ export default class extends Base {
     _.forEach(byKeyElaList, (v: any, k: any) => {
       query.push(k)
     })
+    console.log(`updateVoteStatusByChain query...`, query)
     const proposalList = await db_cvote
       .getDBInstance()
       .find({
