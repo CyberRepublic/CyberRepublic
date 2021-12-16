@@ -45,10 +45,10 @@ class ViewVoteHistoryButton extends Component {
       )
     }
 
-    const avatarName = [
-      data.votedBy.profile.firstName,
-      data.votedBy.profile.lastName
-    ]
+    const profile = data.votedBy.profile
+    const firstName = profile && profile.firstName
+    const lastName = profile && profile.lastName
+    const avatarName = [firstName, lastName]
     const isCurrentVote = data && data.isCurrentVote
 
     const createdAt = data.reasonCreatedAt || data.createdAt
