@@ -78,10 +78,13 @@ class C extends BaseComponent {
     return key
   }
 
-  handleSave = (e, callback) => {
+  handleSave = (e, callback, isNotDraft = true) => {
     e.preventDefault()
     const { form } = this.props
-    this.setState({ loading: true })
+
+    if (isNotDraft) {
+      this.setState({ loading: true })
+    }
     form.validateFields(async (err, values) => {
       if (err) {
         this.setState({
@@ -172,7 +175,7 @@ class C extends BaseComponent {
 
   handleEditSaveDraft = (e) => {
     const { onSaveDraft } = this.props
-    this.handleSave(e, onSaveDraft)
+    this.handleSave(e, onSaveDraft, false)
   }
 
   formatType = (values, saveDraft) => {
@@ -593,6 +596,7 @@ class C extends BaseComponent {
         {cancelText}
       </Button>
     )
+
     return (
       <Container>
         <Form onSubmit={this.handleSubmit}>
