@@ -2290,7 +2290,8 @@ export default class extends Base {
     const elaVote = []
     _.map(elaVoteList, (o: any) => {
       const data = {
-        ...o._doc,
+        txid: o.txid,
+        blockTime: o.blockTime,
         ...JSON.parse(o.payload)
       }
       elaVote.push(data)
@@ -2306,29 +2307,36 @@ export default class extends Base {
         status: constant.CVOTE_STATUS.PROPOSED,
         proposalHash: { $in: query }
       })
-      .populate(
-        'voteResult.votedBy',
-        constant.DB_SELECTED_FIELDS.USER.NAME_EMAIL_DID
-      )
-
+      .populate('voteResult.votedBy', 'did')
+    console.log(
+      `updateVoteStatusByChain proposalList number...`,
+      proposalList.length
+    )
     if (_.isEmpty(proposalList)) {
       return
     }
     const vote = []
     _.forEach(proposalList, (o: any) => {
       _.forEach(o.voteResult, (v: any) => {
-        if (v.status === constant.CVOTE_CHAIN_STATUS.UNCHAIN) {
-          const data = {
-            ...v._doc,
-            proposalId: o._id,
-            proposalHash: o.proposalHash,
-            did: !_.isEmpty(v._doc.votedBy) ? v._doc.votedBy.did.id : null
-          }
-          vote.push(data)
+        const data: any = {
+          _id: v._id,
+          value: v.value,
+          reason: v.reason,
+          status: v.status,
+          proposalId: o._id,
+          proposalHash: o.proposalHash,
+          did: !_.isEmpty(v.votedBy) ? v.votedBy.did.id : null
         }
+        if (v.reasonHash) {
+          data.reasonHash = v.reasonHash
+        }
+        if (v.reasonCreatedAt) {
+          data.reasonCreatedAt = v.reasonCreatedAt
+        }
+        vote.push(data)
       })
     })
-    console.log(`vote...`, vote)
+
     _.forEach(elaVote, async (o: any) => {
       const did: any = DID_PREFIX + o.did
       const voteList = _.find(vote, {
@@ -2337,7 +2345,7 @@ export default class extends Base {
       })
       console.log(`voteList...`, voteList)
       if (voteList) {
-        if (voteList.reasonHash === o.opinionhash) {
+        if (voteList.reasonHash && voteList.reasonHash === o.opinionhash) {
           await db_cvote.update(
             {
               proposalHash: o.proposalhash,
@@ -2355,6 +2363,7 @@ export default class extends Base {
 
         if (!o.opiniondata) return
         const opinionData = await unzipFile(o.opiniondata)
+        console.log(`${voteList._id} opinionData....`, opinionData)
 
         let opinion = o.voteresult
         if (constant.CVOTE_CHAIN_RESULT.APPROVE === o.voteresult) {
@@ -2372,22 +2381,36 @@ export default class extends Base {
           const isAfter = moment(voteList.reasonCreatedAt).isAfter(
             moment(o.blockTime)
           )
+          console.log(`${voteList._id} isAfter...`, isAfter)
           if (isAfter === true) {
-            await db_cvote_history.save({
-              proposalBy: voteList.proposalId,
-              votedBy: voteList._id,
-              value: opinion,
-              reason: opinionData,
-              reasonCreatedAt: moment(o.blockTime),
-              status: constant.CVOTE_CHAIN_STATUS.CHAINED
-            })
-            await db_zip_file.save({
-              proposalId: voteList.proposalId,
-              opinionHash: o.opinionhash,
-              content: Buffer.from(o.opiniondata, 'hex'),
-              proposalHash: o.proposalhash,
-              votedBy: voteList.votedBy._id
-            })
+            const history = await db_cvote_history
+              .getDBInstance()
+              .findOne({ reasonHash: o.opinionhash })
+            if (!history) {
+              await db_cvote_history.save({
+                proposalBy: voteList.proposalId,
+                votedBy: voteList._id,
+                value: opinion,
+                reason: opinionData,
+                reasonHash: o.opinionhash,
+                reasonCreatedAt: moment(o.blockTime),
+                status: constant.CVOTE_CHAIN_STATUS.CHAINED
+              })
+            }
+
+            const zipDoc = await db_zip_file
+              .getDBInstance()
+              .findOne({ opinionHash: o.opinionhash })
+            if (!zipDoc) {
+              await db_zip_file.save({
+                proposalId: voteList.proposalId,
+                opinionHash: o.opinionhash,
+                content: Buffer.from(o.opiniondata, 'hex'),
+                proposalHash: o.proposalhash,
+                votedBy: voteList.votedBy._id
+              })
+            }
+
             await db_ela.remove({ txid: o.txid })
             return
           }
@@ -2421,13 +2444,20 @@ export default class extends Base {
             }
           }
         )
-        await db_zip_file.save({
-          proposalId: voteList.proposalId,
-          opinionHash: o.opinionhash,
-          content: Buffer.from(o.opiniondata, 'hex'),
-          proposalHash: o.proposalhash,
-          votedBy: voteList.votedBy._id
-        })
+
+        const doc = await db_zip_file
+          .getDBInstance()
+          .findOne({ opinionHash: o.opinionhash })
+        if (!doc) {
+          await db_zip_file.save({
+            proposalId: voteList.proposalId,
+            opinionHash: o.opinionhash,
+            content: Buffer.from(o.opiniondata, 'hex'),
+            proposalHash: o.proposalhash,
+            votedBy: voteList.votedBy._id
+          })
+        }
+
         await db_ela.remove({ txid: o.txid })
       }
     })
