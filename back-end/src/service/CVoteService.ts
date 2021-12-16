@@ -2291,7 +2291,7 @@ export default class extends Base {
     _.map(elaVoteList, (o: any) => {
       const data = {
         txid: o.txid,
-        blockTime: o.blockTime,
+        blockTime: o.blockTime * 1000,
         ...JSON.parse(o.payload)
       }
       elaVote.push(data)
@@ -2318,14 +2318,16 @@ export default class extends Base {
     const vote = []
     _.forEach(proposalList, (o: any) => {
       _.forEach(o.voteResult, (v: any) => {
+        const { value, reason, status, votedBy, _id } = v
         const data: any = {
-          _id: v._id,
-          value: v.value,
-          reason: v.reason,
-          status: v.status,
+          _id,
+          value,
+          reason,
+          status,
+          votedBy: votedBy._id,
           proposalId: o._id,
           proposalHash: o.proposalHash,
-          did: !_.isEmpty(v.votedBy) ? v.votedBy.did.id : null
+          did: !_.isEmpty(votedBy) ? votedBy.did.id : null
         }
         if (v.reasonHash) {
           data.reasonHash = v.reasonHash
@@ -2338,6 +2340,7 @@ export default class extends Base {
     })
 
     _.forEach(elaVote, async (o: any) => {
+      console.log(`elaVote proposalHash...`, o.proposalhash)
       const did: any = DID_PREFIX + o.did
       const voteList = _.find(vote, {
         proposalHash: o.proposalhash,
@@ -2378,9 +2381,7 @@ export default class extends Base {
           voteList.reasonHash !== o.opinionhash &&
           voteList.reasonCreatedAt
         ) {
-          const isAfter = moment(voteList.reasonCreatedAt).isAfter(
-            moment(o.blockTime)
-          )
+          const isAfter = moment(voteList.reasonCreatedAt).isAfter(o.blockTime)
           console.log(`${voteList._id} isAfter...`, isAfter)
           if (isAfter === true) {
             const history = await db_cvote_history
@@ -2389,7 +2390,7 @@ export default class extends Base {
             if (!history) {
               await db_cvote_history.save({
                 proposalBy: voteList.proposalId,
-                votedBy: voteList._id,
+                votedBy: voteList.votedBy,
                 value: opinion,
                 reason: opinionData,
                 reasonHash: o.opinionhash,
@@ -2407,7 +2408,7 @@ export default class extends Base {
                 opinionHash: o.opinionhash,
                 content: Buffer.from(o.opiniondata, 'hex'),
                 proposalHash: o.proposalhash,
-                votedBy: voteList.votedBy._id
+                votedBy: voteList.votedBy
               })
             }
 
@@ -2420,7 +2421,7 @@ export default class extends Base {
           ) {
             await db_cvote_history.save({
               proposalBy: voteList.proposalId,
-              votedBy: voteList._id,
+              votedBy: voteList.votedBy,
               value: voteList.value,
               reason: voteList.reason,
               reasonCreatedAt: voteList.reasonCreatedAt,
@@ -2454,7 +2455,7 @@ export default class extends Base {
             opinionHash: o.opinionhash,
             content: Buffer.from(o.opiniondata, 'hex'),
             proposalHash: o.proposalhash,
-            votedBy: voteList.votedBy._id
+            votedBy: voteList.votedBy
           })
         }
 
