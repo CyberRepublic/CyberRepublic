@@ -2419,14 +2419,20 @@ export default class extends Base {
             isAfter === false &&
             voteList.status === constant.CVOTE_CHAIN_STATUS.CHAINED
           ) {
-            await db_cvote_history.save({
-              proposalBy: voteList.proposalId,
-              votedBy: voteList.votedBy,
-              value: voteList.value,
-              reason: voteList.reason,
-              reasonCreatedAt: voteList.reasonCreatedAt,
-              status: constant.CVOTE_CHAIN_STATUS.CHAINED
-            })
+            const history = await db_cvote_history
+              .getDBInstance()
+              .findOne({ reasonHash: voteList.reasonHash })
+            if (!history) {
+              await db_cvote_history.save({
+                proposalBy: voteList.proposalId,
+                votedBy: voteList.votedBy,
+                value: voteList.value,
+                reason: voteList.reason,
+                reasonHash: voteList.reasonHash,
+                reasonCreatedAt: voteList.reasonCreatedAt,
+                status: constant.CVOTE_CHAIN_STATUS.CHAINED
+              })
+            }
           }
         }
 
