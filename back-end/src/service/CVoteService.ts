@@ -2291,8 +2291,10 @@ export default class extends Base {
     _.map(elaVoteList, (o: any) => {
       const data = {
         txid: o.txid,
-        blockTime: o.blockTime * 1000,
         ...JSON.parse(o.payload)
+      }
+      if (o.blockTime) {
+        data.blockTime = o.blockTime * 1000
       }
       elaVote.push(data)
     })
@@ -2366,10 +2368,10 @@ export default class extends Base {
           return
         }
 
-        if (!o.opiniondata || !o.blockTime) return
-        const opinionData = await unzipFile(o.opiniondata)
-        console.log(`${voteList._id} opinionData....`, opinionData)
-
+        if (!o.opiniondata) return
+        const opinionResult = await unzipFile(o.opiniondata)
+        console.log(`${voteList._id} opinionResult....`, opinionResult)
+        const opinionData = opinionResult.opinion
         let opinion = o.voteresult
         if (constant.CVOTE_CHAIN_RESULT.APPROVE === o.voteresult) {
           opinion = constant.CVOTE_RESULT.SUPPORT
@@ -2388,7 +2390,9 @@ export default class extends Base {
             voteList.reasonCreatedAt
           )
 
-          const isAfter = moment(voteList.reasonCreatedAt).isAfter(o.blockTime)
+          const isAfter = moment(voteList.reasonCreatedAt).isAfter(
+            opinionResult.date
+          )
           console.log(`${voteList._id} isAfter...`, isAfter)
 
           if (isAfter === true) {
@@ -2403,7 +2407,7 @@ export default class extends Base {
                 value: opinion,
                 reason: opinionData,
                 reasonHash: o.opinionhash,
-                reasonCreatedAt: moment(o.blockTime),
+                reasonCreatedAt: moment(opinionResult.date),
                 status: constant.CVOTE_CHAIN_STATUS.CHAINED
               })
             }
@@ -2456,7 +2460,7 @@ export default class extends Base {
               'voteResult.$.reason': opinionData,
               'voteResult.$.status': constant.CVOTE_CHAIN_STATUS.CHAINED,
               'voteResult.$.reasonHash': o.opinionhash,
-              'voteResult.$.reasonCreatedAt': moment(o.blockTime)
+              'voteResult.$.reasonCreatedAt': moment(opinionResult.date)
             }
           }
         )
