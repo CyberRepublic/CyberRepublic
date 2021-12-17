@@ -78,10 +78,13 @@ class C extends BaseComponent {
     return key
   }
 
-  handleSave = (e, callback) => {
+  handleSave = (e, callback, isNotDraft = true) => {
     e.preventDefault()
     const { form } = this.props
-    this.setState({ loading: true })
+
+    if (isNotDraft) {
+      this.setState({ loading: true })
+    }
     form.validateFields(async (err, values) => {
       if (err) {
         this.setState({
@@ -95,12 +98,14 @@ class C extends BaseComponent {
       const pItems = _.get(values, 'budget.paymentItems')
 
       const initiation =
-        !_.isEmpty(pItems) && pItems instanceof Array  &&
+        !_.isEmpty(pItems) &&
+        pItems instanceof Array &&
         pItems.filter(
           (item) => item.type === ADVANCE && item.milestoneKey === '0'
         )
       const completion =
-        !_.isEmpty(pItems) && pItems instanceof Array && 
+        !_.isEmpty(pItems) &&
+        pItems instanceof Array &&
         pItems.filter((item) => {
           return (
             item.type === COMPLETION &&
@@ -108,7 +113,8 @@ class C extends BaseComponent {
           )
         })
       if (
-        !_.isEmpty(pItems) && pItems instanceof Array && 
+        !_.isEmpty(pItems) &&
+        pItems instanceof Array &&
         (milestone.length !== pItems.length ||
           initiation.length > 1 ||
           completion.length !== 1)
@@ -120,10 +126,12 @@ class C extends BaseComponent {
 
       const budget = _.get(values, 'budget')
       const planBudget = _.get(values, 'planBudget')
-      const budgetIntro = _.get(values, 'budgetIntro') || _.get(planBudget, 'budgetIntro')
-      const planIntro = _.get(values, 'planIntro') || _.get(planBudget, 'planIntro')
+      const budgetIntro =
+        _.get(values, 'budgetIntro') || _.get(planBudget, 'budgetIntro')
+      const planIntro =
+        _.get(values, 'planIntro') || _.get(planBudget, 'planIntro')
       const teamInfo = _.get(values, 'teamInfo')
-      
+
       // exclude old suggestion data
       if (budget && typeof budget !== 'string') {
         values.budget = pItems instanceof Array ? budget.paymentItems : []
@@ -137,7 +145,7 @@ class C extends BaseComponent {
       }
       if (_.isEmpty(milestone) && planBudget) {
         values.plan = {
-          ..._.get(planBudget,'plan')
+          ..._.get(planBudget, 'plan')
         }
       }
       if (budgetIntro) {
@@ -167,7 +175,7 @@ class C extends BaseComponent {
 
   handleEditSaveDraft = (e) => {
     const { onSaveDraft } = this.props
-    this.handleSave(e, onSaveDraft)
+    this.handleSave(e, onSaveDraft, false)
   }
 
   formatType = (values, saveDraft) => {
@@ -230,7 +238,8 @@ class C extends BaseComponent {
         values.plan[`teamInfo`] = values.teamInfo
       }
       if (budget) {
-        values.budget = budget.paymentItems instanceof Array ? budget.paymentItems : []
+        values.budget =
+          budget.paymentItems instanceof Array ? budget.paymentItems : []
         values.budgetAmount = budget.budgetAmount
         values.elaAddress = budget.elaAddress
         values.budgetIntro = budgetIntro
@@ -446,12 +455,12 @@ class C extends BaseComponent {
         })
       }
       let planBudgetData = {
-        plan: _.get(initialValues, "plan"),
-        planIntro: _.get(initialValues, "planIntro"),
-        budget: _.get(initialValues, "budget"),
-        budgetIntro: _.get(initialValues, "budgetIntro"),
-        elaAddress: _.get(initialValues, "elaAddress"),
-        budgetAmount: _.get(initialValues, "budgetAmount")
+        plan: _.get(initialValues, 'plan'),
+        planIntro: _.get(initialValues, 'planIntro'),
+        budget: _.get(initialValues, 'budget'),
+        budgetIntro: _.get(initialValues, 'budgetIntro'),
+        elaAddress: _.get(initialValues, 'elaAddress'),
+        budgetAmount: _.get(initialValues, 'budgetAmount')
       }
       return getFieldDecorator('planBudget', {
         // rules
@@ -587,6 +596,7 @@ class C extends BaseComponent {
         {cancelText}
       </Button>
     )
+
     return (
       <Container>
         <Form onSubmit={this.handleSubmit}>
@@ -598,7 +608,10 @@ class C extends BaseComponent {
           >
             <div style={{ display: 'flex' }}>
               {this.getTitleInput()}
-              <DuplicateModal form={this.props.form} changeData={this.changeData} />
+              <DuplicateModal
+                form={this.props.form}
+                changeData={this.changeData}
+              />
             </div>
           </FormItem>
           {/* <FormItem
@@ -663,10 +676,10 @@ class C extends BaseComponent {
 
   changeData = (data) => {
     const { controVar } = this.state
-    this.setState({ 
+    this.setState({
       dupData: data,
-      controVar: controVar+1
-     })
+      controVar: controVar + 1
+    })
   }
 
   onTabChange = (activeKey) => {

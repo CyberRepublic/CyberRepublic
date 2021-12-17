@@ -8,16 +8,15 @@ import {
   validate,
   mail,
   user as userUtil,
-  timestamp,
   permissions,
   logger,
   getDidPublicKey,
   utilCrypto,
   getPemPublicKey,
   getProposalReqToken,
-  getProposalJwtPrefix,
   ela
 } from '../utility'
+import { getSuggestionDraftHash } from '../utility/draft-hash'
 const Big = require('big.js')
 const {
   SUGGESTION_TYPE,
@@ -50,7 +49,7 @@ const BASE_FIELDS = [
 
 interface BudgetItem {
   type: string
-  stage: string
+  stage?: string
   milestoneKey: string
   amount: string
   reasons: string
@@ -60,9 +59,11 @@ interface BudgetItem {
 export default class extends Base {
   private model: any
   private draftModel: any
+  private zipFileModel: any
   protected init() {
     this.model = this.getDBModel('Suggestion')
     this.draftModel = this.getDBModel('SuggestionDraft')
+    this.zipFileModel = this.getDBModel('Suggestion_Zip_File')
   }
 
   public async cancel(id: string) {
@@ -493,14 +494,13 @@ export default class extends Base {
       if (currDraft) {
         await this.draftModel.remove({ _id: ObjectId(id) })
       }
-
       if (update) {
         doc.version = await this.saveHistoryGetCurrentVersion(id, doc)
-        await this.model.update({ _id: id }, { $set: doc, $unset: unsetDoc })
-      } else {
-        await this.model.update({ _id: id }, { $set: doc, $unset: unsetDoc })
       }
-      return this.show({ id })
+      doc.isUpdated = true
+      await this.model.update({ _id: id }, { $set: doc, $unset: unsetDoc })
+
+      return { _id: id, success: true }
     } catch (err) {
       console.log('suggestion service update err...', err)
     }
@@ -1477,91 +1477,6 @@ export default class extends Base {
   }
 
   /**
-   * Wallet Api
-   */
-  public async getSuggestion(id): Promise<any> {
-    const db_cvote = this.getDBModel('CVote')
-    const fileds = [
-      '_id',
-      'displayId',
-      'title',
-      'abstract',
-      'createdAt',
-      'draftHash',
-      'type',
-      'budgetAmount',
-      'elaAddress',
-      'budget',
-      'closeProposalNum',
-      'newSecretaryDID',
-      'newAddress',
-      'newOwnerDID',
-      'targetProposalNum'
-    ]
-
-    const suggestion = await this.model
-      .getDBInstance()
-      .findOne({ _id: id }, fileds.join(' '))
-      .populate('createdBy', constant.DB_SELECTED_FIELDS.USER.NAME_EMAIL_DID)
-
-    if (!suggestion) {
-      return {
-        code: 400,
-        message: 'Invalid request parameters',
-        // tslint:disable-next-line:no-null-keyword
-        data: null
-      }
-    }
-
-    // prettier-ignore
-    const targetNum = suggestion.closeProposalNum || suggestion.targetProposalNum
-    let targetProposal: any
-    if (targetNum) {
-      targetProposal = await db_cvote
-        .getDBInstance()
-        .findOne({ vid: targetNum })
-    }
-    const budget = suggestion.budget
-    let fund = []
-    if (budget) {
-      _.forEach(budget, (o) => {
-        fund.push(_.omit(o, ['reasons', 'status', 'milestoneKey']))
-      })
-    }
-
-    const createdBy = suggestion.createdBy
-    const address = `${process.env.SERVER_URL}/suggestion/${suggestion._id}`
-    const did = _.get(createdBy, 'did.id')
-    const didName = _.get(createdBy, 'did.didName')
-    const result = _.omit(suggestion._doc, [
-      '_id',
-      'id',
-      'budget',
-      'budgetAmount',
-      'elaAddress',
-      'displayId',
-      'createdBy',
-      'abstract'
-    ])
-
-    return {
-      ...result,
-      type: constant.CVOTE_TYPE_API[suggestion.type],
-      targetProposalTitle: targetProposal && targetProposal.title,
-      targetProposalHash: targetProposal && targetProposal.proposalHash,
-      createdAt: timestamp.second(result.createdAt),
-      receipts: suggestion.elaAddress,
-      fund,
-      fundAmount: suggestion.budgetAmount,
-      id: suggestion.displayId,
-      abs: suggestion.abstract,
-      address,
-      did,
-      didName
-    }
-  }
-
-  /**
    * Utils
    */
   public validateTitle(title: String) {
@@ -1594,6 +1509,7 @@ export default class extends Base {
     return budgets
   }
 
+  // v1
   private getDraftHash(suggestion: any) {
     const fields = ['_id', 'title', 'type', 'abstract', 'motivation']
     const temp = [
@@ -1617,6 +1533,48 @@ export default class extends Base {
       content[field] = suggestion[field]
     }
     return utilCrypto.sha256D(JSON.stringify(content))
+  }
+
+  // for full-text to chain
+  private async getDraftHashV2(suggestion: any) {
+    const { isUpdated } = suggestion
+    const doc = await this.zipFileModel
+      .getDBInstance()
+      .findOne({ suggestionId: suggestion._id })
+
+    if (!doc) {
+      const rs = await getSuggestionDraftHash(suggestion)
+      if (rs && rs.error) {
+        return { error: rs.error }
+      }
+      if (rs && rs.content && rs.draftHash) {
+        await this.zipFileModel.save({
+          suggestionId: suggestion._id,
+          draftHash: rs.draftHash,
+          content: rs.content
+        })
+        return { draftHash: rs.draftHash }
+      }
+    }
+
+    if (doc && isUpdated === true) {
+      const rs = await getSuggestionDraftHash(suggestion)
+      if (rs && rs.error) {
+        return { error: rs.error }
+      }
+      if (rs && rs.content && rs.draftHash) {
+        await this.zipFileModel.update(
+          {
+            suggestionId: suggestion._id
+          },
+          { draftHash: rs.draftHash, content: rs.content }
+        )
+        return { draftHash: rs.draftHash }
+      }
+      return { draftHash: doc.draftHash }
+    }
+
+    return { draftHash: doc.draftHash }
   }
 
   public async getNewOwnerSignatureUrl(param: { id: string }) {
@@ -1826,7 +1784,12 @@ export default class extends Base {
         return { success: false, message: 'Your DID not bound.' }
       }
       let fields: any = {}
-      const draftHash = this.getDraftHash(suggestion)
+      const draftHashV2 = await this.getDraftHashV2(suggestion)
+      if (draftHashV2 && draftHashV2.error) {
+        return { success: false, message: draftHashV2.error }
+      }
+
+      const draftHash = draftHashV2.draftHash
       fields.draftHash = draftHash
       let ownerPublicKey: string
       if (suggestion.ownerPublicKey) {
@@ -1916,7 +1879,7 @@ export default class extends Base {
           }
           break
         default:
-          const budget = _.get(suggestion, 'budget')
+          const budget: [BudgetItem] = _.get(suggestion, 'budget')
           const hasBudget = !!budget && _.isArray(budget) && !_.isEmpty(budget)
           jwtClaims.data = {
             ...jwtClaims.data,
@@ -1926,7 +1889,14 @@ export default class extends Base {
           }
           break
       }
-      await this.model.update({ _id: suggestion._id }, { $set: fields })
+      if (suggestion.isUpdated) {
+        await this.model.update(
+          { _id: suggestion._id },
+          { $set: fields, $unset: { isUpdated: false } }
+        )
+      } else {
+        await this.model.update({ _id: suggestion._id }, { $set: fields })
+      }
       const jwtToken = jwt.sign(
         JSON.stringify(jwtClaims),
         process.env.APP_PRIVATE_KEY,

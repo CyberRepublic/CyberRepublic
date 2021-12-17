@@ -7,18 +7,16 @@ import {
   getProposalData,
   ela,
   getInformationByDid,
-  getDidName
-} from '../utility'
-import * as moment from 'moment'
-import * as jwt from 'jsonwebtoken'
-import {
+  getDidName,
   mail,
-  utilCrypto,
   user as userUtil,
   timestamp,
-  logger,
-  getProposalJwtPrefix
+  logger
 } from '../utility'
+import { unzipFile } from '../utility/unzip-file'
+import * as moment from 'moment'
+import * as jwt from 'jsonwebtoken'
+import { getCouncilMemberOpinionHash } from '../utility/opinion-hash'
 
 const util = require('util')
 const request = require('request')
@@ -780,8 +778,8 @@ export default class extends Base {
         notificationEnds = (o.notificationEndsHeight - currentHeight) * 252
       }
       const voteHistory = await db_cvote_history
-      .getDBInstance()
-      .find({ proposalBy: o._id })
+        .getDBInstance()
+        .find({ proposalBy: o._id })
       const data = {
         ...o._doc,
         proposedEnds,
@@ -994,39 +992,41 @@ export default class extends Base {
     const budgets = _.get(result, 'data.proposal.budgets')
     let isBudgetUpdated = false
     if (budgets) {
-      const budget = proposal.budget && proposal.budget.map((item, index) => {
-        const chainStatus = budgets[index].status.toLowerCase()
-        if (
-          chainStatus === 'withdrawn' &&
-          item.status === WAITING_FOR_WITHDRAWAL
-        ) {
-          isBudgetUpdated = true
-          return { ...item, status: WITHDRAWN }
-        }
-        if (
-          chainStatus === 'rejected' &&
-          item.status === WAITING_FOR_APPROVAL
-        ) {
-          isBudgetUpdated = true
-          this.notifyProposalOwner(
-            proposal.proposer,
-            this.rejectedMailTemplate(proposal.vid)
-          )
-          return { ...item, status: REJECTED }
-        }
-        if (
-          chainStatus === 'withdrawable' &&
-          item.status === WAITING_FOR_APPROVAL
-        ) {
-          isBudgetUpdated = true
-          this.notifyProposalOwner(
-            proposal.proposer,
-            this.approvalMailTemplate(proposal.vid)
-          )
-          return { ...item, status: WAITING_FOR_WITHDRAWAL }
-        }
-        return item
-      })
+      const budget =
+        proposal.budget &&
+        proposal.budget.map((item, index) => {
+          const chainStatus = budgets[index].status.toLowerCase()
+          if (
+            chainStatus === 'withdrawn' &&
+            item.status === WAITING_FOR_WITHDRAWAL
+          ) {
+            isBudgetUpdated = true
+            return { ...item, status: WITHDRAWN }
+          }
+          if (
+            chainStatus === 'rejected' &&
+            item.status === WAITING_FOR_APPROVAL
+          ) {
+            isBudgetUpdated = true
+            this.notifyProposalOwner(
+              proposal.proposer,
+              this.rejectedMailTemplate(proposal.vid)
+            )
+            return { ...item, status: REJECTED }
+          }
+          if (
+            chainStatus === 'withdrawable' &&
+            item.status === WAITING_FOR_APPROVAL
+          ) {
+            isBudgetUpdated = true
+            this.notifyProposalOwner(
+              proposal.proposer,
+              this.approvalMailTemplate(proposal.vid)
+            )
+            return { ...item, status: WAITING_FOR_WITHDRAWAL }
+          }
+          return item
+        })
       if (isBudgetUpdated && budget) {
         proposal.budget = budget
       }
@@ -1153,6 +1153,30 @@ export default class extends Base {
     return rejectNum > data.voteResult.length * 0.5
   }
 
+  // for full-text to chain
+  private async getOpinionHash(
+    reason: string,
+    proposalId: string,
+    proposalHash: string,
+    votedBy: string
+  ) {
+    const rs = await getCouncilMemberOpinionHash(reason)
+    if (rs && rs.error) {
+      return { error: rs.error }
+    }
+    if (rs && rs.content && rs.opinionHash) {
+      const zipFileModel = this.getDBModel('Council_Member_Opinion_Zip_File')
+      await zipFileModel.save({
+        proposalId,
+        opinionHash: rs.opinionHash,
+        content: rs.content,
+        proposalHash,
+        votedBy
+      })
+      return { opinionHash: rs.opinionHash }
+    }
+  }
+
   public async vote(param): Promise<Document> {
     const db_cvote = this.getDBModel('CVote')
     const db_cvote_history = this.getDBModel('CVote_Vote_History')
@@ -1165,6 +1189,13 @@ export default class extends Base {
     if (!cur) {
       throw 'invalid proposal id'
     }
+
+    const opinionHashObj = await this.getOpinionHash(
+      reason,
+      cur._id,
+      cur.proposalHash,
+      votedBy
+    )
     const currentVoteResult = _.find(cur._doc.voteResult, ['votedBy', votedBy])
     const reasonCreateDate = new Date()
     await db_cvote.update(
@@ -1177,9 +1208,7 @@ export default class extends Base {
           'voteResult.$.value': value,
           'voteResult.$.reason': reason || '',
           'voteResult.$.status': constant.CVOTE_CHAIN_STATUS.UNCHAIN,
-          'voteResult.$.reasonHash':
-            reasonHash ||
-            utilCrypto.sha256D(reason + timestamp.second(reasonCreateDate)),
+          'voteResult.$.reasonHash': reasonHash || opinionHashObj.opinionHash,
           'voteResult.$.reasonCreatedAt': reasonCreateDate
         },
         $inc: {
@@ -1381,18 +1410,18 @@ export default class extends Base {
     const db_config = this.getDBModel('Config')
     let currentHeight = await ela.height()
     const list = await db_cvote
-    .getDBInstance()
-    .find({
-      proposalHash: { $exists: true },
-      status: {
-        $in: [
-          constant.CVOTE_STATUS.PROPOSED,
-          constant.CVOTE_STATUS.NOTIFICATION,
-          constant.CVOTE_STATUS.ACTIVE
-        ]
-      }
-    })
-    .sort({ vid: 1 })
+      .getDBInstance()
+      .find({
+        proposalHash: { $exists: true },
+        status: {
+          $in: [
+            constant.CVOTE_STATUS.PROPOSED,
+            constant.CVOTE_STATUS.NOTIFICATION,
+            constant.CVOTE_STATUS.ACTIVE
+          ]
+        }
+      })
+      .sort({ vid: 1 })
 
     let tempCurrentHeight = 0
     let compareHeight = 0
@@ -1474,10 +1503,8 @@ export default class extends Base {
   }
 
   public async updateProposalOnNotification(data: any) {
-    const {
-      WAITING_FOR_WITHDRAWAL,
-      WAITING_FOR_REQUEST
-    } = constant.MILESTONE_STATUS
+    const { WAITING_FOR_WITHDRAWAL, WAITING_FOR_REQUEST } =
+      constant.MILESTONE_STATUS
     const db_cvote = this.getDBModel('CVote')
     const { rs, _id } = data
     let { rejectThroughAmount } = data
@@ -2251,6 +2278,8 @@ export default class extends Base {
   public async updateVoteStatusByChain() {
     const db_ela = this.getDBModel('Ela_Transaction')
     const db_cvote = this.getDBModel('CVote')
+    const db_zip_file = this.getDBModel('Council_Member_Opinion_Zip_File')
+    const db_cvote_history = this.getDBModel('CVote_Vote_History')
 
     let elaVoteList = await db_ela
       .getDBInstance()
@@ -2259,76 +2288,197 @@ export default class extends Base {
       return
     }
     const elaVote = []
-    const useIndex = []
     _.map(elaVoteList, (o: any) => {
       const data = {
-        ...o._doc,
+        txid: o.txid,
         ...JSON.parse(o.payload)
+      }
+      if (o.blockTime) {
+        data.blockTime = o.blockTime * 1000
       }
       elaVote.push(data)
     })
+    console.log(`updateVoteStatusByChain elaVote...`, elaVote)
     const query = []
     const byKeyElaList = _.keyBy(elaVote, 'proposalhash')
     _.forEach(byKeyElaList, (v: any, k: any) => {
       query.push(k)
     })
+    console.log(`updateVoteStatusByChain query...`, query)
     const proposalList = await db_cvote
       .getDBInstance()
       .find({
         status: constant.CVOTE_STATUS.PROPOSED,
         proposalHash: { $in: query }
       })
-      .populate(
-        'voteResult.votedBy',
-        constant.DB_SELECTED_FIELDS.USER.NAME_EMAIL_DID
-      )
-
+      .populate('voteResult.votedBy', 'did')
+    console.log(
+      `updateVoteStatusByChain proposalList number...`,
+      proposalList.length
+    )
     if (_.isEmpty(proposalList)) {
       return
     }
     const vote = []
     _.forEach(proposalList, (o: any) => {
       _.forEach(o.voteResult, (v: any) => {
-        if (v.status === constant.CVOTE_CHAIN_STATUS.UNCHAIN) {
-          const oldReasonHash = v.reasonCreatedAt
-            ? utilCrypto.sha256D(v.reason + timestamp.second(v.reasonCreatedAt))
-            : utilCrypto.sha256D(v.reason)
-          const reasonHash = v.reasonHash ? v.reasonHash : oldReasonHash
-          const data = {
-            proposalHash: o.proposalHash,
-            ...v._doc,
-            did: !_.isEmpty(v._doc.votedBy) ? v._doc.votedBy.did.id : null,
-            reasonHash
-          }
-          vote.push(data)
+        const { value, reason, status, votedBy, _id } = v
+        const data: any = {
+          _id,
+          value,
+          reason,
+          status,
+          votedBy: votedBy._id,
+          proposalId: o._id,
+          proposalHash: o.proposalHash,
+          did: !_.isEmpty(votedBy) ? votedBy.did.id : null
         }
+        if (v.reasonHash) {
+          data.reasonHash = v.reasonHash
+        }
+        if (v.reasonCreatedAt) {
+          data.reasonCreatedAt = v.reasonCreatedAt
+        }
+        vote.push(data)
       })
     })
+
     _.forEach(elaVote, async (o: any) => {
+      console.log(`elaVote proposalHash...`, o.proposalhash)
       const did: any = DID_PREFIX + o.did
       const voteList = _.find(vote, {
         proposalHash: o.proposalhash,
-        reasonHash: o.opinionhash,
         did: did
       })
+      console.log(`voteList...`, voteList)
       if (voteList) {
-        const rs = await db_cvote.update(
+        if (voteList.reasonHash && voteList.reasonHash === o.opinionhash) {
+          await db_cvote.update(
+            {
+              proposalHash: o.proposalhash,
+              'voteResult._id': voteList._id
+            },
+            {
+              $set: {
+                'voteResult.$.status': constant.CVOTE_CHAIN_STATUS.CHAINED
+              }
+            }
+          )
+          await db_ela.remove({ txid: o.txid })
+          return
+        }
+
+        if (!o.opiniondata) return
+        const opinionResult = await unzipFile(o.opiniondata)
+        console.log(`${voteList._id} opinionResult....`, opinionResult)
+        const opinionData = opinionResult.opinion
+        let opinion = o.voteresult
+        if (constant.CVOTE_CHAIN_RESULT.APPROVE === o.voteresult) {
+          opinion = constant.CVOTE_RESULT.SUPPORT
+        }
+        if (constant.CVOTE_CHAIN_RESULT.ABSTAIN === o.voteresult) {
+          opinion = constant.CVOTE_RESULT.ABSTENTION
+        }
+
+        if (
+          voteList.reasonHash &&
+          voteList.reasonHash !== o.opinionhash &&
+          voteList.reasonCreatedAt
+        ) {
+          console.log(
+            `${voteList.reasonHash}voteList.reasonHash...`,
+            voteList.reasonCreatedAt
+          )
+
+          const isAfter = moment(voteList.reasonCreatedAt).isAfter(
+            opinionResult.date
+          )
+          console.log(`${voteList._id} isAfter...`, isAfter)
+
+          if (isAfter === true) {
+            const history = await db_cvote_history
+              .getDBInstance()
+              .findOne({ reasonHash: o.opinionhash })
+
+            if (!history) {
+              await db_cvote_history.save({
+                proposalBy: voteList.proposalId,
+                votedBy: voteList.votedBy,
+                value: opinion,
+                reason: opinionData,
+                reasonHash: o.opinionhash,
+                reasonCreatedAt: moment(opinionResult.date),
+                status: constant.CVOTE_CHAIN_STATUS.CHAINED
+              })
+            }
+
+            const zipDoc = await db_zip_file
+              .getDBInstance()
+              .findOne({ opinionHash: o.opinionhash })
+            if (!zipDoc) {
+              await db_zip_file.save({
+                proposalId: voteList.proposalId,
+                opinionHash: o.opinionhash,
+                content: Buffer.from(o.opiniondata, 'hex'),
+                proposalHash: o.proposalhash,
+                votedBy: voteList.votedBy
+              })
+            }
+
+            await db_ela.remove({ txid: o.txid })
+            return
+          }
+          if (
+            isAfter === false &&
+            voteList.status === constant.CVOTE_CHAIN_STATUS.CHAINED
+          ) {
+            const history = await db_cvote_history
+              .getDBInstance()
+              .findOne({ reasonHash: voteList.reasonHash })
+            if (!history) {
+              await db_cvote_history.save({
+                proposalBy: voteList.proposalId,
+                votedBy: voteList.votedBy,
+                value: voteList.value,
+                reason: voteList.reason,
+                reasonHash: voteList.reasonHash,
+                reasonCreatedAt: voteList.reasonCreatedAt,
+                status: constant.CVOTE_CHAIN_STATUS.CHAINED
+              })
+            }
+          }
+        }
+
+        await db_cvote.update(
           {
             proposalHash: o.proposalhash,
             'voteResult._id': voteList._id
           },
           {
             $set: {
-              'voteResult.$.status': constant.CVOTE_CHAIN_STATUS.CHAINED
-            },
-            $inc: {
-              __v: 1
+              'voteResult.$.value': opinion,
+              'voteResult.$.reason': opinionData,
+              'voteResult.$.status': constant.CVOTE_CHAIN_STATUS.CHAINED,
+              'voteResult.$.reasonHash': o.opinionhash,
+              'voteResult.$.reasonCreatedAt': moment(opinionResult.date)
             }
           }
         )
-        if (rs && rs.nModified == 1) {
-          await db_ela.remove({ txid: o.txid })
+
+        const doc = await db_zip_file
+          .getDBInstance()
+          .findOne({ opinionHash: o.opinionhash })
+        if (!doc) {
+          await db_zip_file.save({
+            proposalId: voteList.proposalId,
+            opinionHash: o.opinionhash,
+            content: Buffer.from(o.opiniondata, 'hex'),
+            proposalHash: o.proposalhash,
+            votedBy: voteList.votedBy
+          })
         }
+
+        await db_ela.remove({ txid: o.txid })
       }
     })
   }
@@ -2503,7 +2653,7 @@ export default class extends Base {
       {
         title: { $regex: param.title, $options: 'i' }
       },
-      ['_id', 'title']
+      ['_id', 'title', 'proposalHash']
     )
     return proposalList
   }

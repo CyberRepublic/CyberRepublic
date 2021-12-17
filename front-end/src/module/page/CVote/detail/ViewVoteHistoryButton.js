@@ -11,7 +11,7 @@ class ViewVoteHistoryButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      visible: false,
+      visible: false
     }
   }
 
@@ -45,15 +45,17 @@ class ViewVoteHistoryButton extends Component {
       )
     }
 
-    const avatarName = [data.votedBy.profile.firstName, data.votedBy.profile.lastName]
+    const profile = data.votedBy.profile
+    const firstName = profile && profile.firstName
+    const lastName = profile && profile.lastName
+    const avatarName = [firstName, lastName]
     const isCurrentVote = data && data.isCurrentVote
-    
+
     const createdAt = data.reasonCreatedAt || data.createdAt
     const format = 'YYYY-MM-DD'
     const formatTime = 'hh:mm:ss'
     const proposed = moment(createdAt).format(format)
     const detailTime = moment(createdAt).format(formatTime)
-
 
     const valueNode = (
       <ItemStatus key={key}>
@@ -62,15 +64,17 @@ class ViewVoteHistoryButton extends Component {
             {I18N.get(`council.voting.type.${data.value}`)}
           </span>
         </div>
-        {data.reasonCreatedAt || data.createdAt ?
-          (<div>
-            <span style={{ whiteSpace: 'pre-wrap' }}>{proposed + "\n" + detailTime}</span>
-          </div>)
-          : null
-        }
-        <div className="status">{isCurrentVote
-          ? I18N.get('council.voting.viewHistory.current')
-          : null}
+        {data.reasonCreatedAt || data.createdAt ? (
+          <div>
+            <span style={{ whiteSpace: 'pre-wrap' }}>
+              {proposed + '\n' + detailTime}
+            </span>
+          </div>
+        ) : null}
+        <div className="status">
+          {isCurrentVote
+            ? I18N.get('council.voting.viewHistory.current')
+            : null}
         </div>
       </ItemStatus>
     )
@@ -83,20 +87,20 @@ class ViewVoteHistoryButton extends Component {
             alt="voter avatar"
           />
         ) : (
-            <Avatar
-              className="comment-avatar pull-left"
-              style={{
-                backgroundColor: '#000',
-                fontSize: 24
-              }}
-              shape="circle"
-              size={64}
-            >
-              {`${avatarName[0] &&
-                avatarName[0].toUpperCase().substr(0, 1)}${avatarName[1] &&
-                avatarName[1].toUpperCase().substr(0, 1)}`}
-            </Avatar>
-          )}
+          <Avatar
+            className="comment-avatar pull-left"
+            style={{
+              backgroundColor: '#000',
+              fontSize: 24
+            }}
+            shape="circle"
+            size={64}
+          >
+            {`${avatarName[0] &&
+              avatarName[0].toUpperCase().substr(0, 1)}${avatarName[1] &&
+              avatarName[1].toUpperCase().substr(0, 1)}`}
+          </Avatar>
+        )}
         <div>{data.votedBy.did.didName}</div>
         {data.reason !== '' ? voteStatus : null}
       </Item>
@@ -124,51 +128,54 @@ class ViewVoteHistoryButton extends Component {
 
     return (
       <Timeline.Item key={key} color={'green'}>
-        {isCurrentVote
-          ? <CurrentResultRow key={key}>
+        {isCurrentVote ? (
+          <CurrentResultRow key={key}>
             {valueNode}
             {userNode}
             {reasonNode}
           </CurrentResultRow>
-          :
+        ) : (
           <ResultRow key={key}>
             {valueNode}
             {userNode}
             {reasonNode}
           </ResultRow>
-        }
-
+        )}
       </Timeline.Item>
     )
   }
 
   pretreatmentData = () => {
     const data = this.props.data
-    const currentVote = _.find(data, { "isCurrentVote": true })
-    const historyVote = _.filter(data, (o) => { return !o.isCurrentVote })
+    const currentVote = _.find(data, { isCurrentVote: true })
+    const historyVote = _.filter(data, (o) => {
+      return !o.isCurrentVote
+    })
     return { currentVote, historyVote }
   }
 
   render() {
-    const {currentVote, historyVote} = this.pretreatmentData()
-    const currentVoteNode = this.VotesNode(currentVote,"currentVote")
+    const { currentVote, historyVote } = this.pretreatmentData()
+    const currentVoteNode = this.VotesNode(currentVote, 'currentVote')
     const voteNode = _.map(historyVote, (o, key) => this.VotesNode(o, key))
-    return (<span>
-      <VoteHistornBtn type={"primary"} onClick={this.hideModal}>
-        {I18N.get(`council.voting.viewHistory.btn`)}
-      </VoteHistornBtn>
-      <Modal
-        visible={this.state.visible}
-        onOk={this.handleCancel}
-        onCancel={this.handleCancel}
-        footer={null}
-        width={880}
-      >
-        <Timeline style={{ margin: '30px' }}>
-          {currentVoteNode}
-          {voteNode}
-        </Timeline>
-      </Modal></span>
+    return (
+      <span>
+        <VoteHistornBtn type={'primary'} onClick={this.hideModal}>
+          {I18N.get(`council.voting.viewHistory.btn`)}
+        </VoteHistornBtn>
+        <Modal
+          visible={this.state.visible}
+          onOk={this.handleCancel}
+          onCancel={this.handleCancel}
+          footer={null}
+          width={880}
+        >
+          <Timeline style={{ margin: '30px' }}>
+            {currentVoteNode}
+            {voteNode}
+          </Timeline>
+        </Modal>
+      </span>
     )
   }
 }
@@ -176,9 +183,9 @@ class ViewVoteHistoryButton extends Component {
 export default ViewVoteHistoryButton
 
 const colorStyle = {
-  support: "#1DE9B6",
-  abstention: "#BFD2EA",
-  reject: "#FC6D6D",
+  support: '#1DE9B6',
+  abstention: '#BFD2EA',
+  reject: '#FC6D6D'
 }
 
 const ItemStatus = styled.div`
@@ -194,12 +201,12 @@ const ItemStatus = styled.div`
     margin-top: 8px;
     font-style: normal;
     font-weight: normal;
-    color:  #008D85;
+    color: #008d85;
   }
   .vote-value {
     display: inline;
     font-size: 16px;
-    line-height:23px;
+    line-height: 23px;
     margin-bottom: 8px;
     text-transform: uppercase;
   }
@@ -263,7 +270,7 @@ const CurrentResultRow = styled.div`
   display: flex;
   margin-bottom: 30px;
   padding: 30px 20px;
-  background: #E5EDF7;
+  background: #e5edf7;
   border-radius: 8px;
 `
 
@@ -279,5 +286,5 @@ const VoteHistornBtn = styled.button`
   text-align: center;
   text-decoration-line: underline;
 
-  color: #008D85;
+  color: #008d85;
 `

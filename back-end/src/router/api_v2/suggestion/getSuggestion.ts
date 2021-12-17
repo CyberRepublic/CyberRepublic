@@ -1,5 +1,5 @@
-import Base from '../Base'
-import SuggestionApiService from '../../service/SuggestionApiService'
+import Base from '../../Base'
+import SuggestionApiService from '../../../service/SuggestionApiService'
 
 export default class extends Base {
   protected needLogin = false

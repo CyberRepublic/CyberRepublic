@@ -6,6 +6,7 @@ import * as moment from 'moment'
 
 import community from './community'
 import cvote from './cvote'
+import cvoteV2 from './api_v2/cvote'
 import cvoteTracking from './cvote_tracking'
 import cvoteSummary from './cvote_summary'
 import google from './google'
@@ -16,6 +17,7 @@ import release from './release'
 import sso from './sso'
 import submission from './submission'
 import suggestion from './suggestion'
+import suggestionV2 from './api_v2/suggestion'
 import test from './test'
 import team from './team'
 import task from './task'
@@ -26,6 +28,7 @@ import user from './user'
 import elip from './elip'
 import elipReview from './elip_review'
 import council from './council'
+import councilV2 from './api_v2/council'
 import milestone from './milestone'
 import cvoteTrackingMessage from './cvote_tracking_message'
 
@@ -88,6 +91,7 @@ router.use('/ping', ping)
 
 router.use('/community', community)
 router.use('/cvote', cvote)
+router.use('/v2/proposal', cvoteV2)
 router.use('/cvoteTracking', cvoteTracking)
 router.use('/cvoteSummary', cvoteSummary)
 router.use('/google', google)
@@ -100,12 +104,14 @@ router.use('/taskCandidate', taskCandidate)
 router.use('/teamCandidate', teamCandidate)
 router.use('/submission', submission)
 router.use('/suggestion', suggestion)
+router.use('/v2/suggestion', suggestionV2)
 router.use('/sso', sso)
 router.use('/user', user)
 router.use('/upload', upload)
 router.use('/elip', elip)
 router.use('/elipReview', elipReview)
 router.use('/council', council)
+router.use('/v2/council', councilV2)
 router.use('/proposals', milestone)
 router.use('/tracking_message/', cvoteTrackingMessage)
 

@@ -4,12 +4,11 @@ import SuggestionApiService from '../../service/SuggestionApiService'
 export default class extends Base {
   protected needLogin = false
 
-  public async action() {
-    const service = this.buildService(SuggestionApiService)
+  async action() {
     const param = this.getParam()
+    const service = this.buildService(SuggestionApiService)
 
-    const result = await service.getSuggestion(param.id)
-
-    return this.result(1, result)
+    const rs = await service.list(param)
+    return this.result(1, rs)
   }
 }
