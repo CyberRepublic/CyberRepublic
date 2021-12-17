@@ -29,6 +29,7 @@ export default class extends Base {
       const transactions = await ela.getTransactionsByHeight(height)
       transactions.forEach((e: any) => {
         if (e && [constant.TRANSACTION_TYPE.COUNCIL_VOTE].includes(e.type)) {
+          console.log(`council vote transaction e....`, e)
           allTransactions.push({
             txid: e.txid,
             payload: e.payload && JSON.stringify(e.payload),
