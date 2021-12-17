@@ -2296,6 +2296,7 @@ export default class extends Base {
       }
       elaVote.push(data)
     })
+    console.log(`updateVoteStatusByChain elaVote...`, elaVote)
     const query = []
     const byKeyElaList = _.keyBy(elaVote, 'proposalhash')
     _.forEach(byKeyElaList, (v: any, k: any) => {
@@ -2365,7 +2366,7 @@ export default class extends Base {
           return
         }
 
-        if (!o.opiniondata) return
+        if (!o.opiniondata || !o.blockTime) return
         const opinionData = await unzipFile(o.opiniondata)
         console.log(`${voteList._id} opinionData....`, opinionData)
 
@@ -2382,12 +2383,19 @@ export default class extends Base {
           voteList.reasonHash !== o.opinionhash &&
           voteList.reasonCreatedAt
         ) {
+          console.log(
+            `${voteList.reasonHash}voteList.reasonHash...`,
+            voteList.reasonCreatedAt
+          )
+
           const isAfter = moment(voteList.reasonCreatedAt).isAfter(o.blockTime)
           console.log(`${voteList._id} isAfter...`, isAfter)
+
           if (isAfter === true) {
             const history = await db_cvote_history
               .getDBInstance()
               .findOne({ reasonHash: o.opinionhash })
+
             if (!history) {
               await db_cvote_history.save({
                 proposalBy: voteList.proposalId,
