@@ -89,7 +89,7 @@ export default class extends Base {
     const cursor = this.model
       .getDBInstance()
       .find(query, fields.join(' '))
-      .populate('createdBy', 'did')
+      .populate('createdBy', 'did username')
       .sort({ displayId: -1 })
 
     if (
@@ -114,7 +114,12 @@ export default class extends Base {
       const createdAt = _.get(o, 'createdAt')
       temp.createdAt = timestamp.second(createdAt)
       if (version === 'v2') {
-        temp.proposer = _.get(o, 'createdBy.did.didName')
+        const proposerDidName = _.get(o, 'createdBy.did.didName')
+        if (proposerDidName) {
+          temp.proposer = proposerDidName
+        } else {
+          temp.proposer = _.get(o, 'createdBy.username')
+        }
       } else {
         temp.proposedBy = _.get(o, 'createdBy.did.id')
       }
