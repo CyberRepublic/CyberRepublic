@@ -26,24 +26,33 @@ const {
   NEW_MOTION,
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 class C extends BaseComponent {
   constructor(props) {
     super(props)
     const type = _.get(props, 'initialValues.type')
+    let tabs = TAB_KEYS
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'didNameList']
+    }
     const isNewType = _.includes(
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
+    if (isNewType) {
+      tabs = NEW_TAB_KEYS
+    }
+
     this.timer = -1
     this.state = {
       loading: false,
       activeKey: !isNewType ? TAB_KEYS[0] : NEW_TAB_KEYS[0],
       errorKeys: {},
       type: type ? type : NEW_MOTION,
-      tabs: !isNewType ? TAB_KEYS : NEW_TAB_KEYS,
+      tabs,
       dupData: {},
       controVar: 1
     }
