@@ -633,7 +633,7 @@ export default class extends Base {
                 }
               }
 
-              const messageResult = await unzipFile(messageData)
+              const messageResult = await unzipFile(messageData, 'message')
               if (!messageResult) {
                 return {
                   code: 400,
