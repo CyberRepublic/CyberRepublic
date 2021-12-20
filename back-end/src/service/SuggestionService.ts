@@ -1878,6 +1878,12 @@ export default class extends Base {
             targetproposalhash: suggestion.targetProposalHash
           }
           break
+        case SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID:
+          jwtClaims.data = {
+            ...jwtClaims.data,
+            proposaltype: 'reservecustomizedid'
+          }
+          break
         default:
           const budget: [BudgetItem] = _.get(suggestion, 'budget')
           const hasBudget = !!budget && _.isArray(budget) && !_.isEmpty(budget)
