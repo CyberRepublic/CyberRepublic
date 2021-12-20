@@ -290,7 +290,7 @@ export default class extends Base {
         .getDBInstance()
         .findOne({ vid: suggestion.targetProposalNum })
       data.targetProposalTitle = proposal.title
-      data.targetproposalhash = suggestion.targetProposalHash
+      data.targetProposalhash = suggestion.targetProposalHash
       data.targetProposalNum = suggestion.targetProposalNum.toString()
     }
 
@@ -300,7 +300,7 @@ export default class extends Base {
         .findOne({ vid: suggestion.closeProposalNum })
       data.targetProposalNum = suggestion.closeProposalNum.toString()
       data.targetProposalTitle = proposal.title
-      data.targetproposalhash = suggestion.targetProposalHash
+      data.targetProposalhash = suggestion.targetProposalHash
     }
 
     if (type === SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID) {
