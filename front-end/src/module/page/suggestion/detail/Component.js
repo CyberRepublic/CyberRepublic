@@ -69,7 +69,8 @@ import { SUGGESTION_TYPE, SUGGESTION_STATUS } from '@/constant'
 const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 const { TextArea } = Input
 
@@ -120,7 +121,13 @@ export default class extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
-    const sections = isNewType ? newFields : fields
+    let sections = fields
+    if (isNewType) {
+      sections = newFields
+    }
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
     return (
       <StyledAnchor offsetTop={420}>
         {sections.map((section) => {
@@ -256,7 +263,13 @@ export default class extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
-    const sections = isNewType ? newFields : fields
+    let sections = fields
+    if (isNewType) {
+      sections = newFields
+    }
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['abstract', 'motivation', 'didNameList']
+    }
 
     const metaNode = this.renderMetaNode()
     const titleNode = this.renderTitleNode()
