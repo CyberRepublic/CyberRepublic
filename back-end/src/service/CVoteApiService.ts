@@ -712,6 +712,30 @@ export default class extends Base {
     }
   }
 
+  // API-12
+  public async getMessageData(params: any): Promise<Object> {
+    const { messageHash } = params
+    if (!messageHash) {
+      return {
+        code: 400,
+        message: 'Invalid request parameter'
+      }
+    }
+    const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
+    const rs = await zipFileModel.getDBInstance().findOne({ messageHash })
+    if (!rs) {
+      return {
+        code: 400,
+        message: 'Invalid message hash'
+      }
+    }
+    return {
+      proposalHash: rs.proposalHash,
+      content: rs.content.toString('hex'),
+      stage: rs.stage
+    }
+  }
+
   public async walletVote(param: any) {
     const db_user = this.getDBModel('User')
     const db_cvote = this.getDBModel('CVote')
