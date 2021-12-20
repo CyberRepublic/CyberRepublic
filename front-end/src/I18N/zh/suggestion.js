@@ -35,6 +35,7 @@ export default {
     abstract: '摘要',
     goal: '目标',
     motivation: '动机',
+    didNameList: '编辑短名字列表',
     relevance: '关联性',
     budget: '预算',
     type: '类型',
@@ -95,6 +96,7 @@ export default {
       [SUGGESTION_TYPE.CHANGE_PROPOSAL]: '变更提案动议',
       [SUGGESTION_TYPE.CHANGE_SECRETARY]: '变更秘书长动议',
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: '终止提案动议',
+      [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: '预留 DID 短域名动议',
       newMotion: '新动议',
       motionAgainst: '反对动议',
       anythingElse: '其它事宜',
@@ -110,7 +112,8 @@ export default {
         [SUGGESTION_TYPE.NEW_MOTION]: `关于 CR 或亦来云技术发展相关的议题`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `更换提案负责人或提案经费接收地址的议题`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `关于终止无法执行或不应执行提案的议题`,
-        [SUGGESTION_TYPE.CHANGE_SECRETARY]: `更换 CR 秘书长人选的议题`
+        [SUGGESTION_TYPE.CHANGE_SECRETARY]: `更换 CR 秘书长人选的议题`,
+        [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `对部分知名企业、机构和个人 DID 短域名的防抢注保护议题`
       }
     },
     note: {
@@ -118,6 +121,7 @@ export default {
       abstract: '一个关于提案内容的简短描述（不超过200字）。',
       goal: '描述通过执行提案期望达到的效果。目标应该是清晰且可度量的。',
       motivation: `描述为什么会提出这个提案。对于试图对亦来云有所改变的提案来说，动机至关重要。这里应该清楚的解释为什么现有的机制不足以解决提案想解决的问题。`,
+      didNameList: `请输入短名字并用空格符进行区分`,
       motivationHighlight: '没有足够动机的提案被拒的可能性很大。',
       relevance: `如果和其它CRC提案有所关联，这里应该提供关联提案的提案号并且说明和相关提案的关系。如果与亦来云技术或者其它CRC提案有冲突，则应该对这些冲突进行说明并解释怎么处理它们。`,
       budget: `如果执行提案需要CRC的经费支持，这里应该说明总的预算以及支出计划。这是一个和执行计划配套的财务计划。`,

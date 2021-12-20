@@ -27,19 +27,24 @@ export const createContainer = (
 
     return _.merge(s, mapState(state, ownProps))
   }
-  return withRouter(connect(tmp_mapState, mapDispatch)(component))
+  return withRouter(
+    connect(
+      tmp_mapState,
+      mapDispatch
+    )(component)
+  )
 }
 
 export const constant = (moduleName, detailArray) => {
   const result = {}
-  _.each(detailArray, detail => {
+  _.each(detailArray, (detail) => {
     result[detail] = `${moduleName}/${detail}`
   })
 
   return result
 }
 
-export const wordCounter = data => {
+export const wordCounter = (data) => {
   const pattern = /[a-zA-Z0-9_\u0392-\u03c9]+|[\u4E00-\u9FFF\u3400-\u4dbf\uf900-\ufaff\u3040-\u309f\uac00-\ud7af]+/g
   const m = data.match(pattern)
   let count = 0

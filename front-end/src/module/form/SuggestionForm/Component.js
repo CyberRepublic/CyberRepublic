@@ -383,11 +383,17 @@ class C extends BaseComponent {
   }
 
   changeType = (type) => {
+    let tabs = TAB_KEYS
     const isNewType = _.includes(
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
-    const tabs = !isNewType ? TAB_KEYS : NEW_TAB_KEYS
+    if (isNewType) {
+      tabs = NEW_TAB_KEYS
+    }
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'didNameList']
+    }
     this.setState({ type, tabs, errorKeys: {}, activeKey: 'type' })
   }
 
@@ -538,7 +544,7 @@ class C extends BaseComponent {
         content={initialValues[id]}
         activeKey={id}
         name={id}
-        upload={id === 'abstract' ? false : true}
+        upload={id === 'abstract' || id === 'didNameList' ? false : true}
       />
     )
   }

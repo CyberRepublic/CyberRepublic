@@ -9,7 +9,8 @@ const {
   NEW_MOTION,
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 class SelectSuggType extends Component {
@@ -256,7 +257,8 @@ class SelectSuggType extends Component {
             NEW_MOTION,
             CHANGE_PROPOSAL,
             TERMINATE_PROPOSAL,
-            CHANGE_SECRETARY
+            CHANGE_SECRETARY,
+            RESERVE_CUSTOMIZED_ID
           ].map((item) => (
             <div key={item} className="radio-item">
               <Radio value={item}>
