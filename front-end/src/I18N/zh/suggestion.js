@@ -35,7 +35,7 @@ export default {
     abstract: '摘要',
     goal: '目标',
     motivation: '动机',
-    didNameList: '编辑短名字列表',
+    didNameList: '短名字列表',
     relevance: '关联性',
     budget: '预算',
     type: '类型',

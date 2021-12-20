@@ -28,6 +28,7 @@ export default {
     abstract: 'Abstract',
     goal: 'Goal',
     motivation: 'Motivation',
+    didNameList: 'Short Name List',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',

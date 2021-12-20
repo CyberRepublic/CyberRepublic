@@ -79,7 +79,8 @@ const { TabPane } = Tabs
 const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 const renderRichContent = (data, key, title, user, actions) => {
@@ -541,46 +542,46 @@ class C extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
+    let sections = [
+      'preamble',
+      'abstract',
+      'motivation',
+      'goal',
+      'plan',
+      'relevance',
+      'budget'
+    ]
+
+    if (isNewType) {
+      sections = ['preamble', 'abstract', 'motivation']
+    }
+
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
+
     return (
       <StyledAnchor offsetTop={300}>
-        <Anchor.Link
-          href="#preamble"
-          title={I18N.get('proposal.fields.preamble')}
-        />
-        <Anchor.Link
-          href="#abstract"
-          title={I18N.get('proposal.fields.abstract')}
-        />
-        <Anchor.Link
-          marginTop={48}
-          href="#motivation"
-          title={I18N.get('proposal.fields.motivation')}
-        />
-        {!isNewType && (
-          <LinkGroup>
+        {sections.map((el) => {
+          if (el === 'budget') {
+            return (
+              <LinkGroup marginTop={48} key="budget">
+                <Anchor.Link
+                  href="#budget"
+                  title={I18N.get('proposal.fields.budget')}
+                />
+              </LinkGroup>
+            )
+          }
+          return (
             <Anchor.Link
-              href="#goal"
-              title={I18N.get('proposal.fields.goal')}
+              href={`#${el}`}
+              title={I18N.get(`proposal.fields.${el}`)}
+              key={el}
             />
-          </LinkGroup>
-        )}
-        {!isNewType && (
-          <Anchor.Link href="#plan" title={I18N.get('proposal.fields.plan')} />
-        )}
-        {!isNewType && (
-          <Anchor.Link
-            href="#relevance"
-            title={I18N.get('proposal.fields.relevance')}
-          />
-        )}
-        {!isNewType && (
-          <LinkGroup marginTop={48}>
-            <Anchor.Link
-              href="#budget"
-              title={I18N.get('proposal.fields.budget')}
-            />
-          </LinkGroup>
-        )}
+          )
+        })}
+
         <LinkGroup marginTop={48}>
           <Anchor.Link href="#vote" title={I18N.get('proposal.fields.vote')} />
         </LinkGroup>
