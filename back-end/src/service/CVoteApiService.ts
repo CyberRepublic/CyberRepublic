@@ -1,9 +1,20 @@
 import Base from './Base'
 import * as _ from 'lodash'
 import { constant } from '../constant'
-import { timestamp, ela, logger, utilCrypto } from '../utility'
+import {
+  timestamp,
+  ela,
+  mail,
+  logger,
+  utilCrypto,
+  getPemPublicKey,
+  user as userUtil
+} from '../utility'
 import * as moment from 'moment'
 import * as jwt from 'jsonwebtoken'
+const { WAITING_FOR_APPROVAL } = constant.MILESTONE_STATUS
+import { Types } from 'mongoose'
+import { unzipFile } from '../utility/unzip-file'
 
 const Big = require('big.js')
 const {
@@ -538,6 +549,147 @@ export default class extends Base {
     return { ...data, ...notificationResult, crVotes: voteResult }
   }
 
+  // API-10
+  public async updateMilestone(param: any) {
+    try {
+      const jwtToken = param.jwt
+      const claims: any = jwt.decode(jwtToken)
+      const {
+        iss,
+        command,
+        signature,
+        exp,
+        proposalHash,
+        messageData,
+        messageHash,
+        stage
+      } = claims
+      if (
+        command !== 'updatemilestone' ||
+        !proposalHash ||
+        !iss ||
+        !signature ||
+        messageData ||
+        messageHash ||
+        stage
+      ) {
+        return {
+          code: 400,
+          success: false,
+          message: 'Invalid request params'
+        }
+      }
+      const now = Math.trunc(Date.now() / 1000)
+      if (now > exp) {
+        return {
+          code: 400,
+          success: false,
+          message: 'The signature is expired'
+        }
+      }
+
+      const proposal = await this.model
+        .getDBInstance()
+        .findById({ proposalHash })
+        .populate('proposer', 'did')
+
+      if (!proposal) {
+        return {
+          code: 400,
+          success: false,
+          message: 'There is no this proposal.'
+        }
+      }
+
+      const ownerPublicKey = _.get(proposal, 'ownerPublicKey')
+      if (!ownerPublicKey) {
+        return {
+          code: 400,
+          success: false,
+          message: `Can not get your did's public key.`
+        }
+      }
+      const pemPublicKey = getPemPublicKey(ownerPublicKey)
+      return jwt.verify(
+        jwtToken,
+        pemPublicKey,
+        async (err: any, decoded: any) => {
+          if (err) {
+            return {
+              code: 401,
+              success: false,
+              message: 'Verify signatrue failed.'
+            }
+          } else {
+            try {
+              const item = proposal.withdrawalHistory.find(
+                (item: any) => item.messageHash === messageHash
+              )
+              if (item) {
+                return {
+                  code: 400,
+                  success: false,
+                  message: 'This payment application had been saved.'
+                }
+              }
+
+              const messageResult = await unzipFile(messageData)
+              if (!messageResult) {
+                return {
+                  code: 400,
+                  success: false,
+                  message: `Cann't decompress messageData`
+                }
+              }
+              const initiation = _.find(proposal.budget, ['type', 'ADVANCE'])
+              // update withdrawal history
+              const history = {
+                message: messageResult.opinion,
+                milestoneKey: initiation ? stage : stage - 1,
+                messageHash,
+                createdAt: moment(messageResult.date),
+                signature
+              }
+              // TODO: save messageData
+              await Promise.all([
+                await this.model.update(
+                  { proposalHash },
+                  { $push: { withdrawalHistory: history } }
+                ),
+                this.model.update(
+                  {
+                    proposalHash,
+                    'budget.milestoneKey': history.milestoneKey
+                  },
+                  { 'budget.$.status': WAITING_FOR_APPROVAL }
+                )
+              ])
+
+              this.notifySecretaries(
+                this.updateMailTemplate(proposal.vid, proposal._id)
+              )
+              return { code: 200, success: true, message: 'Ok' }
+            } catch (err) {
+              logger.error(err)
+              return {
+                code: 500,
+                success: false,
+                message: 'Something went wrong'
+              }
+            }
+          }
+        }
+      )
+    } catch (err) {
+      console.log(`signature api err...`, err)
+      return {
+        code: 500,
+        success: false,
+        message: 'Something went wrong'
+      }
+    }
+  }
+
   // API-11
   public async getOpinionData(params: any): Promise<Object> {
     const { opinionHash } = params
@@ -736,5 +888,50 @@ export default class extends Base {
       return doc
     }
     return res
+  }
+
+  private updateMailTemplate(vid: string, _id: Types.ObjectId) {
+    const subject = `【Payment Review】One payment request is waiting for your review`
+    const body = `
+      <p>One payment request in proposal #${vid} is waiting for your review:</p>
+      <p>Click this link to view more details:</p>
+      <p><a href="${process.env.SERVER_URL}/proposals/${_id}">${process.env.SERVER_URL}/proposals/${_id}</a></p>
+      <br />
+      <p>Cyber Republic Team</p>
+      <p>Thanks</p>
+    `
+    return { subject, body }
+  }
+
+  private async notifySecretaries(content: { subject: string; body: string }) {
+    const db_user = this.getDBModel('User')
+    const currentUserId = _.get(this.currentUser, '_id')
+    const secretaries = await db_user.find({
+      role: constant.USER_ROLE.SECRETARY
+    })
+    const toUsers = _.filter(
+      secretaries,
+      (user) => !user._id.equals(currentUserId)
+    )
+    const toMails = _.map(toUsers, 'email')
+
+    const recVariables = _.zipObject(
+      toMails,
+      _.map(toUsers, (user) => {
+        return {
+          _id: user._id,
+          username: userUtil.formatUsername(user)
+        }
+      })
+    )
+
+    const mailObj = {
+      to: toMails,
+      subject: content.subject,
+      body: content.body,
+      recVariables
+    }
+
+    mail.send(mailObj)
   }
 }

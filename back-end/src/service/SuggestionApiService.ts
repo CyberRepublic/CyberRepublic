@@ -373,6 +373,7 @@ export default class extends Base {
     return data
   }
 
+  // API-9
   public async signature(param: any) {
     try {
       const jwtToken = param.jwt
