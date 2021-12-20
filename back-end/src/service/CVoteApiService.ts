@@ -416,6 +416,10 @@ export default class extends Base {
       data.targetproposalhash = proposal.targetProposalHash
     }
 
+    if (type === CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
+      data.reservedCustomizedIDList = proposal.didNameList.split(' ')
+    }
+
     if (budgetIntro) {
       data.budgetStatement = budgetIntro
     }
