@@ -650,9 +650,9 @@ export default class extends Base {
                 createdAt: moment(messageResult.date),
                 signature
               }
-              // TODO: save messageData
+              const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
               await Promise.all([
-                await this.model.update(
+                this.model.update(
                   { proposalHash },
                   { $push: { withdrawalHistory: history } }
                 ),
@@ -662,7 +662,14 @@ export default class extends Base {
                     'budget.milestoneKey': history.milestoneKey
                   },
                   { 'budget.$.status': WAITING_FOR_APPROVAL }
-                )
+                ),
+                zipFileModel.save({
+                  proposalId: proposal._id,
+                  messageHash,
+                  content: Buffer.from(messageData, 'hex'),
+                  proposalHash,
+                  stage
+                })
               ])
 
               this.notifySecretaries(
