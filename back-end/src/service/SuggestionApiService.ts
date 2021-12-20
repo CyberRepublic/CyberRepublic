@@ -303,6 +303,10 @@ export default class extends Base {
       data.targetproposalhash = suggestion.targetProposalHash
     }
 
+    if (type === SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID) {
+      data.reservedCustomizedIDList = suggestion.didNameList.split(' ')
+    }
+
     if (draftHash) {
       data.draftHash = draftHash
     }
