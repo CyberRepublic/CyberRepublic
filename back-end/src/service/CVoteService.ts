@@ -209,6 +209,10 @@ export default class extends Base {
       }
     }
 
+    if (suggestion.type === constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
+      doc.didNameList = suggestion.didNameList
+    }
+
     Object.assign(doc, _.pick(suggestion, BASE_FIELDS))
     const budget = _.get(suggestion, 'budget')
     const hasBudget = !!budget && _.isArray(budget) && !_.isEmpty(budget)

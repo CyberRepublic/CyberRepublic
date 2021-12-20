@@ -243,5 +243,6 @@ export const CVote = {
       vid: Number,
       id: { type: Schema.Types.ObjectId, ref: 'cvote' }
     }
-  ]
+  ],
+  didNameList: String
 }
