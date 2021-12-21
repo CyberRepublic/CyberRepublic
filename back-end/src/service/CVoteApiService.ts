@@ -706,11 +706,17 @@ export default class extends Base {
         message: 'Invalid request parameter'
       }
     }
-    const rs = await this.zipFileModel.getDBInstance().findOne({ opinionHash })
+    let rs = await this.zipFileModel.getDBInstance().findOne({ opinionHash })
     if (!rs) {
-      return {
-        code: 400,
-        message: 'Invalid opinion hash'
+      const secretaryZipFileModel = this.getDBModel(
+        'Secretary_Opinion_Zip_File'
+      )
+      rs = await secretaryZipFileModel.getDBInstance().findOne({ opinionHash })
+      if (!rs) {
+        return {
+          code: 400,
+          message: 'Invalid opinion hash'
+        }
       }
     }
     return {
