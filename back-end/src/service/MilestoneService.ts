@@ -13,6 +13,7 @@ import {
   getProposalReqToken
 } from '../utility'
 import { getProposerMessageHash } from 'src/utility/message-hash'
+import { getOpinionHash } from 'src/utility/opinion-hash'
 const Big = require('big.js')
 const {
   WAITING_FOR_REQUEST,
@@ -316,6 +317,28 @@ export default class extends Base {
     }
   }
 
+  // for full-text to chain
+  private async getOpinionHash(
+    reason: string,
+    proposalId: string,
+    proposalHash: string
+  ) {
+    const rs = await getOpinionHash(reason)
+    if (rs && rs.error) {
+      return { error: rs.error }
+    }
+    if (rs && rs.content && rs.opinionHash) {
+      const zipFileModel = this.getDBModel('Secretary_Opinion_Zip_File')
+      await zipFileModel.save({
+        proposalId,
+        opinionHash: rs.opinionHash,
+        content: rs.content,
+        proposalHash
+      })
+      return { opinionHash: rs.opinionHash }
+    }
+  }
+
   public async review(param: any) {
     try {
       const did = _.get(this.currentUser, 'did.id')
@@ -365,9 +388,15 @@ export default class extends Base {
 
       const currTime = Date.now()
       const now = Math.floor(currTime / 1000)
-      const reasonHash = utilCrypto.sha256D(
-        JSON.stringify({ date: now, reason })
+      const opinionHashObj = await this.getOpinionHash(
+        reason,
+        proposal._id,
+        proposal.proposalHash
       )
+
+      if (opinionHashObj && opinionHashObj.error) {
+        return { success: false, message: opinionHashObj.error }
+      }
 
       await this.model.update(
         {
@@ -378,7 +407,7 @@ export default class extends Base {
           $set: {
             'withdrawalHistory.$.review': {
               reason,
-              reasonHash,
+              reasonHash: opinionHashObj.opinionHash,
               opinion,
               createdAt: currTime
             }
@@ -408,7 +437,7 @@ export default class extends Base {
           ownersignature: history.signature,
           newownersignature: '',
           proposaltrackingtype: trackingStatus,
-          secretaryopinionhash: reasonHash
+          secretaryopinionhash: opinionHashObj.opinionHash
         }
       }
       const jwtToken = jwt.sign(
@@ -419,7 +448,12 @@ export default class extends Base {
 
       const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, messageHash: reasonHash, oldUrl }
+      return {
+        success: true,
+        url,
+        messageHash: opinionHashObj.opinionHash,
+        oldUrl
+      }
     } catch (error) {
       logger.error(error)
       return
