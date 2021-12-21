@@ -276,20 +276,23 @@ class SelectSuggType extends Component {
               {type === CHANGE_PROPOSAL && (
                 <Section>
                   <div className="number">
-                    <Label>
-                      {I18N.get('suggestion.form.type.proposalNum')}
-                    </Label>
-                    <Select
-                      onChange={this.handleNumChange}
-                      defaultValue={proposalNum}
-                      className={proposalNumErr ? null : 'no-error'}
-                    >
-                      {this.state.proposals.map((el) => (
-                        <Option value={el.value} key={el.value}>
-                          {el.text}
-                        </Option>
-                      ))}
-                    </Select>
+                    <div className="inline">
+                      <Label>
+                        {I18N.get('suggestion.form.type.proposalNum')}
+                      </Label>
+                      <Select
+                        onChange={this.handleNumChange}
+                        defaultValue={proposalNum}
+                        className={proposalNumErr ? null : 'no-error'}
+                      >
+                        {this.state.proposals.map((el) => (
+                          <Option value={el.value} key={el.value}>
+                            {el.text}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+
                     {proposalNumErr && (
                       <Error>
                         {I18N.get('suggestion.form.error.proposalNum')}
@@ -366,17 +369,22 @@ class SelectSuggType extends Component {
               </Desc>
               {type === TERMINATE_PROPOSAL && (
                 <Section>
-                  <Label>{I18N.get('suggestion.form.type.proposalNum')}</Label>
-                  <Select
-                    onChange={this.handleTerminationChange}
-                    defaultValue={termination}
-                  >
-                    {this.state.proposals.map((el) => (
-                      <Option value={el.value} key={el.value}>
-                        {el.text}
-                      </Option>
-                    ))}
-                  </Select>
+                  <div className="inline">
+                    <Label>
+                      {I18N.get('suggestion.form.type.proposalNum')}
+                    </Label>
+                    <Select
+                      onChange={this.handleTerminationChange}
+                      defaultValue={termination}
+                    >
+                      {this.state.proposals.map((el) => (
+                        <Option value={el.value} key={el.value}>
+                          {el.text}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+
                   {terminationErr && (
                     <Error>
                       {I18N.get('suggestion.form.error.proposalNum')}
@@ -397,15 +405,24 @@ class SelectSuggType extends Component {
               </Desc>
               {type === CHANGE_SECRETARY && (
                 <Section>
-                  <Label>{I18N.get('suggestion.form.type.newSecretary')}</Label>
-                  <Input
-                    onChange={(e) => this.handleChange(e, 'newSecretaryDID')}
-                    value={newSecretaryDID}
-                    placeholder="ibHXCt4ixWjZfbS8oNhjAfBzA8LKxxxxxx"
-                  />
-                  {newSecretaryDIDErr && (
-                    <Error>{I18N.get('suggestion.form.error.secretary')}</Error>
-                  )}
+                  <div className="inline">
+                    <Label>
+                      {I18N.get('suggestion.form.type.newSecretary')}
+                    </Label>
+                    <div style={{ width: '100%' }}>
+                      <Input
+                        onChange={(e) =>
+                          this.handleChange(e, 'newSecretaryDID')
+                        }
+                        value={newSecretaryDID}
+                      />
+                      {newSecretaryDIDErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.secretary')}
+                        </Error>
+                      )}
+                    </div>
+                  </div>
                 </Section>
               )}
             </div>
@@ -446,11 +463,10 @@ const Wrapper = styled.div`
         width: unset;
       }
       & > div {
-        margin-top: 16px;
+        padding: 0 16px 16px;
       }
       & > div.selected {
         background-color: #e7f5f2;
-        padding: 8px 16px 16px;
       }
     }
   }
@@ -468,6 +484,8 @@ const Label = styled.div`
   line-height: 24px;
   margin-bottom: 6px;
   color: #686868;
+  flex-shrink: 0;
+  margin-right: 16px;
 `
 const Section = styled.div`
   margin-left: 24px;
@@ -506,10 +524,16 @@ const Section = styled.div`
   input {
     font-size: 13px;
   }
+  .inline {
+    display: flex;
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
 `
 const Error = styled.div`
   color: red;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1;
 `
 const Desc = styled.div`
