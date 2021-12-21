@@ -12,6 +12,7 @@ import {
   permissions,
   getProposalReqToken
 } from '../utility'
+import { getProposerMessageHash } from 'src/utility/message-hash'
 const Big = require('big.js')
 const {
   WAITING_FOR_REQUEST,
@@ -33,6 +34,30 @@ export default class extends Base {
     const initiation = _.find(budget, ['type', 'ADVANCE'])
     const stage = parseInt(mKey)
     return initiation ? stage : stage + 1
+  }
+
+  // for full-text to chain
+  private async getMessageHash(
+    message: string,
+    proposalId: string,
+    proposalHash: string,
+    stage: number
+  ) {
+    const rs = await getProposerMessageHash(message)
+    if (rs && rs.error) {
+      return { error: rs.error }
+    }
+    if (rs && rs.content && rs.messageHash) {
+      const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
+      await zipFileModel.save({
+        proposalId,
+        messageHash: rs.messageHash,
+        content: rs.content,
+        proposalHash,
+        stage
+      })
+      return { messageHash: rs.messageHash }
+    }
   }
 
   public async applyPayment(param: any) {
@@ -66,16 +91,27 @@ export default class extends Base {
       }
 
       const currDate = Date.now()
-      const now = Math.floor(currDate / 1000)
-      const hashMsg = { date: now, message }
-      const messageHash = utilCrypto.sha256D(JSON.stringify(hashMsg))
+      const initiation = _.find(proposal.budget, ['type', 'ADVANCE'])
+      const stage = initiation
+        ? parseInt(milestoneKey)
+        : parseInt(milestoneKey) + 1
+      const messageHashObj = await this.getMessageHash(
+        message,
+        proposal._id,
+        proposal.proposalHash,
+        stage
+      )
+      if (messageHashObj && messageHashObj.error) {
+        return { success: false, message: messageHashObj.error }
+      }
       // update withdrawal history
       const history = {
         message,
         milestoneKey,
-        messageHash,
+        messageHash: messageHashObj.messageHash,
         createdAt: currDate
       }
+
       await this.model.update(
         { _id: id },
         { $push: { withdrawalHistory: history } }
@@ -83,6 +119,7 @@ export default class extends Base {
 
       const trackingStatus = budget.type === 'COMPLETION' ? FINALIZED : PROGRESS
 
+      const now = Math.floor(currDate / 1000)
       // generate jwt url
       const jwtClaims = {
         iat: now,
