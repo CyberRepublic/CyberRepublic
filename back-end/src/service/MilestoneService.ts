@@ -7,13 +7,12 @@ import {
   mail,
   logger,
   user as userUtil,
-  utilCrypto,
   getPemPublicKey,
   permissions,
   getProposalReqToken
 } from '../utility'
-import { getProposerMessageHash } from 'src/utility/message-hash'
-import { getOpinionHash } from 'src/utility/opinion-hash'
+import { getProposerMessageHash } from '../utility/message-hash'
+import { getOpinionHash } from '../utility/opinion-hash'
 const Big = require('big.js')
 const {
   WAITING_FOR_REQUEST,
