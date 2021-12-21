@@ -253,115 +253,157 @@ class SelectSuggType extends Component {
           onChange={(e) => this.handleChange(e, 'type')}
           value={type}
         >
-          {[
-            NEW_MOTION,
-            CHANGE_PROPOSAL,
-            TERMINATE_PROPOSAL,
-            CHANGE_SECRETARY,
-            RESERVE_CUSTOMIZED_ID
-          ].map((item) => (
-            <div key={item} className="radio-item">
-              <Radio value={item}>
-                {I18N.get(`suggestion.form.type.${item}`)}
+          <div>
+            <div key={NEW_MOTION}>
+              <Radio value={NEW_MOTION}>
+                {I18N.get(`suggestion.form.type.${NEW_MOTION}`)}
               </Radio>
-              <Desc>{I18N.get(`suggestion.form.type.desc.${item}`)}</Desc>
+              <Desc>{I18N.get(`suggestion.form.type.desc.${NEW_MOTION}`)}</Desc>
             </div>
-          ))}
-        </Radio.Group>
-
-        {type === CHANGE_PROPOSAL && (
-          <Section>
-            <div className="number">
-              <Label>{I18N.get('suggestion.form.type.proposalNum')}</Label>
-              <Select
-                onChange={this.handleNumChange}
-                defaultValue={proposalNum}
-                className={proposalNumErr ? null : 'no-error'}
-              >
-                {this.state.proposals.map((el) => (
-                  <Option value={el.value} key={el.value}>
-                    {el.text}
-                  </Option>
-                ))}
-              </Select>
-              {proposalNumErr && (
-                <Error>{I18N.get('suggestion.form.error.proposalNum')}</Error>
+            <div key={CHANGE_PROPOSAL}>
+              <Radio value={CHANGE_PROPOSAL}>
+                {I18N.get(`suggestion.form.type.${CHANGE_PROPOSAL}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${CHANGE_PROPOSAL}`)}
+              </Desc>
+              {type === CHANGE_PROPOSAL && (
+                <Section>
+                  <div className="number">
+                    <Label>
+                      {I18N.get('suggestion.form.type.proposalNum')}
+                    </Label>
+                    <Select
+                      onChange={this.handleNumChange}
+                      defaultValue={proposalNum}
+                      className={proposalNumErr ? null : 'no-error'}
+                    >
+                      {this.state.proposals.map((el) => (
+                        <Option value={el.value} key={el.value}>
+                          {el.text}
+                        </Option>
+                      ))}
+                    </Select>
+                    {proposalNumErr && (
+                      <Error>
+                        {I18N.get('suggestion.form.error.proposalNum')}
+                      </Error>
+                    )}
+                  </div>
+                  <Checkbox
+                    checked={changeOwner}
+                    onChange={(e) =>
+                      this.handleCheckboxChange(e, 'changeOwner')
+                    }
+                  >
+                    {I18N.get('suggestion.form.type.changeProposalOwner')}
+                  </Checkbox>
+                  <Checkbox
+                    checked={changeAddress}
+                    onChange={(e) =>
+                      this.handleCheckboxChange(e, 'changeAddress')
+                    }
+                  >
+                    {I18N.get('suggestion.form.type.changeProposalAddress')}
+                  </Checkbox>
+                  {changeOwner && (
+                    <div
+                      className={`sub ${newOwnerDIDErr ? null : 'no-error'}`}
+                    >
+                      <Label>
+                        {I18N.get('suggestion.form.type.proposalNewOwner')}
+                      </Label>
+                      <Input
+                        onChange={(e) => this.handleChange(e, 'newOwnerDID')}
+                        value={newOwnerDID}
+                        placeholder="ibHXCt4ixWjZfbS8oNhjAfBzA8LKyyyyyy"
+                      />
+                      {newOwnerDIDErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.newOwner')}
+                        </Error>
+                      )}
+                    </div>
+                  )}
+                  {changeAddress && (
+                    <div className={`sub ${newAddressErr ? null : 'no-error'}`}>
+                      <Label>
+                        {I18N.get('suggestion.form.type.proposalNewAddress')}
+                      </Label>
+                      <Input onChange={this.handleAddress} value={newAddress} />
+                      {newAddressErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.elaAddress')}
+                        </Error>
+                      )}
+                      <Desc style={{ paddingLeft: 0, marginTop: 8 }}>
+                        {I18N.get('suggestion.budget.addressTip')}
+                      </Desc>
+                    </div>
+                  )}
+                </Section>
               )}
             </div>
-            <Checkbox
-              checked={changeOwner}
-              onChange={(e) => this.handleCheckboxChange(e, 'changeOwner')}
-            >
-              {I18N.get('suggestion.form.type.changeProposalOwner')}
-            </Checkbox>
-            <Checkbox
-              checked={changeAddress}
-              onChange={(e) => this.handleCheckboxChange(e, 'changeAddress')}
-            >
-              {I18N.get('suggestion.form.type.changeProposalAddress')}
-            </Checkbox>
-            {changeOwner && (
-              <div className={`sub ${newOwnerDIDErr ? null : 'no-error'}`}>
-                <Label>
-                  {I18N.get('suggestion.form.type.proposalNewOwner')}
-                </Label>
-                <Input
-                  onChange={(e) => this.handleChange(e, 'newOwnerDID')}
-                  value={newOwnerDID}
-                  placeholder="ibHXCt4ixWjZfbS8oNhjAfBzA8LKyyyyyy"
-                />
-                {newOwnerDIDErr && (
-                  <Error>{I18N.get('suggestion.form.error.newOwner')}</Error>
-                )}
-              </div>
-            )}
-            {changeAddress && (
-              <div className={`sub ${newAddressErr ? null : 'no-error'}`}>
-                <Label>
-                  {I18N.get('suggestion.form.type.proposalNewAddress')}
-                </Label>
-                <Input onChange={this.handleAddress} value={newAddress} />
-                {newAddressErr && (
-                  <Error>{I18N.get('suggestion.form.error.elaAddress')}</Error>
-                )}
-                <Desc style={{ paddingLeft: 0, marginTop: 8 }}>
-                  {I18N.get('suggestion.budget.addressTip')}
-                </Desc>
-              </div>
-            )}
-          </Section>
-        )}
-        {type === CHANGE_SECRETARY && (
-          <Section>
-            <Label>{I18N.get('suggestion.form.type.newSecretary')}</Label>
-            <Input
-              onChange={(e) => this.handleChange(e, 'newSecretaryDID')}
-              value={newSecretaryDID}
-              placeholder="ibHXCt4ixWjZfbS8oNhjAfBzA8LKxxxxxx"
-            />
-            {newSecretaryDIDErr && (
-              <Error>{I18N.get('suggestion.form.error.secretary')}</Error>
-            )}
-          </Section>
-        )}
-        {type === TERMINATE_PROPOSAL && (
-          <Section>
-            <Label>{I18N.get('suggestion.form.type.proposalNum')}</Label>
-            <Select
-              onChange={this.handleTerminationChange}
-              defaultValue={termination}
-            >
-              {this.state.proposals.map((el) => (
-                <Option value={el.value} key={el.value}>
-                  {el.text}
-                </Option>
-              ))}
-            </Select>
-            {terminationErr && (
-              <Error>{I18N.get('suggestion.form.error.proposalNum')}</Error>
-            )}
-          </Section>
-        )}
+            <div key={TERMINATE_PROPOSAL}>
+              <Radio value={TERMINATE_PROPOSAL}>
+                {I18N.get(`suggestion.form.type.${TERMINATE_PROPOSAL}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${TERMINATE_PROPOSAL}`)}
+              </Desc>
+              {type === TERMINATE_PROPOSAL && (
+                <Section>
+                  <Label>{I18N.get('suggestion.form.type.proposalNum')}</Label>
+                  <Select
+                    onChange={this.handleTerminationChange}
+                    defaultValue={termination}
+                  >
+                    {this.state.proposals.map((el) => (
+                      <Option value={el.value} key={el.value}>
+                        {el.text}
+                      </Option>
+                    ))}
+                  </Select>
+                  {terminationErr && (
+                    <Error>
+                      {I18N.get('suggestion.form.error.proposalNum')}
+                    </Error>
+                  )}
+                </Section>
+              )}
+            </div>
+            <div key={CHANGE_SECRETARY}>
+              <Radio value={CHANGE_SECRETARY}>
+                {I18N.get(`suggestion.form.type.${CHANGE_SECRETARY}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${CHANGE_SECRETARY}`)}
+              </Desc>
+              {type === CHANGE_SECRETARY && (
+                <Section>
+                  <Label>{I18N.get('suggestion.form.type.newSecretary')}</Label>
+                  <Input
+                    onChange={(e) => this.handleChange(e, 'newSecretaryDID')}
+                    value={newSecretaryDID}
+                    placeholder="ibHXCt4ixWjZfbS8oNhjAfBzA8LKxxxxxx"
+                  />
+                  {newSecretaryDIDErr && (
+                    <Error>{I18N.get('suggestion.form.error.secretary')}</Error>
+                  )}
+                </Section>
+              )}
+            </div>
+          </div>
+
+          <div key={RESERVE_CUSTOMIZED_ID}>
+            <Radio value={RESERVE_CUSTOMIZED_ID}>
+              {I18N.get(`suggestion.form.type.${RESERVE_CUSTOMIZED_ID}`)}
+            </Radio>
+            <Desc>
+              {I18N.get(`suggestion.form.type.desc.${RESERVE_CUSTOMIZED_ID}`)}
+            </Desc>
+          </div>
+        </Radio.Group>
       </Wrapper>
     )
   }
