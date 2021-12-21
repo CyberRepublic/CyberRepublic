@@ -130,7 +130,7 @@ export default class extends Base {
         data: {
           userdid: _.get(this.currentUser, 'did.id'),
           proposalhash: proposal.proposalHash,
-          messagehash: messageHash,
+          messagehash: messageHashObj.messageHash,
           stage: this.paymentStage(proposal.budget, milestoneKey),
           ownerpubkey: proposal.ownerPublicKey,
           newownerpubkey: '',
