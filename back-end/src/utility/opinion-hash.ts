@@ -1,5 +1,4 @@
 import * as crypto from 'crypto'
-import * as _ from 'lodash'
 import * as admZip from 'adm-zip'
 
 function sha256(str: Buffer) {
@@ -20,13 +19,13 @@ async function compressFiles(reason: string) {
   if (!content) {
     return {
       success: false,
-      error: `Cann't get this council member opinion's zip data`
+      error: `Cann't get this opinion's zip data`
     }
   }
   return { success: true, content }
 }
 
-export const getCouncilMemberOpinionHash = async (reason: any) => {
+export const getOpinionHash = async (reason: any) => {
   try {
     const rs: any = await compressFiles(reason)
     if (rs.success === false) {
@@ -35,7 +34,7 @@ export const getCouncilMemberOpinionHash = async (reason: any) => {
     // the size of a zip file should be less than 1M
     if (rs.content && rs.content.length >= 1048576) {
       return {
-        error: `The size of this council member opinion's zip data is bigger than 1M`
+        error: `The size of this opinion's zip data is bigger than 1M`
       }
     }
     const hash0 = sha256(rs.content)
@@ -49,6 +48,6 @@ export const getCouncilMemberOpinionHash = async (reason: any) => {
       opinionHash: reverseHash
     }
   } catch (err) {
-    console.log(`getCouncilMemberOpinionHash err...`, err)
+    console.log(`getOpinionHash err...`, err)
   }
 }

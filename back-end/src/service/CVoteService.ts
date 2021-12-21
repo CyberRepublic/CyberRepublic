@@ -16,7 +16,7 @@ import {
 import { unzipFile } from '../utility/unzip-file'
 import * as moment from 'moment'
 import * as jwt from 'jsonwebtoken'
-import { getCouncilMemberOpinionHash } from '../utility/opinion-hash'
+import { getOpinionHash } from '../utility/opinion-hash'
 
 const util = require('util')
 const request = require('request')
@@ -1164,7 +1164,7 @@ export default class extends Base {
     proposalHash: string,
     votedBy: string
   ) {
-    const rs = await getCouncilMemberOpinionHash(reason)
+    const rs = await getOpinionHash(reason)
     if (rs && rs.error) {
       return { error: rs.error }
     }
