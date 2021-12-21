@@ -254,13 +254,19 @@ class SelectSuggType extends Component {
           value={type}
         >
           <div className="radio-item">
-            <div key={NEW_MOTION}>
+            <div
+              key={NEW_MOTION}
+              className={type === NEW_MOTION ? 'selected' : null}
+            >
               <Radio value={NEW_MOTION}>
                 {I18N.get(`suggestion.form.type.${NEW_MOTION}`)}
               </Radio>
               <Desc>{I18N.get(`suggestion.form.type.desc.${NEW_MOTION}`)}</Desc>
             </div>
-            <div key={CHANGE_PROPOSAL}>
+            <div
+              key={CHANGE_PROPOSAL}
+              className={type === CHANGE_PROPOSAL ? 'selected' : null}
+            >
               <Radio value={CHANGE_PROPOSAL}>
                 {I18N.get(`suggestion.form.type.${CHANGE_PROPOSAL}`)}
               </Radio>
@@ -344,7 +350,10 @@ class SelectSuggType extends Component {
                 </Section>
               )}
             </div>
-            <div key={TERMINATE_PROPOSAL}>
+            <div
+              key={TERMINATE_PROPOSAL}
+              className={type === TERMINATE_PROPOSAL ? 'selected' : null}
+            >
               <Radio value={TERMINATE_PROPOSAL}>
                 {I18N.get(`suggestion.form.type.${TERMINATE_PROPOSAL}`)}
               </Radio>
@@ -372,7 +381,10 @@ class SelectSuggType extends Component {
                 </Section>
               )}
             </div>
-            <div key={CHANGE_SECRETARY}>
+            <div
+              key={CHANGE_SECRETARY}
+              className={type === CHANGE_SECRETARY ? 'selected' : null}
+            >
               <Radio value={CHANGE_SECRETARY}>
                 {I18N.get(`suggestion.form.type.${CHANGE_SECRETARY}`)}
               </Radio>
@@ -395,7 +407,10 @@ class SelectSuggType extends Component {
             </div>
           </div>
           <div className="radio-item">
-            <div key={RESERVE_CUSTOMIZED_ID}>
+            <div
+              key={RESERVE_CUSTOMIZED_ID}
+              className={type === RESERVE_CUSTOMIZED_ID ? 'selected' : null}
+            >
               <Radio value={RESERVE_CUSTOMIZED_ID}>
                 {I18N.get(`suggestion.form.type.${RESERVE_CUSTOMIZED_ID}`)}
               </Radio>
@@ -429,6 +444,10 @@ const Wrapper = styled.div`
       & > div {
         margin-top: 16px;
       }
+      & > div.selected {
+        background-color: #e7f5f2;
+        padding: 8px 16px 16px;
+      }
     }
   }
   .ant-radio-wrapper,
@@ -449,7 +468,8 @@ const Label = styled.div`
   color: #686868;
 `
 const Section = styled.div`
-  margin-top: 24px;
+  margin-left: 24px;
+  margin-top: 16px;
   max-width: 520px;
   .number {
     margin-bottom: 16px;
