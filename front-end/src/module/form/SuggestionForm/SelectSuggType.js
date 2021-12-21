@@ -297,6 +297,7 @@ class SelectSuggType extends Component {
                     )}
                   </div>
                   <Checkbox
+                    className="checkbox"
                     checked={changeOwner}
                     onChange={(e) =>
                       this.handleCheckboxChange(e, 'changeOwner')
@@ -304,25 +305,16 @@ class SelectSuggType extends Component {
                   >
                     {I18N.get('suggestion.form.type.changeProposalOwner')}
                   </Checkbox>
-                  <Checkbox
-                    checked={changeAddress}
-                    onChange={(e) =>
-                      this.handleCheckboxChange(e, 'changeAddress')
-                    }
-                  >
-                    {I18N.get('suggestion.form.type.changeProposalAddress')}
-                  </Checkbox>
                   {changeOwner && (
                     <div
                       className={`sub ${newOwnerDIDErr ? null : 'no-error'}`}
                     >
-                      <Label>
-                        {I18N.get('suggestion.form.type.proposalNewOwner')}
-                      </Label>
                       <Input
                         onChange={(e) => this.handleChange(e, 'newOwnerDID')}
                         value={newOwnerDID}
-                        placeholder="ibHXCt4ixWjZfbS8oNhjAfBzA8LKyyyyyy"
+                        placeholder={I18N.get(
+                          'suggestion.form.type.proposalNewOwner'
+                        )}
                       />
                       {newOwnerDIDErr && (
                         <Error>
@@ -331,12 +323,24 @@ class SelectSuggType extends Component {
                       )}
                     </div>
                   )}
+                  <Checkbox
+                    className="checkbox"
+                    checked={changeAddress}
+                    onChange={(e) =>
+                      this.handleCheckboxChange(e, 'changeAddress')
+                    }
+                  >
+                    {I18N.get('suggestion.form.type.changeProposalAddress')}
+                  </Checkbox>
                   {changeAddress && (
                     <div className={`sub ${newAddressErr ? null : 'no-error'}`}>
-                      <Label>
-                        {I18N.get('suggestion.form.type.proposalNewAddress')}
-                      </Label>
-                      <Input onChange={this.handleAddress} value={newAddress} />
+                      <Input
+                        onChange={this.handleAddress}
+                        value={newAddress}
+                        placeholder={I18N.get(
+                          'suggestion.form.type.proposalNewAddress'
+                        )}
+                      />
                       {newAddressErr && (
                         <Error>
                           {I18N.get('suggestion.form.error.elaAddress')}
@@ -455,14 +459,12 @@ const Wrapper = styled.div`
     color: #686868;
   }
   .ant-checkbox-wrapper + .ant-checkbox-wrapper {
-    @media (max-width: 768px) {
-      margin-left: 0;
-    }
+    margin-left: 0;
   }
 `
 
 const Label = styled.div`
-  font-size: 14px;
+  font-size: 13px;
   line-height: 24px;
   margin-bottom: 6px;
   color: #686868;
@@ -472,7 +474,6 @@ const Section = styled.div`
   margin-top: 16px;
   max-width: 520px;
   .number {
-    margin-bottom: 16px;
     .no-error .ant-select-selection {
       border-color: #d9d9d9;
       &:active {
@@ -487,7 +488,7 @@ const Section = styled.div`
     }
   }
   .sub {
-    margin-top: 16px;
+    margin-left: 24px;
   }
   .sub.no-error .ant-input {
     border-color: #d9d9d9;
@@ -497,6 +498,13 @@ const Section = styled.div`
     &:focus {
       box-shadow: unset;
     }
+  }
+  .checkbox {
+    font-size: 13px;
+    display: block;
+  }
+  input {
+    font-size: 13px;
   }
 `
 const Error = styled.div`
