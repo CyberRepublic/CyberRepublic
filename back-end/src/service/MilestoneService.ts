@@ -145,7 +145,12 @@ export default class extends Base {
 
       const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, messageHash, oldUrl }
+      return {
+        success: true,
+        url,
+        messageHash: messageHashObj.messageHash,
+        oldUrl
+      }
     } catch (error) {
       logger.error(error)
       return
