@@ -253,7 +253,7 @@ class SelectSuggType extends Component {
           onChange={(e) => this.handleChange(e, 'type')}
           value={type}
         >
-          <div>
+          <div className="radio-item">
             <div key={NEW_MOTION}>
               <Radio value={NEW_MOTION}>
                 {I18N.get(`suggestion.form.type.${NEW_MOTION}`)}
@@ -394,14 +394,15 @@ class SelectSuggType extends Component {
               )}
             </div>
           </div>
-
-          <div key={RESERVE_CUSTOMIZED_ID}>
-            <Radio value={RESERVE_CUSTOMIZED_ID}>
-              {I18N.get(`suggestion.form.type.${RESERVE_CUSTOMIZED_ID}`)}
-            </Radio>
-            <Desc>
-              {I18N.get(`suggestion.form.type.desc.${RESERVE_CUSTOMIZED_ID}`)}
-            </Desc>
+          <div className="radio-item">
+            <div key={RESERVE_CUSTOMIZED_ID}>
+              <Radio value={RESERVE_CUSTOMIZED_ID}>
+                {I18N.get(`suggestion.form.type.${RESERVE_CUSTOMIZED_ID}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${RESERVE_CUSTOMIZED_ID}`)}
+              </Desc>
+            </div>
           </div>
         </Radio.Group>
       </Wrapper>
@@ -415,14 +416,18 @@ const Wrapper = styled.div`
   .ant-radio-group {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     @media (max-width: 768px) {
       flex-direction: column;
     }
     flex-wrap: wrap;
     .radio-item {
-      width: 50%;
+      width: 45%;
       @media (max-width: 768px) {
         width: unset;
+      }
+      & > div {
+        margin-top: 16px;
       }
     }
   }
