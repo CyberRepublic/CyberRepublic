@@ -190,7 +190,7 @@ export default {
     madeByOtherCM: `This suggestion had been made into proposal by other council member.`,
     councilQRCode: `Scan the QR code above to make this suggestion into proposal. Then go to the proposal list page to view the proposal when it is saved on the chain.`,
     toChain: 'Saving onto blockchain',
-    signQRCode: 'Scan the QR code above to sign your suggestion.',
+    signQRCode: 'Scan the QR code with Essentials',
     scanEla: 'Switch to the ELA Wallet',
     scanEssentials: 'Switch to the Essentials',
     associateDidFirst: 'Please associate your DID first.',
