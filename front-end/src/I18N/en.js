@@ -884,10 +884,7 @@ const en = {
   'council.voting.voteResult.unvoted': 'Unvoted by me',
 
   'council.voting.voteResult.onchain': 'Vote Onchain',
-  'council.voting.essentials': 'Scan this with the Essentials',
-  'council.voting.ela': 'Scan this with the ELA Wallet',
-  'council.voting.scan.ela': 'Switch to the ELA Wallet',
-  'council.voting.scan.essentials': 'Switch to the Essentials',
+  'council.voting.essentials': 'Scan QR code with Essentials',
 
   'council.voting.viewHistory.btn': 'Voting history',
   'council.voting.viewHistory.current': 'Current Voting',

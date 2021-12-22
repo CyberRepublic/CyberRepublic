@@ -857,10 +857,7 @@ const zh = {
   'council.voting.voteResult.unvoted': '待投票',
 
   'council.voting.voteResult.onchain': '投票上链',
-  'council.voting.essetials': '用 Essentials 扫码投票',
-  'council.voting.ela': '用 ELA Wallet 扫码投票',
-  'council.voting.scan.ela': '改用 ELA Wallet 扫码',
-  'council.voting.scan.essentials': '改用 Essentials 扫码',
+  'council.voting.essentials': '用 Essentials 扫码投票',
 
   'council.voting.viewHistory.btn': '投票历史',
   'council.voting.viewHistory.current': '当前投票',
