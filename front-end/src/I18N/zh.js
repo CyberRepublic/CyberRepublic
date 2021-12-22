@@ -916,9 +916,7 @@ const zh = {
   'role.admin.mode': '管理员模式',
 
   // Profile
-  'profile.associateDid': '扫码绑定 DID',
-  'profile.qrcodeTip': '用 Essentials 扫码绑定',
-  'profile.qrcodeOldTip': '用 ELA Wallet 扫码绑定',
+  'profile.associateDid': '用 Essentials 扫码绑定',
   'profile.reassociateDid': '重新绑定 DID',
   'profile.thanksForCompleting': '感谢更新您的个人档案！',
   'profile.skillsets': '我的技能',

@@ -944,9 +944,7 @@ const en = {
   'role.admin.mode': 'Admin Mode',
 
   // Profile
-  'profile.associateDid': 'Associate DID with APP',
-  'profile.qrcodeTip': 'Scan this with the Essentials',
-  'profile.qrcodeOldTip': 'Scan this with the ELA Wallet',
+  'profile.associateDid': 'Associate DID with Essentials',
   'profile.reassociateDid': 'Re-associate DID',
   'profile.thanksForCompleting': 'Thanks for updating your profile!',
   'profile.skillsets': 'My Skillsets',

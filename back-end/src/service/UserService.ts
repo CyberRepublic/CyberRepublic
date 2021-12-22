@@ -701,9 +701,8 @@ export default class extends Base {
         expiresIn: '7d',
         algorithm: 'ES256'
       })
-      const oldUrl = constant.oldAccessJwtPrefix + jwtToken
       const url = constant.accessJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
@@ -729,20 +728,7 @@ export default class extends Base {
           message: 'The payload of jwt token is not correct.'
         }
       }
-      let reqToken: any
-      let isNew: Boolean = false
-      if (
-        claims.req.slice(0, constant.oldAccessJwtPrefix.length) ===
-        constant.oldAccessJwtPrefix
-      ) {
-        reqToken = claims.req.slice(constant.oldAccessJwtPrefix.length)
-      } else if (
-        claims.req.slice(0, constant.accessJwtPrefix.length) ===
-        constant.accessJwtPrefix
-      ) {
-        reqToken = claims.req.slice(constant.accessJwtPrefix.length)
-        isNew = true
-      }
+      const reqToken = claims.req.slice(constant.accessJwtPrefix.length)
       console.log('didCallbackEla reqToken...', reqToken)
       const payload: any = jwt.decode(reqToken)
       if (!payload || (payload && !payload.userId)) {
@@ -807,10 +793,7 @@ export default class extends Base {
                 id: decoded.iss,
                 compressedPublicKey: rs.compressedPublicKey
               }
-              await db_user.update(
-                { _id: payload.userId },
-                { $set: { did, newVersion: isNew } }
-              )
+              await db_user.update({ _id: payload.userId }, { $set: { did } })
               return { code: 200, success: true, message: 'Ok' }
             } catch (err) {
               logger.error(err)
