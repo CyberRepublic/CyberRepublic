@@ -79,19 +79,11 @@ export default class extends Base {
 
     // simply validate did format
     if (param.did && _.isString(param.did) && param.did.length === 46) {
-      const rs = param.did.split(':')
-      if (rs.length === 3 && rs[0] === 'did' && rs[1] === 'elastos') {
-        const result = await getDidPublicKey(param.did)
-        if (result && result.compressedPublicKey) {
-          doc.did = {
-            id: param.did,
-            compressedPublicKey: result.compressedPublicKey
-          }
-        } else {
-          doc.did = { id: param.did }
-        }
-        if ([true, false].includes(param.newVersion)) {
-          doc.newVersion = param.newVersion
+      const result = await getDidPublicKey(param.did)
+      if (result && result.compressedPublicKey) {
+        doc.did = {
+          id: param.did,
+          compressedPublicKey: result.compressedPublicKey
         }
       }
     }
@@ -114,9 +106,6 @@ export default class extends Base {
   public async recordLogin(param) {
     const db_user = this.getDBModel('User')
     const fields = { $push: { logins: new Date() } }
-    if ([true, false].includes(param.newVersion)) {
-      fields['$set'] = { newVersion: param.newVersion }
-    }
     await db_user.update({ _id: param.userId }, fields)
   }
 
@@ -883,11 +872,9 @@ export default class extends Base {
       const db_did = this.getDBModel('Did')
       await db_did.save({ number: nonce })
 
-      const oldUrl = constant.oldAccessJwtPrefix + jwtToken
       const url = constant.accessJwtPrefix + jwtToken
-      console.log('loginElaUrl oldUrl...', oldUrl)
       console.log('loginElaUrl url...', url)
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
@@ -914,20 +901,7 @@ export default class extends Base {
           message: 'The payload of jwt token is not correct.'
         }
       }
-      let reqToken: any
-      let isNew: boolean = false
-      if (
-        claims.req.slice(0, constant.oldAccessJwtPrefix.length) ===
-        constant.oldAccessJwtPrefix
-      ) {
-        reqToken = claims.req.slice(constant.oldAccessJwtPrefix.length)
-      } else if (
-        claims.req.slice(0, constant.accessJwtPrefix.length) ===
-        constant.accessJwtPrefix
-      ) {
-        reqToken = claims.req.slice(constant.accessJwtPrefix.length)
-        isNew = true
-      }
+      const reqToken = claims.req.slice(constant.accessJwtPrefix.length)
       console.log('loginCallbackEla reqToken...', reqToken)
       const payload: any = jwt.decode(reqToken)
       if (!payload || (payload && !payload.nonce)) {
@@ -993,8 +967,7 @@ export default class extends Base {
                   $set: {
                     did: decoded.iss,
                     success: true,
-                    message: 'Ok',
-                    newVersion: isNew
+                    message: 'Ok'
                   }
                 }
               )
@@ -1025,18 +998,7 @@ export default class extends Base {
       if (!param.req) {
         return { success: false }
       }
-      let jwtToken: any
-      if (
-        param.req.slice(0, constant.oldAccessJwtPrefix.length) ===
-        constant.oldAccessJwtPrefix
-      ) {
-        jwtToken = param.req.slice(constant.oldAccessJwtPrefix.length)
-      } else if (
-        param.req.slice(0, constant.accessJwtPrefix.length) ===
-        constant.accessJwtPrefix
-      ) {
-        jwtToken = param.req.slice(constant.accessJwtPrefix.length)
-      }
+      const jwtToken = param.req.slice(constant.accessJwtPrefix.length)
       if (!jwtToken) {
         return { success: false }
       }
@@ -1055,8 +1017,7 @@ export default class extends Base {
                 await db_did.getDBInstance().remove({ number: decoded.nonce })
                 return {
                   did: doc.did,
-                  success: true,
-                  newVersion: doc.newVersion
+                  success: true
                 }
               }
               if (doc.success === false) {

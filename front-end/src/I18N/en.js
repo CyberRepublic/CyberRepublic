@@ -172,9 +172,7 @@ const en = {
   'login.reset': 'Reset password',
   'login.title': 'Login to Cyber Republic',
   'login.description_1': 'Input your credentials below.',
-  'login.withDid': 'Log in with APP',
-  'login.qrcodeTip': 'Scan this with the Essentials',
-  'login.qrcodeOldTip': `Scan this with the ELA Wallet`,
+  'login.withDid': 'Log in with Essentials',
   'login.modal.register': 'Register',
   'login.modal.content': 'Your DID does not register the CR website',
   // Logout

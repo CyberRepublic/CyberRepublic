@@ -171,9 +171,7 @@ const zh = {
   'login.reset': '重置密码',
   'login.title': '登录 Cyber Republic',
   'login.description_1': '输入密码',
-  'login.withDid': '用 APP 扫码登录',
-  'login.qrcodeTip': 'Essentials 扫码登录',
-  'login.qrcodeOldTip': 'ELA Wallet 扫码登录',
+  'login.withDid': '用 Essentials 扫码登录',
   'login.modal.register': '立即注册',
   'login.modal.content': '当前 DID 尚未注册 CR 网站',
 

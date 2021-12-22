@@ -12,8 +12,8 @@ export default class extends Base {
       if (user) {
         const resultData = { user }
         // record user login date
-        userService.recordLogin({ userId: user.id, newVersion: rs.newVersion })
-  
+        userService.recordLogin({ userId: user.id })
+
         // always return api-token on login, this is needed for future requests
         this.session.userId = user.id
         resultData['api-token'] = utilCrypto.encrypt(
