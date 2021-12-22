@@ -189,7 +189,7 @@ export default {
     unarchived: '建议已取消归档',
     revertVersion: '已使用指定版本的内容',
     madeByOtherCM: '其他委员已经把这个建议转成提案了。',
-    councilQRCode: `扫描上面二维码把建议转成提案，提案上链后请到网站提案列表页面查看`,
+    councilQRCode: `用 Essentials 扫描上面二维码把建议转成提案，提案上链后请到网站提案列表页面查看`,
     toChain: '正在上链中',
     signQRCode: '用 Essentials 扫码签名建议',
     scanEla: '改用 ELA Wallet 扫码',

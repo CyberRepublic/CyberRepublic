@@ -1491,7 +1491,7 @@ export default class extends Base {
     }
   }
 
-  private convertBudget(budget: [BudgetItem]) {
+  private convertBudget(budget: any) {
     const chainBudgetType = {
       ADVANCE: 'imprest',
       CONDITIONED: 'normalpayment',
@@ -2232,9 +2232,8 @@ export default class extends Base {
         { _id: suggestion._id },
         { $push: { proposers: { did: councilMemberDid, timestamp: now } } }
       )
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
