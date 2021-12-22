@@ -10,7 +10,6 @@ class CommunityVoteQrCode extends Component {
     super(props)
     this.state = {
       url: '',
-      oldUrl: '',
       visible: false
     }
   }
@@ -18,7 +17,7 @@ class CommunityVoteQrCode extends Component {
   componentDidMount = async () => {
     const rs = await this.props.getMemberVoteUrl(this.props._id)
     if (rs && rs.success) {
-      this.setState({ url: rs.url, oldUrl: rs.oldUrl })
+      this.setState({ url: rs.url })
     }
   }
 
@@ -30,16 +29,9 @@ class CommunityVoteQrCode extends Component {
     const { visible } = this.state
     const content = (
       <Content>
-        <div>
-          <QRCode value={this.state.url} size={180} />
-          <Tip>{I18N.get('profile.member.vote.qrcodeTip')}</Tip>
-          <Tip>{I18N.get('profile.member.vote.community')}</Tip>
-        </div>
-        <div>
-          <QRCode value={this.state.oldUrl} size={180} />
-          <Tip>{I18N.get('profile.member.vote.qrcodeOldTip')}</Tip>
-          <Tip>{I18N.get('profile.member.vote.community')}</Tip>
-        </div>
+        <QRCode value={this.state.url} size={180} />
+        <Tip>{I18N.get('profile.member.vote.qrcodeTip')}</Tip>
+        <Tip>{I18N.get('profile.member.vote.community')}</Tip>
       </Content>
     )
     return (
@@ -63,10 +55,7 @@ export default CommunityVoteQrCode
 
 const Content = styled.div`
   padding: 28px 24px;
-  min-width: 470px;
   text-align: center;
-  display: flex;
-  justify-content: space-between;
 `
 const Tip = styled.div`
   font-size: 12px;

@@ -1689,13 +1689,11 @@ export default class extends Base {
           proposalHash: cur.proposalHash
         }
       }
-
       const jwtToken = jwt.sign(jwtClaims, process.env.APP_PRIVATE_KEY, {
         algorithm: 'ES256'
       })
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
