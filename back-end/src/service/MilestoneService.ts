@@ -142,14 +142,11 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
       return {
         success: true,
         url,
-        messageHash: messageHashObj.messageHash,
-        oldUrl
+        messageHash: messageHashObj.messageHash
       }
     } catch (error) {
       logger.error(error)
@@ -444,14 +441,11 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
       return {
         success: true,
         url,
-        messageHash: opinionHashObj.opinionHash,
-        oldUrl
+        messageHash: opinionHashObj.opinionHash
       }
     } catch (error) {
       logger.error(error)

@@ -19,7 +19,7 @@ export default {
   [WAITING_FOR_WITHDRAWAL]: 'WAITING FOR WITHDRAW',
   [WITHDRAWN]: 'WITHDRAWN',
   [REJECTED]: 'REJECTED',
-  sign: 'Scan the QR code above to sign',
+  sign: 'Scan the QR code with Essentials to sign',
   summary: 'Summary',
   reason: 'Reason',
   exception: 'Something went wrong',

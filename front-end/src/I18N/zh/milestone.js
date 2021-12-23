@@ -19,7 +19,7 @@ export default {
   [WAITING_FOR_WITHDRAWAL]: '等待取款',
   [WITHDRAWN]: '已取款',
   [REJECTED]: '已拒绝',
-  sign: '扫码上面二维码签名',
+  sign: '用 Essentials 扫码签名',
   summary: '总结',
   reason: '理由',
   exception: '出错了',
