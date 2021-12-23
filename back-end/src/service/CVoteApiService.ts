@@ -86,6 +86,7 @@ export default class extends Base {
     ) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameters - status',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -351,6 +352,7 @@ export default class extends Base {
     if (!proposal) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameters',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -694,7 +696,8 @@ export default class extends Base {
                     messageHash,
                     content: Buffer.from(messageData, 'hex'),
                     proposalHash,
-                    stage
+                    stage,
+                    ownerSignature: signature
                   })
                 ])
               } catch (err) {
@@ -732,6 +735,7 @@ export default class extends Base {
     if (!opinionHash) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameter'
       }
     }
@@ -744,6 +748,7 @@ export default class extends Base {
       if (!rs) {
         return {
           code: 400,
+          success: false,
           message: 'Invalid opinion hash'
         }
       }
@@ -760,6 +765,7 @@ export default class extends Base {
     if (!messageHash) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameter'
       }
     }
@@ -768,13 +774,15 @@ export default class extends Base {
     if (!rs) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid message hash'
       }
     }
     return {
       proposalHash: rs.proposalHash,
       content: rs.content.toString('hex'),
-      stage: rs.stage
+      stage: rs.stage,
+      ownerSignature: rs.ownerSignature
     }
   }
 

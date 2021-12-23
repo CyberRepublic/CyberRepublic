@@ -247,6 +247,8 @@ export default class extends Base {
                 }
               }
 
+              const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
+
               await Promise.all([
                 this.model.update(
                   {
@@ -264,6 +266,10 @@ export default class extends Base {
                     'budget.milestoneKey': history.milestoneKey
                   },
                   { 'budget.$.status': WAITING_FOR_APPROVAL }
+                ),
+                zipFileModel.update(
+                  { proposalHash, messageHash },
+                  { $set: { ownerSignature: decoded.data } }
                 )
               ])
 

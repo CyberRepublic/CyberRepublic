@@ -38,6 +38,7 @@ export default class extends Base {
     ) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameters - status',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -169,6 +170,7 @@ export default class extends Base {
     if (!draftHash) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameter',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -178,6 +180,7 @@ export default class extends Base {
     if (!rs) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid this draft hash',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -215,6 +218,7 @@ export default class extends Base {
     if (!suggestion) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameters',
         // tslint:disable-next-line:no-null-keyword
         data: null

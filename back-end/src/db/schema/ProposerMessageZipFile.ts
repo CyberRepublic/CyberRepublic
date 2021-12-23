@@ -9,5 +9,6 @@ export const ProposerMessageZipFile = {
   proposalHash: String,
   messageHash: String,
   content: Buffer,
-  stage: Number
+  stage: Number,
+  ownerSignature: String
 }
