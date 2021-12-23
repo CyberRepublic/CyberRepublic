@@ -286,6 +286,7 @@ export default class extends Base {
           history.push({
             apply: {
               content: withdrawal.message,
+              messageHash: withdrawal.messageHash,
               timestamp: moment(withdrawal.createdAt).unix()
             },
             review
