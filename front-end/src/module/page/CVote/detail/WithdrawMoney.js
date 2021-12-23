@@ -3,25 +3,18 @@ import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import { Modal } from 'antd'
 import I18N from '@/I18N'
-import SwitchSvgIcon from '@/module/common/SwitchSvgIcon'
 
 class WithdrawMoney extends Component {
   constructor(props) {
     super(props)
     this.state = {
       url: '',
-      oldUrl: '',
-      message: '',
-      toggle: ''
+      message: ''
     }
   }
 
   hideModal = () => {
     this.props.hideModal()
-  }
-
-  handleSwitch = () => {
-    this.setState({ toggle: !this.state.toggle })
   }
 
   componentDidMount = async () => {
@@ -31,12 +24,12 @@ class WithdrawMoney extends Component {
       this.setState({ message: rs.message })
     }
     if (rs && rs.success) {
-      this.setState({ url: rs.url, message: '', oldUrl: rs.oldUrl })
+      this.setState({ url: rs.url, message: '' })
     }
   }
 
   render() {
-    const { url, message, oldUrl, toggle } = this.state
+    const { url, message } = this.state
     return (
       <Modal
         maskClosable={false}
@@ -46,17 +39,8 @@ class WithdrawMoney extends Component {
       >
         {url ? (
           <Content>
-            <QRCode value={toggle ? oldUrl : url} size={300} />
+            <QRCode value={url} size={300} />
             <Tip>{I18N.get('milestone.scanToWithdraw')}</Tip>
-
-            <SwitchWrapper>
-              <SwitchSvgIcon />
-              <SwitchButton onClick={this.handleSwitch}>
-                {!toggle
-                  ? I18N.get('milestone.scanEla')
-                  : I18N.get('milestone.scanEssentials')}
-              </SwitchButton>
-            </SwitchWrapper>
           </Content>
         ) : (
           <Content>{message}</Content>
@@ -76,20 +60,6 @@ const Tip = styled.div`
   font-size: 12px;
   color: #333333;
   margin-top: 16px;
-  font-weight: 400;
-  line-height: 17px;
-`
-const SwitchWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-`
-const SwitchButton = styled.span`
-  color: #65bda3;
-  font-size: 12px;
-  padding-left: 4px;
-  cursor: pointer;
   font-weight: 400;
   line-height: 17px;
 `

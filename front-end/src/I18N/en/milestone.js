@@ -24,7 +24,7 @@ export default {
   reason: 'Reason',
   exception: 'Something went wrong',
   payment: 'Payment',
-  scanToWithdraw: 'Scan the QR code above to withdraw ELA',
+  scanToWithdraw: 'Scan QR code with Essentials to withdraw ELA',
   scanEla: 'Switch to the ELA Wallet',
   scanEssentials: 'Switch to the Essentials',
   required: 'This field is required.',

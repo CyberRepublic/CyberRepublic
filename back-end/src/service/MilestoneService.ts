@@ -604,10 +604,8 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (error) {
       logger.error(error)
       return

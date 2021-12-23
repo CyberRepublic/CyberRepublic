@@ -24,7 +24,7 @@ export default {
   reason: '理由',
   exception: '出错了',
   payment: '款项',
-  scanToWithdraw: '扫码上面二维码取款',
+  scanToWithdraw: '用 Essentials 扫码取款',
   scanEla: '改用 ELA Wallet 扫码',
   scanEssentials: '改用 the Essentials 扫码',
   required: '必填项',
