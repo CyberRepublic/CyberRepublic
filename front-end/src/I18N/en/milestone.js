@@ -25,8 +25,6 @@ export default {
   exception: 'Something went wrong',
   payment: 'Payment',
   scanToWithdraw: 'Scan QR code with Essentials to withdraw ELA',
-  scanEla: 'Switch to the ELA Wallet',
-  scanEssentials: 'Switch to the Essentials',
   required: 'This field is required.',
   next: 'Next',
   showMore: 'Show More',

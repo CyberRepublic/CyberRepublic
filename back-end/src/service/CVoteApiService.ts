@@ -555,7 +555,9 @@ export default class extends Base {
   public async updateMilestone(param: any) {
     try {
       const jwtToken = param.jwt
+      console.log(`jwtToken...`, jwtToken)
       const claims: any = jwt.decode(jwtToken)
+      console.log(`claims...`, claims)
       const {
         iss,
         command,
@@ -571,9 +573,9 @@ export default class extends Base {
         !proposalHash ||
         !iss ||
         !signature ||
-        messageData ||
-        messageHash ||
-        stage
+        !messageData ||
+        !messageHash ||
+        !stage
       ) {
         return {
           code: 400,
@@ -592,7 +594,7 @@ export default class extends Base {
 
       const proposal = await this.model
         .getDBInstance()
-        .findById({ proposalHash })
+        .findOne({ proposalHash })
         .populate('proposer', 'did')
 
       if (!proposal) {
