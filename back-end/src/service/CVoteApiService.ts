@@ -12,7 +12,8 @@ import {
 } from '../utility'
 import * as moment from 'moment'
 import * as jwt from 'jsonwebtoken'
-const { WAITING_FOR_APPROVAL } = constant.MILESTONE_STATUS
+const { WAITING_FOR_REQUEST, WAITING_FOR_APPROVAL, REJECTED } =
+  constant.MILESTONE_STATUS
 import { Types } from 'mongoose'
 import { unzipFile } from '../utility/unzip-file'
 
@@ -638,39 +639,64 @@ export default class extends Base {
                 return {
                   code: 400,
                   success: false,
-                  message: `Cann't decompress messageData`
+                  message: `Cann't decompress messageData.`
                 }
               }
+
               const initiation = _.find(proposal.budget, ['type', 'ADVANCE'])
+              const milestoneKey = initiation ? stage : stage - 1
+              // check if milestoneKey is valid
+              const budget = proposal.budget.find(
+                (item: any) => item.milestoneKey === milestoneKey.toString()
+              )
+              if (!budget) {
+                return {
+                  code: 400,
+                  success: false,
+                  message: 'This is no this milestone.'
+                }
+              }
+              if (![WAITING_FOR_REQUEST, REJECTED].includes(budget.status)) {
+                return {
+                  code: 400,
+                  success: false,
+                  message: 'Milestone status is invalid.'
+                }
+              }
+
               // update withdrawal history
               const history = {
                 message: messageResult.opinion,
-                milestoneKey: initiation ? stage : stage - 1,
+                milestoneKey: milestoneKey.toString(),
                 messageHash,
                 createdAt: moment(messageResult.date),
                 signature
               }
               const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
-              await Promise.all([
-                this.model.update(
-                  { proposalHash },
-                  { $push: { withdrawalHistory: history } }
-                ),
-                this.model.update(
-                  {
+              try {
+                await Promise.all([
+                  this.model.update(
+                    { proposalHash },
+                    { $push: { withdrawalHistory: history } }
+                  ),
+                  this.model.update(
+                    {
+                      proposalHash,
+                      'budget.milestoneKey': history.milestoneKey
+                    },
+                    { 'budget.$.status': WAITING_FOR_APPROVAL }
+                  ),
+                  zipFileModel.save({
+                    proposalId: proposal._id,
+                    messageHash,
+                    content: Buffer.from(messageData, 'hex'),
                     proposalHash,
-                    'budget.milestoneKey': history.milestoneKey
-                  },
-                  { 'budget.$.status': WAITING_FOR_APPROVAL }
-                ),
-                zipFileModel.save({
-                  proposalId: proposal._id,
-                  messageHash,
-                  content: Buffer.from(messageData, 'hex'),
-                  proposalHash,
-                  stage
-                })
-              ])
+                    stage
+                  })
+                ])
+              } catch (err) {
+                console.log(`update milestone when save data to db err...`, err)
+              }
 
               this.notifySecretaries(
                 this.updateMailTemplate(proposal.vid, proposal._id)
@@ -688,7 +714,7 @@ export default class extends Base {
         }
       )
     } catch (err) {
-      console.log(`signature api err...`, err)
+      console.log(`update milestone api err...`, err)
       return {
         code: 500,
         success: false,
