@@ -697,7 +697,8 @@ export default class extends Base {
                     content: Buffer.from(messageData, 'hex'),
                     proposalHash,
                     stage,
-                    ownerSignature: signature
+                    ownerSignature: signature,
+                    ownerPublicKey
                   })
                 ])
               } catch (err) {
@@ -782,7 +783,8 @@ export default class extends Base {
       proposalHash: rs.proposalHash,
       content: rs.content.toString('hex'),
       stage: rs.stage,
-      ownerSignature: rs.ownerSignature
+      ownerSignature: rs.ownerSignature,
+      ownerPublicKey: rs.ownerPublicKey
     }
   }
 

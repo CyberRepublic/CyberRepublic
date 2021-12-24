@@ -269,7 +269,7 @@ export default class extends Base {
                 ),
                 zipFileModel.update(
                   { proposalHash, messageHash },
-                  { $set: { ownerSignature: decoded.data } }
+                  { $set: { ownerSignature: decoded.data, ownerPublicKey } }
                 )
               ])
 

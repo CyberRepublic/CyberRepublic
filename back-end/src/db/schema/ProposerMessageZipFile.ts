@@ -10,5 +10,6 @@ export const ProposerMessageZipFile = {
   messageHash: String,
   content: Buffer,
   stage: Number,
-  ownerSignature: String
+  ownerSignature: String,
+  ownerPublicKey: String
 }
