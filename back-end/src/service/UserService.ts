@@ -884,9 +884,23 @@ export default class extends Base {
           message: 'The payload of jwt token is not correct.'
         }
       }
-      const reqToken = claims.req.slice(constant.accessJwtPrefix.length)
+      let reqToken: any
+      if (
+        claims.req.slice(0, constant.oldAccessJwtPrefix.length) ===
+        constant.oldAccessJwtPrefix
+      ) {
+        reqToken = claims.req.slice(constant.oldAccessJwtPrefix.length)
+      } else if (
+        claims.req.slice(0, constant.accessJwtPrefix.length) ===
+        constant.accessJwtPrefix
+      ) {
+        reqToken = claims.req.slice(constant.accessJwtPrefix.length)
+      } else {
+        reqToken = claims.req
+      }
       console.log('loginCallbackEla reqToken...', reqToken)
       const payload: any = jwt.decode(reqToken)
+      console.log(`loginCallbackEla reqToken payload...`, payload)
       if (!payload || (payload && !payload.nonce)) {
         return {
           code: 400,
