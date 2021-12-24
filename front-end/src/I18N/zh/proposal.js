@@ -28,7 +28,7 @@ export default {
     abstract: '摘要',
     goal: '目标',
     motivation: '动机',
-    didNameList: '短名字列表',
+    didNameList: '自定义 DID 列表',
     relevance: '关联性',
     budget: '预算',
     type: '类型',
@@ -168,6 +168,6 @@ export default {
     [PROPOSAL_TYPE.CHANGE_PROPOSAL]: '变更提案动议',
     [PROPOSAL_TYPE.CHANGE_SECRETARY]: '变更秘书长动议',
     [PROPOSAL_TYPE.TERMINATE_PROPOSAL]: '终止提案动议',
-    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: '预留 DID 短域名动议'
+    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: '预留自定义 DID 动议'
   }
 }
