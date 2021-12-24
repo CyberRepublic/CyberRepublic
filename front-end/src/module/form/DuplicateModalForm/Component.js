@@ -11,10 +11,12 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL
 } = SUGGESTION_TYPE
-const suggestion_type = [NEW_MOTION,
+const suggestion_type = [
+  NEW_MOTION,
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL]
+  TERMINATE_PROPOSAL
+]
 class DuplicateModal extends Component {
   constructor(props) {
     super(props)
@@ -29,11 +31,7 @@ class DuplicateModal extends Component {
     }
   }
 
-  componentDidMount() {
-
-  }
-
-  setData = value => {
+  setData = (value) => {
     this.setState({ data: value })
   }
 
@@ -45,24 +43,22 @@ class DuplicateModal extends Component {
     this.setState({ visible: true, index: -1 })
   }
 
-  changeValue = value => {
+  changeValue = (value) => {
     const { onChange, callback } = this.props
     const { relevances } = this.state
-    this.setState(
-      { values: [...relevances, value.relevances] }, () => {
-        onChange(this.state.relevances)
-        callback('relevances')
-      })
+    this.setState({ values: [...relevances, value.relevances] }, () => {
+      onChange(this.state.relevances)
+      callback('relevances')
+    })
   }
 
-  handleDelete = index => {
-  }
+  handleDelete = (index) => {}
 
-  handleEdit = index => {
+  handleEdit = (index) => {
     this.setState({ index, visible: true })
   }
 
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     const { relevances, index } = this.state
     if (index >= 0) {
       const rs = relevances.map((item, key) => {
@@ -106,22 +102,21 @@ class DuplicateModal extends Component {
     }
   }
 
-  handleChange = param => {
+  handleChange = (param) => {
     if (typeof param === 'string') {
       this.setState({ value: param })
     }
     if (typeof param === 'object') {
-      this.setState({ value: param.target.value})
+      this.setState({ value: param.target.value })
     }
   }
 
   handleSave = () => {
     const { setFieldsValue } = this.props.form
     const { value, data, radioData } = this.state
-    const radio = _.find(radioData, { '_id': value })
+    const radio = _.find(radioData, { _id: value })
     let changedata
     if (data._id === value) {
-
       setFieldsValue({
         title: data.title,
         validPeriod: data.validPeriod ? data.validPeriod : 3
@@ -141,7 +136,10 @@ class DuplicateModal extends Component {
         changedata = _.omit(radio, 'relevance')
       }
     }
-    this.props.changeData({...changedata,  type: _.includes(suggestion_type, changedata.type) ? changedata.type : '1'})
+    this.props.changeData({
+      ...changedata,
+      type: _.includes(suggestion_type, changedata.type) ? changedata.type : '1'
+    })
     this.hideModal()
   }
 
@@ -150,11 +148,15 @@ class DuplicateModal extends Component {
     let selectItem
     let radioItem
     if (!_.isEmpty(data)) {
-      selectItem = (<Select.Option key={data._id}>{data.title}</Select.Option>)
+      selectItem = <Select.Option key={data._id}>{data.title}</Select.Option>
     }
     if (!_.isEmpty(radioData)) {
       radioItem = _.map(radioData, (obj) => {
-        return <Radio style={radioStyle} key={obj._id} value={obj._id}>{obj.title}</Radio>
+        return (
+          <Radio style={radioStyle} key={obj._id} value={obj._id}>
+            {obj.title}
+          </Radio>
+        )
       })
     }
     return (
@@ -174,11 +176,11 @@ class DuplicateModal extends Component {
           width={670}
         >
           <div>
-            <TitleDiv>{I18N.get("suggestion.form.fields.duplicate")}</TitleDiv>
+            <TitleDiv>{I18N.get('suggestion.form.fields.duplicate')}</TitleDiv>
             <div>
               <Row>
                 <Col span={6} style={{ lineHeight: '40px' }}>
-                  {I18N.get("suggestion.form.fields.duplicate.number")}
+                  {I18N.get('suggestion.form.fields.duplicate.number')}
                 </Col>
                 <Col span={18}>
                   <Select
@@ -188,7 +190,13 @@ class DuplicateModal extends Component {
                     filterOption={false}
                     onSearch={this.fetchProposal}
                     onChange={this.handleChange}
-                    suffixIcon={<Icon type="search" spin={false} style={{ height: '100px !improtant' }} />}
+                    suffixIcon={
+                      <Icon
+                        type="search"
+                        spin={false}
+                        style={{ height: '100px !improtant' }}
+                      />
+                    }
                     defaultActiveFirstOption={false}
                     notFoundContent={null}
                     defaultOpen={false}
@@ -205,16 +213,10 @@ class DuplicateModal extends Component {
               </Radio.Group>
             </RadioItem>
             <FooterButton>
-              <Button
-                style={cancelButton}
-                onClick={this.hideModal}
-              >
+              <Button style={cancelButton} onClick={this.hideModal}>
                 {I18N.get('suggestion.cancel')}
               </Button>
-              <Button
-                style={saveButton}
-                onClick={this.handleSave}
-              >
+              <Button style={saveButton} onClick={this.handleSave}>
                 {I18N.get('profile.save')}
               </Button>
             </FooterButton>
