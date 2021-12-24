@@ -83,13 +83,9 @@ class SelectSuggType extends Component {
         }
       }
 
-      if (value.type === NEW_MOTION) {
-        const data = {
-          type
-        }
-        if (!_.isEqual(value, data)) {
-          this.dupOperating(value, preVar)
-        }
+      const data = { type }
+      if (!_.isEqual(value, data)) {
+        this.dupOperating(value, preVar)
       }
     }
   }
@@ -247,6 +243,7 @@ class SelectSuggType extends Component {
       terminationErr,
       newSecretaryDIDErr
     } = this.state
+
     return (
       <Wrapper>
         <Radio.Group
