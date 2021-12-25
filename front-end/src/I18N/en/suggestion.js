@@ -121,7 +121,7 @@ export default {
       abstract: `Provide a brief description of the proposal content (no more than 200 words).`,
       goal: `Describe the desired results achieved by implementing the proposal. Goals should be clear and measurable.`,
       motivation: `Describe why this proposal is proposed. Motivation is critical for proposals that try to improve Elastos or CR. It should be clearly explained here why the existing mechanism is not enough to solve the problems the proposal wants to solve.`,
-      didNameList: `Please enter a short name and use spaces to distinguish`,
+      didNameList: `Please enter Customized DID and use spaces to distinguish`,
       motivationHighlight: `Proposals with insufficient motivation are highly likely to be rejected.`,
       relevance: `If the proposal is related to other CRC proposals, the proposal number of each related proposal should be provided here. The relationship between the proposal and each related proposal should be described. If there are conflicts with Elastos technology or other CRC proposals, the proposal must describe these conflicts and explain how to deal with them.`,
       budget: `If the implementation of the proposal requires financial support from the CRC, describe the overall budget and expenditure plan. This financial plan should be aligned with the implementation plan.`,
@@ -157,7 +157,8 @@ export default {
       proposalNum: 'The proposal number is emtpy.',
       secretary: 'The new secretary general DID is emtpy.',
       newOwner: 'The new owner DID is empty.',
-      changeWhat: `Please fill in the info of the change proposal`
+      changeWhat: `Please fill in the info of the change proposal`,
+      didNameList: `Please remove these following duplicates from the Customized DID list:`
     }
   },
   modal: {

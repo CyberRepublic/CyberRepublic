@@ -61,6 +61,18 @@ export const wordCounter = (data) => {
   return count
 }
 
+export const getDuplicatesFromArray = (arr) => {
+  const uniqueItems = new Set(arr)
+  const duplicates = arr.filter((item) => {
+    if (uniqueItems.has(item)) {
+      uniqueItems.delete(item)
+    } else {
+      return item
+    }
+  })
+  return duplicates
+}
+
 export {
   api_request,
   upload_file,

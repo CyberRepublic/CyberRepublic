@@ -14,6 +14,7 @@ import SelectSuggType from './SelectSuggType'
 import ImplementationAndBudget from './ImplementationAndBudget'
 import TeamInfoSection from './TeamInfoSection'
 import DuplicateModal from '../DuplicateModalForm/Container'
+import { getDuplicatesFromArray } from '../../../util/index'
 
 const FormItem = Form.Item
 const { TabPane } = Tabs
@@ -91,9 +92,6 @@ class C extends BaseComponent {
     e.preventDefault()
     const { form } = this.props
 
-    if (isNotDraft) {
-      this.setState({ loading: true })
-    }
     form.validateFields(async (err, values) => {
       if (err) {
         this.setState({
@@ -102,6 +100,9 @@ class C extends BaseComponent {
           activeKey: this.getActiveKey(Object.keys(err)[0])
         })
         return
+      }
+      if (isNotDraft) {
+        this.setState({ loading: true })
       }
       const milestone = _.get(values, 'plan.milestone')
       const pItems = _.get(values, 'budget.paymentItems')
@@ -167,6 +168,29 @@ class C extends BaseComponent {
         values.plan = {
           ...values.plan,
           teamInfo
+        }
+      }
+      const didNameList = _.get(values, 'didNameList')
+      if (didNameList) {
+        const duplicates = getDuplicatesFromArray(didNameList.split(' '))
+        if (duplicates && duplicates.length > 0) {
+          this.setState({ loading: false })
+          message.error(
+            <span>
+              {I18N.get('suggestion.form.error.didNameList')}
+              <span
+                style={{
+                  display: 'block',
+                  color: '#f5222d',
+                  marginTop: 16
+                }}
+              >
+                {duplicates.join(' ')}
+              </span>
+            </span>,
+            5
+          )
+          return
         }
       }
       const rs = this.formatType(values, false)
