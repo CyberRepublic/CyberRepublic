@@ -308,7 +308,7 @@ export default class extends Base {
     }
 
     if (type === SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID) {
-      data.reservedCustomizedIDList = suggestion.didNameList.split(' ')
+      data.reservedCustomizedIDList = suggestion.didNameList.split(/\s+/)
     }
 
     if (draftHash) {

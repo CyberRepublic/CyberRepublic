@@ -172,7 +172,7 @@ class C extends BaseComponent {
       }
       const didNameList = _.get(values, 'didNameList')
       if (didNameList) {
-        const duplicates = getDuplicatesFromArray(didNameList.split(' '))
+        const duplicates = getDuplicatesFromArray(didNameList.split(/\s+/))
         if (duplicates && duplicates.length > 0) {
           this.setState({ loading: false })
           message.error(
