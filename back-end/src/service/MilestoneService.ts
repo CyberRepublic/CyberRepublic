@@ -13,6 +13,8 @@ import {
 } from '../utility'
 import { getProposerMessageHash } from '../utility/message-hash'
 import { getOpinionHash } from '../utility/opinion-hash'
+import { unzipFile } from '../utility/unzip-file'
+import * as moment from 'moment'
 const Big = require('big.js')
 const {
   WAITING_FOR_REQUEST,
@@ -610,5 +612,94 @@ export default class extends Base {
       logger.error(error)
       return
     }
+  }
+
+  public async syncSecretaryOpinionFromChain() {
+    const db_ela = this.getDBModel('Ela_Transaction')
+    const db_cvote = this.getDBModel('CVote')
+    const db_zip_file = this.getDBModel('Secretary_Opinion_Zip_File')
+
+    let transactions = await db_ela
+      .getDBInstance()
+      .find({ type: constant.TRANSACTION_TYPE.SECRETARY_REVIEW })
+    if (_.isEmpty(transactions)) {
+      return
+    }
+    const reviewList = []
+    _.map(transactions, (o: any) => {
+      const data = {
+        txid: o.txid,
+        ...JSON.parse(o.payload)
+      }
+      reviewList.push(data)
+    })
+    const query = reviewList.map((el) => el.proposalHash)
+    console.log(`syncSecretaryOpinionFromChain query...`, query)
+    const proposalList = await db_cvote.getDBInstance().find({
+      status: constant.CVOTE_STATUS.ACTIVE,
+      proposalHash: { $in: query }
+    })
+    if (_.isEmpty(proposalList)) {
+      return
+    }
+
+    const histories = []
+    _.forEach(proposalList, (o: any) => {
+      _.forEach(o.withdrawalHistory, (v: any) => {
+        const budget = o.budget.filter(
+          (item: any) => item.milestoneKey === v.milestoneKey
+        )[0]
+        if (budget.status === WAITING_FOR_APPROVAL) {
+          histories.push({
+            ...v,
+            proposalHash: o.proposalHash,
+            proposalId: o._id
+          })
+        }
+      })
+    })
+
+    _.forEach(reviewList, async (o: any) => {
+      console.log(`reviewList proposalHash...`, o.proposalhash)
+      if (!o.opiniondata) return
+      const history = _.find(histories, {
+        proposalHash: o.proposalhash,
+        messageHash: o.messageHash
+      })
+      console.log(`history...`, history)
+      if (history) {
+        const opinionResult = await unzipFile(o.opiniondata)
+        await db_cvote.update(
+          {
+            proposalHash: o.proposalhash,
+            'withdrawalHistory.messageHash': o.messagehash
+          },
+          {
+            $set: {
+              'withdrawalHistory.$.review': {
+                reason: opinionResult.opinion,
+                reasonHash: o.opinionhash,
+                opinion: o.opinion,
+                createdAt: moment(opinionResult.date)
+              }
+            }
+          }
+        )
+
+        const doc = await db_zip_file
+          .getDBInstance()
+          .findOne({ opinionHash: o.opinionhash })
+        if (!doc) {
+          await db_zip_file.save({
+            proposalId: history.proposalId,
+            opinionHash: o.opinionhash,
+            content: Buffer.from(o.opiniondata, 'hex'),
+            proposalHash: o.proposalhash
+          })
+        }
+
+        await db_ela.remove({ txid: o.txid })
+      }
+    })
   }
 }
