@@ -28,7 +28,8 @@ const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
-  RESERVE_CUSTOMIZED_ID
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 class C extends BaseComponent {
@@ -38,6 +39,9 @@ class C extends BaseComponent {
     let tabs = TAB_KEYS
     if (type === RESERVE_CUSTOMIZED_ID) {
       tabs = ['type', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
     }
     const isNewType = _.includes(
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
@@ -419,6 +423,9 @@ class C extends BaseComponent {
     }
     if (type === RESERVE_CUSTOMIZED_ID) {
       tabs = ['type', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
     }
     this.setState({ type, tabs, errorKeys: {}, activeKey: 'type' })
   }

@@ -36,6 +36,7 @@ export default {
     goal: 'Goal',
     motivation: 'Motivation',
     didNameList: 'Customized DID List',
+    receivedCustomizedIDList: 'Enable Customized DID List',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',
@@ -97,6 +98,7 @@ export default {
       [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Motion for new CR Council Secretary General`,
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
+      [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
       newMotion: 'New Motion',
       motionAgainst: 'Motion Against',
       anythingElse: 'Anything Else',
@@ -108,12 +110,14 @@ export default {
       newSecretary: 'New Secretary',
       ownerInfo: `Please input the new owner's DID`,
       secretaryInfo: `Please input the new secretary's DID`,
+      bindToDID: `Bind to DID`,
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `Topic regarding terminating proposals unable or should not be executed`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
-        [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals DID short domain names`
+        [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals DID short domain names`,
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Enable reserved Customized DID`
       }
     },
     note: {
@@ -122,6 +126,7 @@ export default {
       goal: `Describe the desired results achieved by implementing the proposal. Goals should be clear and measurable.`,
       motivation: `Describe why this proposal is proposed. Motivation is critical for proposals that try to improve Elastos or CR. It should be clearly explained here why the existing mechanism is not enough to solve the problems the proposal wants to solve.`,
       didNameList: `Please enter Customized DID and use spaces to distinguish`,
+      receivedCustomizedIDList: `Please select Customized DID to enable`,
       motivationHighlight: `Proposals with insufficient motivation are highly likely to be rejected.`,
       relevance: `If the proposal is related to other CRC proposals, the proposal number of each related proposal should be provided here. The relationship between the proposal and each related proposal should be described. If there are conflicts with Elastos technology or other CRC proposals, the proposal must describe these conflicts and explain how to deal with them.`,
       budget: `If the implementation of the proposal requires financial support from the CRC, describe the overall budget and expenditure plan. This financial plan should be aligned with the implementation plan.`,

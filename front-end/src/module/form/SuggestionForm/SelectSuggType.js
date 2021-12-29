@@ -10,7 +10,8 @@ const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
-  RESERVE_CUSTOMIZED_ID
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 class SelectSuggType extends Component {
@@ -29,7 +30,8 @@ class SelectSuggType extends Component {
       proposals: [],
       isChange: false,
       changeType: (value && value.type) || '1',
-      controVar: this.props.controVar
+      controVar: this.props.controVar,
+      customizedIDBindToDID: value && value.customizedIDBindToDID
     }
   }
 
@@ -241,7 +243,8 @@ class SelectSuggType extends Component {
       newOwnerDIDErr,
       newAddressErr,
       terminationErr,
-      newSecretaryDIDErr
+      newSecretaryDIDErr,
+      customizedIDBindToDID
     } = this.state
 
     return (
@@ -435,6 +438,37 @@ class SelectSuggType extends Component {
               <Desc>
                 {I18N.get(`suggestion.form.type.desc.${RESERVE_CUSTOMIZED_ID}`)}
               </Desc>
+            </div>
+            <div
+              key={RECEIVE_CUSTOMIZED_ID}
+              className={type === RECEIVE_CUSTOMIZED_ID ? 'selected' : null}
+            >
+              <Radio value={RECEIVE_CUSTOMIZED_ID}>
+                {I18N.get(`suggestion.form.type.${RECEIVE_CUSTOMIZED_ID}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${RECEIVE_CUSTOMIZED_ID}`)}
+              </Desc>
+              {type === RECEIVE_CUSTOMIZED_ID && (
+                <Section>
+                  <div className="inline">
+                    <Label>{I18N.get('suggestion.form.type.bindToDID')}</Label>
+                    <div style={{ width: '100%' }}>
+                      <Input
+                        onChange={(e) =>
+                          this.handleChange(e, 'customizedIDBindToDID')
+                        }
+                        value={customizedIDBindToDID}
+                      />
+                      {newSecretaryDIDErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.secretary')}
+                        </Error>
+                      )}
+                    </div>
+                  </div>
+                </Section>
+              )}
             </div>
           </div>
         </Radio.Group>
