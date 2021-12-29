@@ -259,6 +259,13 @@ class C extends BaseComponent {
           }
           values.closeProposalNum = type.termination
           break
+        case RECEIVE_CUSTOMIZED_ID:
+          if (!saveDraft && !type.customizedIDBindToDID) {
+            message.error(I18N.get('suggestion.form.error.bindToDID'))
+            return
+          }
+          values.customizedIDBindToDID = type.customizedIDBindToDID
+          break
         default:
           break
       }
@@ -471,6 +478,12 @@ class C extends BaseComponent {
           data = {
             type: initialValues.type,
             termination: initialValues.closeProposalNum
+          }
+          break
+        case RECEIVE_CUSTOMIZED_ID:
+          data = {
+            type: initialValues.type,
+            customizedIDBindToDID: initialValues.customizedIDBindToDID
           }
           break
         default:

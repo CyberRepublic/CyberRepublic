@@ -164,7 +164,8 @@ export default {
       secretary: '新秘书长 DID 为空',
       newOwner: '新负责人 DID 为空',
       changeWhat: '请填写变更提案的信息',
-      didNameList: `请删除重复的自定义 DID, 如下所示：`
+      didNameList: `请删除重复的自定义 DID, 如下所示：`,
+      bindToDID: `请输入要绑定的 DID`
     }
   },
   modal: {

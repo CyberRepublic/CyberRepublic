@@ -45,7 +45,9 @@ const BASE_FIELDS = [
   'closeProposalNum',
   'newAddress',
   'validPeriod',
-  'didNameList'
+  'didNameList',
+  'customizedIDBindToDID',
+  'receivedCustomizedIDList'
 ]
 
 interface BudgetItem {

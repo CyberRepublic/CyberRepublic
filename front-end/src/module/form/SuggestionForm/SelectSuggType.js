@@ -132,11 +132,13 @@ class SelectSuggType extends Component {
       changeAddress,
       changeOwner,
       newAddress,
+      customizedIDBindToDID,
       proposalNumErr,
       terminationErr,
       newOwnerDIDErr,
       newAddressErr,
-      newSecretaryDIDErr
+      newSecretaryDIDErr,
+      customizedIDBindToDIDErr
     } = this.state
     let data = { type }
     switch (type) {
@@ -175,6 +177,12 @@ class SelectSuggType extends Component {
       case TERMINATE_PROPOSAL:
         data.termination = termination
         if (terminationErr) {
+          data.hasErr = true
+        }
+        break
+      case RECEIVE_CUSTOMIZED_ID:
+        data.customizedIDBindToDID = customizedIDBindToDID
+        if (customizedIDBindToDIDErr) {
           data.hasErr = true
         }
         break
@@ -239,12 +247,13 @@ class SelectSuggType extends Component {
       changeOwner,
       changeAddress,
       newAddress,
+      customizedIDBindToDID,
       proposalNumErr,
       newOwnerDIDErr,
       newAddressErr,
       terminationErr,
       newSecretaryDIDErr,
-      customizedIDBindToDID
+      customizedIDBindToDIDErr
     } = this.state
 
     return (
@@ -460,9 +469,9 @@ class SelectSuggType extends Component {
                         }
                         value={customizedIDBindToDID}
                       />
-                      {newSecretaryDIDErr && (
+                      {customizedIDBindToDIDErr && (
                         <Error>
-                          {I18N.get('suggestion.form.error.secretary')}
+                          {I18N.get('suggestion.form.error.bindToDID')}
                         </Error>
                       )}
                     </div>

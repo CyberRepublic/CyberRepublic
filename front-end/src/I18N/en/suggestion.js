@@ -159,11 +159,12 @@ export default {
       noOwner: `The new owner does not exist.`,
       noSecretary: `The new secretary general does not exist.`,
       noProposal: `The proposal number is invalid.`,
-      proposalNum: 'The proposal number is emtpy.',
-      secretary: 'The new secretary general DID is emtpy.',
+      proposalNum: 'The proposal number is empty.',
+      secretary: 'The new secretary general DID is empty.',
       newOwner: 'The new owner DID is empty.',
       changeWhat: `Please fill in the info of the change proposal`,
-      didNameList: `Please remove these following duplicates from the Customized DID list:`
+      didNameList: `Please remove these following duplicates from the Customized DID list:`,
+      bindToDID: `The DID is empty.`
     }
   },
   modal: {
