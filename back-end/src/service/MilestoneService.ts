@@ -661,14 +661,14 @@ export default class extends Base {
 
     _.forEach(reviewList, async (o: any) => {
       console.log(`reviewList proposalHash...`, o.proposalhash)
-      if (!o.opiniondata) return
+      if (!o.secretarygeneralopiniondata) return
       const history = _.find(histories, {
         proposalHash: o.proposalhash,
-        messageHash: o.messageHash
+        messageHash: o.messagehash
       })
       console.log(`history...`, history)
       if (history) {
-        const opinionResult = await unzipFile(o.opiniondata)
+        const opinionResult = await unzipFile(o.secretarygeneralopiniondata)
         await db_cvote.update(
           {
             proposalHash: o.proposalhash,
@@ -677,9 +677,9 @@ export default class extends Base {
           {
             $set: {
               'withdrawalHistory.$.review': {
-                reason: opinionResult.opinion,
-                reasonHash: o.opinionhash,
-                opinion: o.opinion,
+                reason: opinionResult.opinion.content,
+                reasonHash: o.secretarygeneralopinionhash,
+                opinion: o.opinion.opinion,
                 createdAt: moment(opinionResult.date)
               }
             }
@@ -688,12 +688,12 @@ export default class extends Base {
 
         const doc = await db_zip_file
           .getDBInstance()
-          .findOne({ opinionHash: o.opinionhash })
+          .findOne({ opinionHash: o.secretarygeneralopinionhash })
         if (!doc) {
           await db_zip_file.save({
             proposalId: history.proposalId,
-            opinionHash: o.opinionhash,
-            content: Buffer.from(o.opiniondata, 'hex'),
+            opinionHash: o.secretarygeneralopinionhash,
+            content: Buffer.from(o.secretarygeneralopiniondata, 'hex'),
             proposalHash: o.proposalhash
           })
         }

@@ -22,7 +22,7 @@ const JOB_NAME = {
   NOTIFICATIONCOUNCILVOTE: 'notification council to vote',
   UPDATECURRENTHEIGHT: 'update current height',
   BACKUP_CANDIDATE_LIST: 'backup candidate list',
-  SECRETARY_REVIEW_JOB: 'secretary review budget application'
+  SECRETARY_REVIEW_JOB: 'the secretary general reviews budget applications'
 }
 
 agenda.define(JOB_NAME.UPDATEMILESTONE, async (job: any, done: any) => {
@@ -141,7 +141,7 @@ agenda.define(JOB_NAME.COUNCILREVIEWJOB, async (job: any, done: any) => {
 })
 
 agenda.define(JOB_NAME.SECRETARY_REVIEW_JOB, async (job: any, done: any) => {
-  console.log('------begin new council review------')
+  console.log('------begin secretary general review------')
   try {
     const DB = await db.create()
     const milestoneService = new MilestoneService(DB, { user: undefined })
@@ -209,6 +209,6 @@ agenda.define(JOB_NAME.BACKUP_CANDIDATE_LIST, async (job: any, done: any) => {
   await agenda.every('3 minutes', JOB_NAME.COUNCILREVIEWJOB)
   await agenda.every('1 minutes', JOB_NAME.TRANSACTIONJOB)
   await agenda.every('10 minutes', JOB_NAME.NOTIFICATIONCOUNCILVOTE)
-  // await agenda.every('5 minutes', JOB_NAME.SECRETARY_REVIEW_JOB)
+  await agenda.every('5 minutes', JOB_NAME.SECRETARY_REVIEW_JOB)
   // await agenda.every('5 minutes', JOB_NAME.BACKUP_CANDIDATE_LIST)
 })()
