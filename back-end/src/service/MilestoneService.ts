@@ -682,11 +682,11 @@ export default class extends Base {
           `syncSecretaryOpinionFromChain opinionResult...`,
           opinionResult
         )
-        let opinion = opinionResult.secretaryGeneralOpinion
-        if (opinion === 'approve') {
-          opinion = constant.REVIEW_OPINION.APPROVED
-        } else {
+        let opinion = o.proposaltrackingtype
+        if (opinion === 'Rejected') {
           opinion = constant.REVIEW_OPINION.REJECTED
+        } else {
+          opinion = constant.REVIEW_OPINION.APPROVED
         }
         await db_cvote.update(
           {
