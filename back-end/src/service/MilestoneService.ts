@@ -682,6 +682,12 @@ export default class extends Base {
           `syncSecretaryOpinionFromChain opinionResult...`,
           opinionResult
         )
+        let opinion = opinionResult.secretaryGeneralOpinion
+        if (opinion === 'approve') {
+          opinion = constant.REVIEW_OPINION.APPROVED
+        } else {
+          opinion = constant.REVIEW_OPINION.REJECTED
+        }
         await db_cvote.update(
           {
             proposalHash: o.proposalhash,
@@ -692,7 +698,7 @@ export default class extends Base {
               'withdrawalHistory.$.review': {
                 reason: opinionResult.opinion,
                 reasonHash: o.secretarygeneralopinionhash,
-                opinion: opinionResult.secretaryGeneralOpinion,
+                opinion,
                 createdAt: moment(opinionResult.date),
                 txid: o.txid
               }
