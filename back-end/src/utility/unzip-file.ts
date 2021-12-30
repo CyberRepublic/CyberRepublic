@@ -8,9 +8,16 @@ export const unzipFile = async (opinionData: string, fileName = 'opinion') => {
       const file = files.find((el: any) => el.path === fileName + '.json')
       if (file && file.data && file.mtime) {
         const text = file.data.toString()
-        const opinion = JSON.parse(text).content
+        const rs = JSON.parse(text)
+        if (rs.opinion) {
+          return {
+            opinion: rs.content,
+            date: file.mtime,
+            secretaryGeneralOpinion: rs.opinion
+          }
+        }
         return {
-          opinion,
+          opinion: rs.content,
           date: file.mtime
         }
       }

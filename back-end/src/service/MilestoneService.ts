@@ -633,7 +633,12 @@ export default class extends Base {
       }
       reviewList.push(data)
     })
-    const query = reviewList.map((el) => el.proposalhash)
+
+    const query = []
+    const byKeyElaList = _.keyBy(reviewList, 'proposalhash')
+    _.forEach(byKeyElaList, (v: any, k: any) => {
+      query.push(k)
+    })
     console.log(`syncSecretaryOpinionFromChain query...`, query)
     const proposalList = await db_cvote.getDBInstance().find({
       status: constant.CVOTE_STATUS.ACTIVE,
@@ -642,22 +647,23 @@ export default class extends Base {
     if (_.isEmpty(proposalList)) {
       return
     }
-
-    const histories = []
+    console.log(
+      `syncSecretaryOpinionFromChain proposalList....`,
+      proposalList.length
+    )
+    let histories = []
     _.forEach(proposalList, (o: any) => {
       _.forEach(o.withdrawalHistory, (v: any) => {
-        const budget = o.budget.filter(
-          (item: any) => item.milestoneKey === v.milestoneKey
-        )[0]
-        if (budget.status === WAITING_FOR_APPROVAL) {
+        if (v.signature && (!v.review || (v.review && !v.review.txid))) {
           histories.push({
-            ...v,
+            messageHash: v.messageHash,
             proposalHash: o.proposalHash,
             proposalId: o._id
           })
         }
       })
     })
+    console.log(`histories...`, histories.length)
 
     _.forEach(reviewList, async (o: any) => {
       console.log(
@@ -684,10 +690,11 @@ export default class extends Base {
           {
             $set: {
               'withdrawalHistory.$.review': {
-                reason: opinionResult.opinion.content,
+                reason: opinionResult.opinion,
                 reasonHash: o.secretarygeneralopinionhash,
-                opinion: opinionResult.opinion.opinion,
-                createdAt: moment(opinionResult.date)
+                opinion: opinionResult.secretaryGeneralOpinion,
+                createdAt: moment(opinionResult.date),
+                txid: o.txid
               }
             }
           }
