@@ -246,7 +246,7 @@ export default class extends Base {
 
   private getSecretaryReview(withdrawal) {
     const comment = {}
-    if (_.get(withdrawal, 'review.createdAt')) {
+    if (_.get(withdrawal, 'review.txid')) {
       let opinion = _.get(withdrawal, 'review.opinion')
       if (opinion === REVIEW_OPINION.APPROVED) {
         opinion = 'approve'
