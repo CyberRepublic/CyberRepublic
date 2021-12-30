@@ -1,6 +1,6 @@
 import Base from './Base'
 import { constant } from '../constant'
-import { ela, logger, getCurrentHeight } from '../utility'
+import { ela } from '../utility'
 
 const _ = require('lodash')
 
@@ -28,7 +28,13 @@ export default class extends Base {
     for (let height = preHeight + 1; height <= currentHeight; height++) {
       const transactions = await ela.getTransactionsByHeight(height)
       transactions.forEach((e: any) => {
-        if (e && [constant.TRANSACTION_TYPE.COUNCIL_VOTE].includes(e.type)) {
+        if (
+          e &&
+          [
+            constant.TRANSACTION_TYPE.COUNCIL_VOTE,
+            constant.TRANSACTION_TYPE.SECRETARY_REVIEW
+          ].includes(e.type)
+        ) {
           console.log(`council vote transaction e....`, e)
           allTransactions.push({
             txid: e.txid,
