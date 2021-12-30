@@ -633,7 +633,7 @@ export default class extends Base {
       }
       reviewList.push(data)
     })
-    const query = reviewList.map((el) => el.proposalHash)
+    const query = reviewList.map((el) => el.proposalhash)
     console.log(`syncSecretaryOpinionFromChain query...`, query)
     const proposalList = await db_cvote.getDBInstance().find({
       status: constant.CVOTE_STATUS.ACTIVE,
@@ -660,15 +660,22 @@ export default class extends Base {
     })
 
     _.forEach(reviewList, async (o: any) => {
-      console.log(`reviewList proposalHash...`, o.proposalhash)
+      console.log(
+        `syncSecretaryOpinionFromChain proposalHash...`,
+        o.proposalhash
+      )
       if (!o.secretarygeneralopiniondata) return
       const history = _.find(histories, {
         proposalHash: o.proposalhash,
         messageHash: o.messagehash
       })
-      console.log(`history...`, history)
+      console.log(`syncSecretaryOpinionFromChain history...`, history)
       if (history) {
         const opinionResult = await unzipFile(o.secretarygeneralopiniondata)
+        console.log(
+          `syncSecretaryOpinionFromChain opinionResult...`,
+          opinionResult
+        )
         await db_cvote.update(
           {
             proposalHash: o.proposalhash,
@@ -679,13 +686,15 @@ export default class extends Base {
               'withdrawalHistory.$.review': {
                 reason: opinionResult.opinion.content,
                 reasonHash: o.secretarygeneralopinionhash,
-                opinion: o.opinion.opinion,
+                opinion: opinionResult.opinion.opinion,
                 createdAt: moment(opinionResult.date)
               }
             }
           }
         )
-
+        console.log(
+          `syncSecretaryOpinionFromChain begin to save opinion data...`
+        )
         const doc = await db_zip_file
           .getDBInstance()
           .findOne({ opinionHash: o.secretarygeneralopinionhash })
@@ -699,6 +708,7 @@ export default class extends Base {
         }
 
         await db_ela.remove({ txid: o.txid })
+        console.log(`syncSecretaryOpinionFromChain done`)
       }
     })
   }
