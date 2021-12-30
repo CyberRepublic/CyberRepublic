@@ -284,14 +284,16 @@ export default class extends Base {
         for (let i = withdrawals.length - 1; i >= 0; i--) {
           const withdrawal = withdrawals[i]
           const review = this.getSecretaryReview(withdrawal)
-          history.push({
-            apply: {
-              content: withdrawal.message,
-              messageHash: withdrawal.messageHash,
-              timestamp: moment(withdrawal.createdAt).unix()
-            },
-            review
-          })
+          if (withdrawal.signature) {
+            history.push({
+              apply: {
+                content: withdrawal.message,
+                messageHash: withdrawal.messageHash,
+                timestamp: moment(withdrawal.createdAt).unix()
+              },
+              review
+            })
+          }
         }
         return { stage: parseInt(k), history }
       })
