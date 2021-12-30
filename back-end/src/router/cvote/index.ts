@@ -24,6 +24,7 @@ import getAllAuthor from './get_author'
 import getActiveProposals from './get_active_proposals'
 import getProposalTitle from './get_proposal_title'
 import walletVote from './wallet_vote'
+import getCustomizedIDList from './get_customized_id_list'
 
 export default Base.setRouter([
   {
@@ -140,7 +141,13 @@ export default Base.setRouter([
     path: '/getProposalTitle',
     router: getProposalTitle,
     method: 'get'
-  },{
+  },
+  {
+    path: '/customizd_id_list',
+    router: getCustomizedIDList,
+    method: 'get'
+  },
+  {
     path: '/wallet_vote',
     router: walletVote,
     method: 'post'

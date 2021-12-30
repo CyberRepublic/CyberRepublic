@@ -2662,6 +2662,15 @@ export default class extends Base {
     return proposalList
   }
 
+  public async getCustomizedIDList() {
+    const db_cvote = this.getDBModel('CVote')
+    const proposal = await db_cvote.getDBInstance().find({
+      type: constant.CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID
+    })
+    if (!proposal) return
+    return { didNameList: proposal.didNameList }
+  }
+
   public async walletVote(param: any) {
     const db_user = this.getDBModel('User')
     const db_cvote = this.getDBModel('CVote')
