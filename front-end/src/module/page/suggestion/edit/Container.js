@@ -19,10 +19,7 @@ export default createContainer(
     const cvoteService = new CVoteService()
     return {
       getDetail(id) {
-        return service.getDetail({
-          id,
-          incViewsNum: false
-        })
+        return service.getDetail({ id, incViewsNum: false })
       },
       updateSuggestion(suggestion) {
         return service.update(suggestion)
@@ -35,6 +32,9 @@ export default createContainer(
       },
       async getActiveProposals() {
         return cvoteService.getActiveProposals()
+      },
+      async getCustomizedIDList() {
+        return cvoteService.getCustomizedIDList()
       }
     }
   }

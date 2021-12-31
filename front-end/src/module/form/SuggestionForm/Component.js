@@ -15,6 +15,7 @@ import ImplementationAndBudget from './ImplementationAndBudget'
 import TeamInfoSection from './TeamInfoSection'
 import DuplicateModal from '../DuplicateModalForm/Container'
 import { getDuplicatesFromArray } from '../../../util/index'
+import ReceivedCustomizedIDList from './ReceivedCustomizedIDList'
 
 const FormItem = Form.Item
 const { TabPane } = Tabs
@@ -105,6 +106,7 @@ class C extends BaseComponent {
         })
         return
       }
+      console.log(`values...`, values)
       if (isNotDraft) {
         this.setState({ loading: true })
       }
@@ -578,6 +580,22 @@ class C extends BaseComponent {
         message: I18N.get(`suggestion.form.error.limit${WORD_LIMIT}`),
         validator: this.validateAbstract
       })
+    }
+
+    if (id === 'receivedCustomizedIDList') {
+      let receivedCustomizedIDList = []
+      if (initialValues.receivedCustomizedIDList) {
+        receivedCustomizedIDList = initialValues.receivedCustomizedIDList
+      }
+      return getFieldDecorator('receivedCustomizedIDList', {
+        initialValue: initialValues[id]
+      })(
+        <ReceivedCustomizedIDList
+          callback={this.onTextareaChange}
+          initialValue={receivedCustomizedIDList}
+          getCustomizedIDList={this.props.getCustomizedIDList}
+        />
+      )
     }
 
     return getFieldDecorator(id, {

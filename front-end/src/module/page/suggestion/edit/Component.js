@@ -124,6 +124,7 @@ export default class extends StandardPage {
               onCancel={this.historyBack}
               onSaveDraft={this.onSaveDraft}
               getActiveProposals={this.props.getActiveProposals}
+              getCustomizedIDList={this.props.getCustomizedIDList}
             />
           </div>
         </Container>

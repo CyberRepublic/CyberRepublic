@@ -2664,11 +2664,11 @@ export default class extends Base {
 
   public async getCustomizedIDList() {
     const db_cvote = this.getDBModel('CVote')
-    const proposal = await db_cvote.getDBInstance().find({
-      type: constant.CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID
+    const proposal = await db_cvote.getDBInstance().findOne({
+      type: constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID
     })
     if (!proposal) return
-    return { didNameList: proposal.didNameList }
+    return { didNameList: proposal.didNameList, success: true }
   }
 
   public async walletVote(param: any) {
