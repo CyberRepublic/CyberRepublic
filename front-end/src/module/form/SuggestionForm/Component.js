@@ -106,7 +106,6 @@ class C extends BaseComponent {
         })
         return
       }
-      console.log(`values...`, values)
       if (isNotDraft) {
         this.setState({ loading: true })
       }
@@ -367,6 +366,13 @@ class C extends BaseComponent {
     }
   }
 
+  validateSelectedID = (rule, value, cb) => {
+    if (_.isEmpty(value)) {
+      return cb(I18N.get('suggestion.form.error.customizedID'))
+    }
+    return cb()
+  }
+
   validateAbstract = (rule, value, cb) => {
     let count = 0
     if (value) {
@@ -588,6 +594,11 @@ class C extends BaseComponent {
         receivedCustomizedIDList = initialValues.receivedCustomizedIDList
       }
       return getFieldDecorator('receivedCustomizedIDList', {
+        rules: [
+          {
+            validator: this.validateSelectedID
+          }
+        ],
         initialValue: initialValues[id]
       })(
         <ReceivedCustomizedIDList
@@ -599,7 +610,6 @@ class C extends BaseComponent {
     }
 
     return getFieldDecorator(id, {
-      rules,
       initialValue: initialValues[id]
     })(
       <CodeMirrorEditor

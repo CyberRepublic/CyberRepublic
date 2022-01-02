@@ -69,7 +69,7 @@ class ReceivedCustomizedIDList extends Component {
             onChange={this.handleChange}
             suffixIcon={<Icon type="search" spin={false} />}
             defaultActiveFirstOption={false}
-            placeholder={'search Customized DID'}
+            placeholder={I18N.get(`suggestion.form.note.searchDID`)}
             notFoundContent={null}
             defaultOpen={false}
             style={{ fontSize: 14 }}
@@ -79,7 +79,7 @@ class ReceivedCustomizedIDList extends Component {
         </StyledDiv>
 
         <Tags>
-          <div>You have selected: </div>
+          <div>{I18N.get(`suggestion.form.note.yourSelections`)} </div>
           {customizedIDList.length
             ? customizedIDList.map((tag) => (
                 <Tag
