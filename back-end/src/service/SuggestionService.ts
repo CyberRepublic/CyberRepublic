@@ -2441,7 +2441,9 @@ export default class extends Base {
       'newAddress',
       'closeProposalNum',
       'validPeriod',
-      'didNameList'
+      'didNameList',
+      'customizedIDBindToDID',
+      'receivedCustomizedIDList'
     ]
     const user = _.get(this.currentUser, '_id')
     if (param.type === 'byNumber') {

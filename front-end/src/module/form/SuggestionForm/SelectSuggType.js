@@ -53,7 +53,8 @@ class SelectSuggType extends Component {
       proposalNum,
       newAddress,
       newOwnerDID,
-      controVar
+      controVar,
+      customizedIDBindToDID
     } = this.state
     if (preVar !== controVar) {
       if (value.type === CHANGE_SECRETARY) {
@@ -79,6 +80,16 @@ class SelectSuggType extends Component {
           proposalNum,
           newAddress,
           newOwnerDID: newOwnerDID == '' ? undefined : newOwnerDID
+        }
+        if (!_.isEqual(value, data)) {
+          this.dupOperating(value, preVar)
+        }
+      }
+
+      if (value.type === RECEIVE_CUSTOMIZED_ID) {
+        const data = {
+          type,
+          customizedIDBindToDID
         }
         if (!_.isEqual(value, data)) {
           this.dupOperating(value, preVar)
