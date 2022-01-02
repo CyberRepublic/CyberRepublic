@@ -70,7 +70,8 @@ const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
-  RESERVE_CUSTOMIZED_ID
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 const { TextArea } = Input
 
@@ -127,6 +128,15 @@ export default class extends StandardPage {
     }
     if (type === RESERVE_CUSTOMIZED_ID) {
       sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
     }
     return (
       <StyledAnchor offsetTop={420}>
@@ -270,6 +280,15 @@ export default class extends StandardPage {
     if (type === RESERVE_CUSTOMIZED_ID) {
       sections = ['abstract', 'motivation', 'didNameList']
     }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
 
     const metaNode = this.renderMetaNode()
     const titleNode = this.renderTitleNode()
@@ -383,7 +402,13 @@ export default class extends StandardPage {
               <DescLabel id={section}>
                 {I18N.get(`suggestion.fields.${section}`)}
               </DescLabel>
-              <MarkdownPreview content={detail[section]} />
+              <MarkdownPreview
+                content={
+                  section === 'receivedCustomizedIDList'
+                    ? detail[section].join(' ')
+                    : detail[section]
+                }
+              />
             </div>
           )
         })}
