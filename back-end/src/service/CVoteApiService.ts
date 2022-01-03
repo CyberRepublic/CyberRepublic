@@ -434,7 +434,7 @@ export default class extends Base {
     }
 
     if (type === CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
-      data.reservedCustomizedIDList = proposal.didNameList.split(' ')
+      data.reservedCustomizedIDList = proposal.didNameList.trim().split(/\s+/)
     }
 
     if (budgetIntro) {
