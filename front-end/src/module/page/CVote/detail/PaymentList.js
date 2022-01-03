@@ -110,7 +110,8 @@ class PaymentList extends Component {
       status === ACTIVE
     ) {
       return (
-        <StylePaymentActionBtn action="true"
+        <StylePaymentActionBtn
+          action="true"
           className="action"
           onClick={() => {
             this.showModal(item)
@@ -122,7 +123,8 @@ class PaymentList extends Component {
     }
     if (this.isOwner() && item.status === REJECTED && status === ACTIVE) {
       return (
-        <StylePaymentActionBtn action="true"
+        <StylePaymentActionBtn
+          action="true"
           className="action"
           onClick={() => {
             this.showModal(item)
@@ -139,7 +141,9 @@ class PaymentList extends Component {
     ) {
       return (
         <div className="review">
-          <StylePaymentActionBtn action="true" approve="true"
+          <StylePaymentActionBtn
+            action="true"
+            approve="true"
             className="action approve"
             onClick={() => {
               this.showModal(item, 'APPROVED')
@@ -147,14 +151,16 @@ class PaymentList extends Component {
           >
             {I18N.get('milestone.approve')}
           </StylePaymentActionBtn>
-          <StylePaymentActionBtn
-            className="action reject"
-            onClick={() => {
-              this.showModal(item, 'REJECTED')
-            }}
-          >
-            {I18N.get('milestone.reject')}
-          </StylePaymentActionBtn>
+          {item.type !== COMPLETION && (
+            <StylePaymentActionBtn
+              className="action reject"
+              onClick={() => {
+                this.showModal(item, 'REJECTED')
+              }}
+            >
+              {I18N.get('milestone.reject')}
+            </StylePaymentActionBtn>
+          )}
         </div>
       )
     }
@@ -164,7 +170,8 @@ class PaymentList extends Component {
       Number(item.amount) !== 0
     ) {
       return (
-        <StylePaymentActionBtn action="true"
+        <StylePaymentActionBtn
+          action="true"
           className="action"
           onClick={() => this.showWithdrawalModal(item.milestoneKey)}
         >
@@ -233,14 +240,18 @@ class PaymentList extends Component {
           <StylePaymentHead>
             <StylePaymentIndex>{index + 1}</StylePaymentIndex>
             <StylePaymentAmmount>{item.amount + ' ELA'}</StylePaymentAmmount>
-            <StylePaymentType>{item.type ? I18N.get(`suggestion.budget.${item.type}`) : ''}</StylePaymentType>
+            <StylePaymentType>
+              {item.type ? I18N.get(`suggestion.budget.${item.type}`) : ''}
+            </StylePaymentType>
             {visible && (
-              <StylePaymentStatus>{item.status && I18N.get(`milestone.${item.status}`)}</StylePaymentStatus>
+              <StylePaymentStatus>
+                {item.status && I18N.get(`milestone.${item.status}`)}
+              </StylePaymentStatus>
             )}
           </StylePaymentHead>
           <div>
             <StylePaymentContentItem goal="true">
-              <div >{I18N.get('suggestion.budget.goal') + ': '}</div>
+              <div>{I18N.get('suggestion.budget.goal') + ': '}</div>
               <div>{this.renderGoal(item)}</div>
             </StylePaymentContentItem>
             <StylePaymentContentItem>
@@ -261,7 +272,9 @@ class PaymentList extends Component {
             ) : null}
           </div>
         </StylePaymentContent>
-        <StylePaymentAction>{visible && <div>{this.renderActions(item)}</div>}</StylePaymentAction>
+        <StylePaymentAction>
+          {visible && <div>{this.renderActions(item)}</div>}
+        </StylePaymentAction>
       </StylePayment>
     )
   }
@@ -283,7 +296,6 @@ class PaymentList extends Component {
 
   render() {
     const { list, proposalId, actions, user } = this.props
-    const visible = this.isVisible()
     const {
       toggle,
       stage,
@@ -292,7 +304,7 @@ class PaymentList extends Component {
       withdrawal,
       withdrawalStage
     } = this.state
-    const isOld = list && list.find((item) => item.reasons)
+
     return (
       <div>
         {list &&
@@ -338,9 +350,8 @@ const StylePaymentContent = styled.div`
   width: 80%;
   margin-bottom: 20px;
 `
-const StylePaymentContentItem= styled.div`
-  ${props => props.goal ? 'display: flex': ''}
-  margin-bottom: 20px;
+const StylePaymentContentItem = styled.div`
+  ${(props) => (props.goal ? 'display: flex' : '')} margin-bottom: 20px;
 `
 const StylePaymentAction = styled.div`
   width: 20%;
@@ -350,10 +361,10 @@ const StylePaymentAction = styled.div`
 `
 const StylePaymentActionBtn = styled.div`
   width: 72px;
-  cursor:pointer;
-  border: 1px solid ${props => props.action ? '#43AF92': '#ED6060'};
-  color: ${props => props.action ? '#43AF92': '#ED6060'};
-  margin-bottom: ${props => props.approve ? '16px': '0'};
+  cursor: pointer;
+  border: 1px solid ${(props) => (props.action ? '#43AF92' : '#ED6060')};
+  color: ${(props) => (props.action ? '#43AF92' : '#ED6060')};
+  margin-bottom: ${(props) => (props.approve ? '16px' : '0')};
   box-sizing: border-box;
   border-radius: 24px;
   font-size: 12px;
@@ -365,17 +376,17 @@ const StylePaymentHead = styled.div`
   display: flex;
   align-items: center;
   height: 32px;
-  margin-bottom: 20px
+  margin-bottom: 20px;
 `
 const StylePaymentIndex = styled.div`
   width: 32px;
   height: 32px;
   margin-right: 24px;
-  background: #1DE9B6;
+  background: #1de9b6;
   border-radius: 4px;
   text-align: center;
   display: flex;
-  color: #FFF;
+  color: #fff;
   justify-content: center;
   align-items: center;
   font-size: 14px;
@@ -393,7 +404,7 @@ const StylePaymentType = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 20px;
-  color: #008D85;
+  color: #008d85;
   font-size: 12px;
   height: 25px;
   background-color: #e4f8f3;
@@ -404,10 +415,10 @@ const StylePaymentStatus = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 20px;
-  color: #A49939;
+  color: #a49939;
   font-size: 12px;
   height: 25px;
-  background-color: #F9F7CF;
+  background-color: #f9f7cf;
   padding: 0px 10px 2px 10px;
 `
 const StyledTable = styled.table`
