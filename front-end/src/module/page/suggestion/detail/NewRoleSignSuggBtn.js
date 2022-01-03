@@ -102,6 +102,8 @@ export default NewRoleSignSuggBtn
 const Content = styled.div`
   padding: 24px 24px 14px;
   text-align: center;
+  border-radius: 16px;
+  background-color: #ffffff;
 `
 const Tip = styled.div`
   font-size: 12px;

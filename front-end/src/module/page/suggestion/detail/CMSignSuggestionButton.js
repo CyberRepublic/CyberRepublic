@@ -82,7 +82,7 @@ class CMSignSuggestionButton extends Component {
         >
           {I18N.get('suggestion.btn.makeIntoProposal')}
         </StyledButton>
-        <Modal
+        <StyledModal
           maskClosable={false}
           visible={visible}
           onCancel={this.hideModal}
@@ -90,7 +90,7 @@ class CMSignSuggestionButton extends Component {
           width={500}
         >
           {this.elaQrCode()}
-        </Modal>
+        </StyledModal>
       </div>
     )
   }
@@ -111,4 +111,9 @@ const Notice = styled.div`
   font-size: 16px;
   color: #000;
   margin-bottom: 24px;
+`
+const StyledModal = styled(Modal)`
+  .ant-modal-body {
+    background: #fff !important;
+  }
 `

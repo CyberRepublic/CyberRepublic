@@ -122,7 +122,7 @@ class SignSuggestionModal extends Component {
   render() {
     const { visible } = this.state
     return (
-      <Modal
+      <StyledModal
         maskClosable={false}
         visible={visible}
         onCancel={this.hideModal}
@@ -130,7 +130,7 @@ class SignSuggestionModal extends Component {
         width={500}
       >
         {this.modalContent()}
-      </Modal>
+      </StyledModal>
     )
   }
 }
@@ -153,4 +153,9 @@ const Notice = styled.div`
   text-align: left;
   margin-left: 50px;
   margin-right: 50px;
+`
+const StyledModal = styled(Modal)`
+  .ant-modal-body {
+    background: #fff !important;
+  }
 `

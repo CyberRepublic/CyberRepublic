@@ -155,6 +155,8 @@ const StyledButton = styled.span`
 const Content = styled.div`
   padding: 16px;
   text-align: center;
+  border-radius: 16px;
+  background-color: #ffffff;
 `
 const Notice = styled.div`
   font-size: 16px;

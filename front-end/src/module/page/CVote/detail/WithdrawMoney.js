@@ -31,7 +31,7 @@ class WithdrawMoney extends Component {
   render() {
     const { url, message } = this.state
     return (
-      <Modal
+      <StyledModal
         maskClosable={false}
         visible={this.props.withdrawal}
         onCancel={this.hideModal}
@@ -45,7 +45,7 @@ class WithdrawMoney extends Component {
         ) : (
           <Content>{message}</Content>
         )}
-      </Modal>
+      </StyledModal>
     )
   }
 }
@@ -62,4 +62,9 @@ const Tip = styled.div`
   margin-top: 16px;
   font-weight: 400;
   line-height: 17px;
+`
+const StyledModal = styled(Modal)`
+  .ant-modal-body {
+    background: #fff !important;
+  }
 `

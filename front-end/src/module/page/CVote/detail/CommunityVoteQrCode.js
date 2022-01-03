@@ -56,6 +56,8 @@ export default CommunityVoteQrCode
 const Content = styled.div`
   padding: 28px 24px;
   text-align: center;
+  border-radius: 16px;
+  background-color: #ffffff;
 `
 const Tip = styled.div`
   font-size: 12px;

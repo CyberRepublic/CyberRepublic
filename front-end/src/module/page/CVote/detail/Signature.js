@@ -172,7 +172,7 @@ class Signature extends Component {
     const { stage, isSecretary, toggle, opinion } = this.props
     const flag = opinion && opinion.toLowerCase() === 'rejected'
     return (
-      <Modal
+      <StyledModal
         maskClosable={false}
         visible={toggle}
         onCancel={this.hideModal}
@@ -195,7 +195,7 @@ class Signature extends Component {
 
           {this.modalContent()}
         </Wrapper>
-      </Modal>
+      </StyledModal>
     )
   }
 }
@@ -245,17 +245,8 @@ const Msg = styled.div`
   padding: 8px;
   margin-bottom: 24px;
 `
-const SwitchWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-`
-const SwitchButton = styled.span`
-  color: #65bda3;
-  font-size: 12px;
-  padding-left: 4px;
-  cursor: pointer;
-  font-weight: 400;
-  line-height: 17px;
+const StyledModal = styled(Modal)`
+  .ant-modal-body {
+    background: #fff !important;
+  }
 `
