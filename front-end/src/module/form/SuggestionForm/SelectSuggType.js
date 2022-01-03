@@ -459,7 +459,7 @@ class SelectSuggType extends Component {
                 {I18N.get(`suggestion.form.type.desc.${RESERVE_CUSTOMIZED_ID}`)}
               </Desc>
             </div>
-            <div
+            {/* <div
               key={RECEIVE_CUSTOMIZED_ID}
               className={type === RECEIVE_CUSTOMIZED_ID ? 'selected' : null}
             >
@@ -489,7 +489,7 @@ class SelectSuggType extends Component {
                   </div>
                 </Section>
               )}
-            </div>
+            </div> */}
           </div>
         </Radio.Group>
       </Wrapper>
