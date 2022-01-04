@@ -208,9 +208,10 @@ export default class extends Base {
         doc.newAddress = suggestion.newAddress
       }
     }
-
+    console.log(`makeSuggIntoProposal suggestion.type...`, suggestion.type)
     if (suggestion.type === constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
       doc.didNameList = suggestion.didNameList
+      console.log(`makeSuggIntoProposal doc.didNameList...`, doc.didNameList)
     }
 
     Object.assign(doc, _.pick(suggestion, BASE_FIELDS))
