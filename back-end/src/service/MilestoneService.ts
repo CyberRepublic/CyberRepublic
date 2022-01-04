@@ -641,7 +641,6 @@ export default class extends Base {
     })
     console.log(`syncSecretaryOpinionFromChain query...`, query)
     const proposalList = await db_cvote.getDBInstance().find({
-      status: constant.CVOTE_STATUS.ACTIVE,
       proposalHash: { $in: query }
     })
     if (_.isEmpty(proposalList)) {
