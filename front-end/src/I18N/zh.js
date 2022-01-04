@@ -171,9 +171,7 @@ const zh = {
   'login.reset': '重置密码',
   'login.title': '登录 Cyber Republic',
   'login.description_1': '输入密码',
-  'login.withDid': '用 APP 扫码登录',
-  'login.qrcodeTip': 'Essentials 扫码登录',
-  'login.qrcodeOldTip': 'ELA Wallet 扫码登录',
+  'login.withDid': '用 Essentials 扫码登录',
   'login.modal.register': '立即注册',
   'login.modal.content': '当前 DID 尚未注册 CR 网站',
 
@@ -859,10 +857,7 @@ const zh = {
   'council.voting.voteResult.unvoted': '待投票',
 
   'council.voting.voteResult.onchain': '投票上链',
-  'council.voting.essetials': '用 Essentials 扫码投票',
-  'council.voting.ela': '用 ELA Wallet 扫码投票',
-  'council.voting.scan.ela': '改用 ELA Wallet 扫码',
-  'council.voting.scan.essentials': '改用 Essentials 扫码',
+  'council.voting.essentials': '用 Essentials 扫码投票',
 
   'council.voting.viewHistory.btn': '投票历史',
   'council.voting.viewHistory.current': '当前投票',
@@ -918,9 +913,7 @@ const zh = {
   'role.admin.mode': '管理员模式',
 
   // Profile
-  'profile.associateDid': '扫码绑定 DID',
-  'profile.qrcodeTip': '用 Essentials 扫码绑定',
-  'profile.qrcodeOldTip': '用 ELA Wallet 扫码绑定',
+  'profile.associateDid': '用 Essentials 扫码绑定',
   'profile.reassociateDid': '重新绑定 DID',
   'profile.thanksForCompleting': '感谢更新您的个人档案！',
   'profile.skillsets': '我的技能',

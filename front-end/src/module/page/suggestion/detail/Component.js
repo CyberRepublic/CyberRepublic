@@ -69,7 +69,9 @@ import { SUGGESTION_TYPE, SUGGESTION_STATUS } from '@/constant'
 const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 const { TextArea } = Input
 
@@ -120,7 +122,22 @@ export default class extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
-    const sections = isNewType ? newFields : fields
+    let sections = fields
+    if (isNewType) {
+      sections = newFields
+    }
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
     return (
       <StyledAnchor offsetTop={420}>
         {sections.map((section) => {
@@ -256,7 +273,22 @@ export default class extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
-    const sections = isNewType ? newFields : fields
+    let sections = fields
+    if (isNewType) {
+      sections = newFields
+    }
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
 
     const metaNode = this.renderMetaNode()
     const titleNode = this.renderTitleNode()
@@ -370,7 +402,13 @@ export default class extends StandardPage {
               <DescLabel id={section}>
                 {I18N.get(`suggestion.fields.${section}`)}
               </DescLabel>
-              <MarkdownPreview content={detail[section]} />
+              <MarkdownPreview
+                content={
+                  section === 'receivedCustomizedIDList'
+                    ? detail[section].join(' ')
+                    : detail[section]
+                }
+              />
             </div>
           )
         })}

@@ -79,7 +79,8 @@ const { TabPane } = Tabs
 const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 const renderRichContent = (data, key, title, user, actions) => {
@@ -133,7 +134,7 @@ const renderRichContent = (data, key, title, user, actions) => {
     typeof data.relevance !== 'string'
   ) {
     rc = (
-      <div key="relevance">
+      <div>
         <Subtitle id="relevance"> </Subtitle>
         {data.relevance.map((item, index) => {
           return (
@@ -152,10 +153,10 @@ const renderRichContent = (data, key, title, user, actions) => {
       </div>
     )
   } else {
-    rc = <MarkdownPreview content={data[key]} />
+    rc = <MarkdownPreview content={data[key]} key={key} />
   }
   return (
-    <div>
+    <div key={key}>
       {title && <ContentTitle id={key}>{title}</ContentTitle>}
       <StyledRichContent>{rc}</StyledRichContent>
     </div>
@@ -541,46 +542,46 @@ class C extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
+    let sections = [
+      'preamble',
+      'abstract',
+      'motivation',
+      'goal',
+      'plan',
+      'relevance',
+      'budget'
+    ]
+
+    if (isNewType) {
+      sections = ['preamble', 'abstract', 'motivation']
+    }
+
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
+
     return (
       <StyledAnchor offsetTop={300}>
-        <Anchor.Link
-          href="#preamble"
-          title={I18N.get('proposal.fields.preamble')}
-        />
-        <Anchor.Link
-          href="#abstract"
-          title={I18N.get('proposal.fields.abstract')}
-        />
-        <Anchor.Link
-          marginTop={48}
-          href="#motivation"
-          title={I18N.get('proposal.fields.motivation')}
-        />
-        {!isNewType && (
-          <LinkGroup>
+        {sections.map((el) => {
+          if (el === 'budget') {
+            return (
+              <LinkGroup marginTop={48} key="budget">
+                <Anchor.Link
+                  href="#budget"
+                  title={I18N.get('proposal.fields.budget')}
+                />
+              </LinkGroup>
+            )
+          }
+          return (
             <Anchor.Link
-              href="#goal"
-              title={I18N.get('proposal.fields.goal')}
+              href={`#${el}`}
+              title={I18N.get(`proposal.fields.${el}`)}
+              key={el}
             />
-          </LinkGroup>
-        )}
-        {!isNewType && (
-          <Anchor.Link href="#plan" title={I18N.get('proposal.fields.plan')} />
-        )}
-        {!isNewType && (
-          <Anchor.Link
-            href="#relevance"
-            title={I18N.get('proposal.fields.relevance')}
-          />
-        )}
-        {!isNewType && (
-          <LinkGroup marginTop={48}>
-            <Anchor.Link
-              href="#budget"
-              title={I18N.get('proposal.fields.budget')}
-            />
-          </LinkGroup>
-        )}
+          )
+        })}
+
         <LinkGroup marginTop={48}>
           <Anchor.Link href="#vote" title={I18N.get('proposal.fields.vote')} />
         </LinkGroup>
@@ -701,42 +702,47 @@ class C extends StandardPage {
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
+    let sections = [
+      'abstract',
+      'motivation',
+      'goal',
+      'plan',
+      'relevance',
+      'budget'
+    ]
+
+    if (isNewType) {
+      sections = ['abstract', 'motivation']
+    }
+
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      sections = ['abstract', 'motivation', 'didNameList']
+    }
     return (
       <div>
         <Preamble {...data} user={user} copyFun={this.copyToClip} />
-        {renderRichContent(
-          data,
-          'abstract',
-          I18N.get('proposal.fields.abstract')
-        )}
-        {renderRichContent(
-          data,
-          'motivation',
-          I18N.get('proposal.fields.motivation')
-        )}
-        {!isNewType &&
-          renderRichContent(data, 'goal', I18N.get('proposal.fields.goal'))}
-        {!isNewType &&
-          renderRichContent(data, 'plan', I18N.get('proposal.fields.plan'))}
-        {!isNewType &&
-          renderRichContent(
+        {sections.map((el) => {
+          if (el === 'budget') {
+            return renderRichContent(
+              data,
+              'budget',
+              I18N.get('proposal.fields.budget'),
+              user,
+              {
+                applyPayment: this.props.applyPayment,
+                getPaymentSignature: this.props.getPaymentSignature,
+                reviewApplication: this.props.reviewApplication,
+                withdraw: this.props.withdraw
+              }
+            )
+          }
+          return renderRichContent(
             data,
-            'relevance',
-            I18N.get('proposal.fields.relevance')
-          )}
-        {!isNewType &&
-          renderRichContent(
-            data,
-            'budget',
-            I18N.get('proposal.fields.budget'),
-            user,
-            {
-              applyPayment: this.props.applyPayment,
-              getPaymentSignature: this.props.getPaymentSignature,
-              reviewApplication: this.props.reviewApplication,
-              withdraw: this.props.withdraw
-            }
-          )}
+            el,
+            I18N.get(`proposal.fields.${el}`),
+            null
+          )
+        })}
       </div>
     )
   }

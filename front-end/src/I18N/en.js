@@ -172,9 +172,7 @@ const en = {
   'login.reset': 'Reset password',
   'login.title': 'Login to Cyber Republic',
   'login.description_1': 'Input your credentials below.',
-  'login.withDid': 'Log in with APP',
-  'login.qrcodeTip': 'Scan this with the Essentials',
-  'login.qrcodeOldTip': `Scan this with the ELA Wallet`,
+  'login.withDid': 'Log in with Essentials',
   'login.modal.register': 'Register',
   'login.modal.content': 'Your DID does not register the CR website',
   // Logout
@@ -886,10 +884,7 @@ const en = {
   'council.voting.voteResult.unvoted': 'Unvoted by me',
 
   'council.voting.voteResult.onchain': 'Vote Onchain',
-  'council.voting.essentials': 'Scan this with the Essentials',
-  'council.voting.ela': 'Scan this with the ELA Wallet',
-  'council.voting.scan.ela': 'Switch to the ELA Wallet',
-  'council.voting.scan.essentials': 'Switch to the Essentials',
+  'council.voting.essentials': 'Scan QR code with Essentials',
 
   'council.voting.viewHistory.btn': 'Voting history',
   'council.voting.viewHistory.current': 'Current Voting',
@@ -946,9 +941,7 @@ const en = {
   'role.admin.mode': 'Admin Mode',
 
   // Profile
-  'profile.associateDid': 'Associate DID with APP',
-  'profile.qrcodeTip': 'Scan this with the Essentials',
-  'profile.qrcodeOldTip': 'Scan this with the ELA Wallet',
+  'profile.associateDid': 'Associate DID with Essentials',
   'profile.reassociateDid': 'Re-associate DID',
   'profile.thanksForCompleting': 'Thanks for updating your profile!',
   'profile.skillsets': 'My Skillsets',

@@ -5,6 +5,7 @@ import CouncilService from '../service/CouncilService'
 import UserService from '../service/UserService'
 import ElaTransactionService from '../service/ElaTransactionService'
 import CandidateService from '../service/CandidateService'
+import MilestoneService from '../service/MilestoneService'
 import { constant } from '../constant'
 
 const Agenda = require('agenda')
@@ -20,7 +21,8 @@ const JOB_NAME = {
   TRANSACTIONJOB: 'new append transaction',
   NOTIFICATIONCOUNCILVOTE: 'notification council to vote',
   UPDATECURRENTHEIGHT: 'update current height',
-  BACKUP_CANDIDATE_LIST: 'backup candidate list'
+  BACKUP_CANDIDATE_LIST: 'backup candidate list',
+  SECRETARY_REVIEW_JOB: 'the secretary general reviews budget applications'
 }
 
 agenda.define(JOB_NAME.UPDATEMILESTONE, async (job: any, done: any) => {
@@ -137,6 +139,21 @@ agenda.define(JOB_NAME.COUNCILREVIEWJOB, async (job: any, done: any) => {
     done()
   }
 })
+
+agenda.define(JOB_NAME.SECRETARY_REVIEW_JOB, async (job: any, done: any) => {
+  console.log('------begin secretary general review------')
+  try {
+    const DB = await db.create()
+    const milestoneService = new MilestoneService(DB, { user: undefined })
+    await milestoneService.syncSecretaryOpinionFromChain()
+    console.log(JOB_NAME.SECRETARY_REVIEW_JOB, 'at working')
+  } catch (err) {
+    console.log('', err)
+  } finally {
+    done()
+  }
+})
+
 agenda.define(JOB_NAME.TRANSACTIONJOB, async (job: any, done: any) => {
   console.log('------begin new append transaction------')
   try {
@@ -192,5 +209,6 @@ agenda.define(JOB_NAME.BACKUP_CANDIDATE_LIST, async (job: any, done: any) => {
   await agenda.every('3 minutes', JOB_NAME.COUNCILREVIEWJOB)
   await agenda.every('1 minutes', JOB_NAME.TRANSACTIONJOB)
   await agenda.every('10 minutes', JOB_NAME.NOTIFICATIONCOUNCILVOTE)
+  await agenda.every('1 minutes', JOB_NAME.SECRETARY_REVIEW_JOB)
   // await agenda.every('5 minutes', JOB_NAME.BACKUP_CANDIDATE_LIST)
 })()

@@ -14,6 +14,8 @@ import SelectSuggType from './SelectSuggType'
 import ImplementationAndBudget from './ImplementationAndBudget'
 import TeamInfoSection from './TeamInfoSection'
 import DuplicateModal from '../DuplicateModalForm/Container'
+import { getDuplicatesFromArray } from '../../../util/index'
+import ReceivedCustomizedIDList from './ReceivedCustomizedIDList'
 
 const FormItem = Form.Item
 const { TabPane } = Tabs
@@ -26,24 +28,37 @@ const {
   NEW_MOTION,
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
-  TERMINATE_PROPOSAL
+  TERMINATE_PROPOSAL,
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID
 } = SUGGESTION_TYPE
 
 class C extends BaseComponent {
   constructor(props) {
     super(props)
     const type = _.get(props, 'initialValues.type')
+    let tabs = TAB_KEYS
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
+    }
     const isNewType = _.includes(
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
+    if (isNewType) {
+      tabs = NEW_TAB_KEYS
+    }
+
     this.timer = -1
     this.state = {
       loading: false,
       activeKey: !isNewType ? TAB_KEYS[0] : NEW_TAB_KEYS[0],
       errorKeys: {},
       type: type ? type : NEW_MOTION,
-      tabs: !isNewType ? TAB_KEYS : NEW_TAB_KEYS,
+      tabs,
       dupData: {},
       controVar: 1
     }
@@ -82,9 +97,6 @@ class C extends BaseComponent {
     e.preventDefault()
     const { form } = this.props
 
-    if (isNotDraft) {
-      this.setState({ loading: true })
-    }
     form.validateFields(async (err, values) => {
       if (err) {
         this.setState({
@@ -93,6 +105,9 @@ class C extends BaseComponent {
           activeKey: this.getActiveKey(Object.keys(err)[0])
         })
         return
+      }
+      if (isNotDraft) {
+        this.setState({ loading: true })
       }
       const milestone = _.get(values, 'plan.milestone')
       const pItems = _.get(values, 'budget.paymentItems')
@@ -160,6 +175,31 @@ class C extends BaseComponent {
           teamInfo
         }
       }
+      const didNameList = _.get(values, 'didNameList')
+      if (didNameList) {
+        const duplicates = getDuplicatesFromArray(
+          didNameList.trim().split(/\s+/)
+        )
+        if (duplicates && duplicates.length > 0) {
+          this.setState({ loading: false })
+          message.error(
+            <span>
+              {I18N.get('suggestion.form.error.didNameList')}
+              <span
+                style={{
+                  display: 'block',
+                  color: '#f5222d',
+                  marginTop: 16
+                }}
+              >
+                {duplicates.join(' ')}
+              </span>
+            </span>,
+            5
+          )
+          return
+        }
+      }
       const rs = this.formatType(values, false)
       if (rs) {
         await callback(rs)
@@ -219,6 +259,13 @@ class C extends BaseComponent {
             return
           }
           values.closeProposalNum = type.termination
+          break
+        case RECEIVE_CUSTOMIZED_ID:
+          if (!saveDraft && !type.customizedIDBindToDID) {
+            message.error(I18N.get('suggestion.form.error.bindToDID'))
+            return
+          }
+          values.customizedIDBindToDID = type.customizedIDBindToDID
           break
         default:
           break
@@ -319,6 +366,13 @@ class C extends BaseComponent {
     }
   }
 
+  validateSelectedID = (rule, value, cb) => {
+    if (_.isEmpty(value)) {
+      return cb(I18N.get('suggestion.form.error.customizedID'))
+    }
+    return cb()
+  }
+
   validateAbstract = (rule, value, cb) => {
     let count = 0
     if (value) {
@@ -374,11 +428,20 @@ class C extends BaseComponent {
   }
 
   changeType = (type) => {
+    let tabs = TAB_KEYS
     const isNewType = _.includes(
       [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
       type
     )
-    const tabs = !isNewType ? TAB_KEYS : NEW_TAB_KEYS
+    if (isNewType) {
+      tabs = NEW_TAB_KEYS
+    }
+    if (type === RESERVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
+    }
     this.setState({ type, tabs, errorKeys: {}, activeKey: 'type' })
   }
 
@@ -423,6 +486,12 @@ class C extends BaseComponent {
           data = {
             type: initialValues.type,
             termination: initialValues.closeProposalNum
+          }
+          break
+        case RECEIVE_CUSTOMIZED_ID:
+          data = {
+            type: initialValues.type,
+            customizedIDBindToDID: initialValues.customizedIDBindToDID
           }
           break
         default:
@@ -519,6 +588,27 @@ class C extends BaseComponent {
       })
     }
 
+    if (id === 'receivedCustomizedIDList') {
+      let receivedCustomizedIDList = []
+      if (initialValues.receivedCustomizedIDList) {
+        receivedCustomizedIDList = initialValues.receivedCustomizedIDList
+      }
+      return getFieldDecorator('receivedCustomizedIDList', {
+        rules: [
+          {
+            validator: this.validateSelectedID
+          }
+        ],
+        initialValue: initialValues[id]
+      })(
+        <ReceivedCustomizedIDList
+          callback={this.onTextareaChange}
+          initialValue={receivedCustomizedIDList}
+          getCustomizedIDList={this.props.getCustomizedIDList}
+        />
+      )
+    }
+
     return getFieldDecorator(id, {
       rules,
       initialValue: initialValues[id]
@@ -529,7 +619,7 @@ class C extends BaseComponent {
         content={initialValues[id]}
         activeKey={id}
         name={id}
-        upload={id === 'abstract' ? false : true}
+        upload={id === 'abstract' || id === 'didNameList' ? false : true}
       />
     )
   }

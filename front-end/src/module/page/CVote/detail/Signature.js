@@ -14,9 +14,7 @@ class Signature extends Component {
     this.state = {
       url: '',
       messageHash: '',
-      message: '',
-      oldUrl: '',
-      showOld: false
+      message: ''
     }
     this.mtimer = null
   }
@@ -38,8 +36,7 @@ class Signature extends Component {
         if (rs.success && rs.url) {
           this.setState({
             url: rs.url,
-            messageHash: rs.messageHash,
-            oldUrl: rs.oldUrl
+            messageHash: rs.messageHash
           })
           this.mtimer = setTimeout(this.pollingSignature, 3000)
         }
@@ -65,7 +62,7 @@ class Signature extends Component {
         }
         const rs = await reviewApplication(proposalId, stage, data)
         if (rs.success && rs.url) {
-          this.setState({ url: rs.url, oldUrl: rs.oldUrl, showOld: false })
+          this.setState({ url: rs.url })
         }
         if (!rs.success && rs.message) {
           this.setState({ message: rs.message })
@@ -114,26 +111,12 @@ class Signature extends Component {
     this.mtimer = null
   }
 
-  handleSwitch = () => {
-    this.setState({ showOld: !this.state.showOld })
-  }
-
   signatureQrCode = () => {
-    const { url, oldUrl, showOld } = this.state
+    const { url } = this.state
     return (
       <Content>
-        {url ? <QRCode value={showOld ? oldUrl : url} size={300} /> : <Spin />}
+        {url ? <QRCode value={url} size={300} /> : <Spin />}
         <Tip>{I18N.get('milestone.sign')}</Tip>
-        {url && (
-          <SwitchWrapper>
-            <SwitchSvgIcon />
-            <SwitchButton onClick={this.handleSwitch}>
-              {!showOld
-                ? I18N.get('milestone.scanEla')
-                : I18N.get('milestone.scanEssentials')}
-            </SwitchButton>
-          </SwitchWrapper>
-        )}
       </Content>
     )
   }
@@ -170,7 +153,7 @@ class Signature extends Component {
   }
 
   hideModal = () => {
-    this.setState({ url: '', message: '', oldUrl: '' })
+    this.setState({ url: '', message: '' })
     this.props.hideModal()
   }
 
@@ -189,7 +172,7 @@ class Signature extends Component {
     const { stage, isSecretary, toggle, opinion } = this.props
     const flag = opinion && opinion.toLowerCase() === 'rejected'
     return (
-      <Modal
+      <StyledModal
         maskClosable={false}
         visible={toggle}
         onCancel={this.hideModal}
@@ -212,7 +195,7 @@ class Signature extends Component {
 
           {this.modalContent()}
         </Wrapper>
-      </Modal>
+      </StyledModal>
     )
   }
 }
@@ -262,17 +245,8 @@ const Msg = styled.div`
   padding: 8px;
   margin-bottom: 24px;
 `
-const SwitchWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-`
-const SwitchButton = styled.span`
-  color: #65bda3;
-  font-size: 12px;
-  padding-left: 4px;
-  cursor: pointer;
-  font-weight: 400;
-  line-height: 17px;
+const StyledModal = styled(Modal)`
+  .ant-modal-body {
+    background: #fff !important;
+  }
 `

@@ -11,5 +11,8 @@ export const SuggestionEditHistory = {
     type: Schema.Types.ObjectId,
     ref: 'suggestion',
     required: true
-  }
+  },
+  didNameList: String,
+  customizedIDBindToDID: String,
+  receivedCustomizedIDList: [String]
 }

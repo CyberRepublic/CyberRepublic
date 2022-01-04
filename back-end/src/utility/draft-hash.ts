@@ -100,13 +100,11 @@ function generateProposalData(data: any) {
   } = data
   const newAbstract = getImageUrls(abstract)
   const newMotivation = getImageUrls(motivation)
-  const newGoal = getImageUrls(goal)
 
   const proposal: { [key: string]: any } = {
     title,
     abstract: newAbstract.content,
-    motivation: newMotivation.content,
-    goal: newGoal.content
+    motivation: newMotivation.content
   }
 
   const hasBudget = !!budget && _.isArray(budget) && !_.isEmpty(budget)
@@ -156,7 +154,13 @@ function generateProposalData(data: any) {
     proposal.relevance = info
   }
 
-  let urls = [...newAbstract.urls, ...newMotivation.urls, ...newGoal.urls]
+  let urls = [...newAbstract.urls, ...newMotivation.urls]
+  if (goal) {
+    const newGoal = getImageUrls(goal)
+    proposal.goal = newGoal.content
+    urls = [...urls, ...newGoal.urls]
+  }
+
   if (planIntro) {
     const newPlanIntro = getImageUrls(planIntro)
     urls = [...urls, ...newPlanIntro.urls]

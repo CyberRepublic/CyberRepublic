@@ -51,7 +51,8 @@ const withdrawalHistorySchema = {
     reason: String,
     reasonHash: String,
     opinion: String,
-    createdAt: Date
+    createdAt: Date,
+    txid: String
   }
 }
 
@@ -243,5 +244,6 @@ export const CVote = {
       vid: Number,
       id: { type: Schema.Types.ObjectId, ref: 'cvote' }
     }
-  ]
+  ],
+  didNameList: String
 }

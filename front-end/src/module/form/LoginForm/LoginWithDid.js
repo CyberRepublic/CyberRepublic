@@ -10,29 +10,17 @@ class LoginWithDid extends Component {
     super(props)
     this.state = {
       url: '',
-      oldUrl: '',
       visible: false,
       modalVisible: false,
-      did: '',
-      newVersion: ''
+      did: ''
     }
     this.timerDid = null
-    this.oldTimerDid = null
   }
 
   elaQrCode = () => {
-    const { oldUrl, url } = this.state
+    const { url } = this.state
     return (
-      <Content>
-        <div>
-          {url ? <QRCode value={url} size={180} /> : <Spin />}
-          <Tip>{I18N.get('login.qrcodeTip')}</Tip>
-        </div>
-        <div>
-          {oldUrl ? <QRCode value={oldUrl} size={180} /> : <Spin />}
-          <Tip>{I18N.get('login.qrcodeOldTip')}</Tip>
-        </div>
-      </Content>
+      <Content>{url ? <QRCode value={url} size={180} /> : <Spin />}</Content>
     )
   }
 
@@ -44,15 +32,12 @@ class LoginWithDid extends Component {
     const rs = await this.props.checkElaAuth(url)
     if (rs && rs.success === true) {
       clearTimeout(this.timerDid)
-      clearTimeout(this.oldTimerDid)
       this.timerDid = null
-      this.oldTimerDid = null
       if (rs.did) {
         this.setState({
           visible: false,
           modalVisible: true,
-          did: rs.did,
-          newVersion: rs.newVersion
+          did: rs.did
         })
       }
       return
@@ -69,42 +54,6 @@ class LoginWithDid extends Component {
     if (this._isMounted) {
       clearTimeout(this.timerDid)
       this.timerDid = setTimeout(this.polling, 3000)
-    }
-  }
-
-  pollingWithOldUrl = async () => {
-    if (!this._isMounted) {
-      return
-    }
-    const { oldUrl } = this.state
-    const rs = await this.props.checkElaAuth(oldUrl)
-    if (rs && rs.success === true) {
-      clearTimeout(this.timerDid)
-      clearTimeout(this.oldTimerDid)
-      this.timerDid = null
-      this.oldTimerDid = null
-      if (rs.did) {
-        this.setState({
-          visible: false,
-          modalVisible: true,
-          did: rs.did,
-          newVersion: rs.newVersion
-        })
-      }
-      return
-    }
-    if (rs && rs.success === false) {
-      clearTimeout(this.oldTimerDid)
-      this.oldTimerDid = null
-      if (rs.message) {
-        message.error(rs.message)
-      }
-      this.setState({ visible: false })
-      return
-    }
-    if (this._isMounted) {
-      clearTimeout(this.oldTimerDid)
-      this.oldTimerDid = setTimeout(this.pollingWithOldUrl, 3500)
     }
   }
 
@@ -112,25 +61,20 @@ class LoginWithDid extends Component {
     if (!this.timerDid) {
       this.timerDid = setTimeout(this.polling, 3000)
     }
-    if (!this.oldTimerDid) {
-      this.oldTimerDid = setTimeout(this.pollingWithOldUrl, 3500)
-    }
   }
 
   componentDidMount = async () => {
     this._isMounted = true
     const rs = await this.props.loginElaUrl()
     if (rs && rs.success) {
-      this.setState({ url: rs.url, oldUrl: rs.oldUrl })
+      this.setState({ url: rs.url })
     }
   }
 
   componentWillUnmount() {
     this._isMounted = false
     clearTimeout(this.timerDid)
-    clearTimeout(this.oldTimerDid)
     this.timerDid = null
-    this.oldTimerDid = null
   }
 
   handleVisibleChange = (visible) => {
@@ -138,10 +82,11 @@ class LoginWithDid extends Component {
   }
 
   handleModalClick = () => {
-    const { did, newVersion } = this.state
-    if (!did || !newVersion) return
-    this.props.changeTab('register', did, newVersion)
-    this.setState({ modalVisible: false })
+    const { did } = this.state
+    if (did) {
+      this.props.changeTab('register', did)
+      this.setState({ modalVisible: false })
+    }
   }
 
   hideModal = () => {
@@ -205,19 +150,13 @@ const StyledButton = styled.span`
   color: #65bda3;
   padding-left: 10px;
   display: inline-block;
+  margin-top: -4px;
 `
 const Content = styled.div`
   padding: 16px;
-  min-width: 460px;
   text-align: center;
-  display: flex;
-  justify-content: space-between;
-`
-const Tip = styled.div`
-  font-size: 13px;
-  color: #333333;
-  margin-top: 16px;
-  opacity: 0.8;
+  border-radius: 16px;
+  background-color: #ffffff;
 `
 const Notice = styled.div`
   font-size: 16px;

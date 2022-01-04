@@ -21,6 +21,9 @@ export default createContainer(
       },
       async getActiveProposals() {
         return cvoteService.getActiveProposals()
+      },
+      async getCustomizedIDList() {
+        return cvoteService.getCustomizedIDList()
       }
     }
   }

@@ -11,36 +11,16 @@ class OnChainButton extends Component {
     super(props)
     this.state = {
       url: '',
-      oldUrl: '',
-      visible: false,
-      toggle: false
+      visible: false
     }
   }
 
-  handleSwitch = () => {
-    this.setState({ toggle: !this.state.toggle })
-  }
-
   qrCode = () => {
-    const { url, oldUrl, toggle } = this.state
+    const { url } = this.state
     return (
       <Content>
-        {url ? <QRCode value={toggle ? oldUrl : url} size={180} /> : <Spin />}
-        <Tip>
-          {toggle
-            ? I18N.get('council.voting.ela')
-            : I18N.get('council.voting.essentials')}
-        </Tip>
-        {url && (
-          <SwitchWrapper>
-            <SwitchSvgIcon />
-            <SwitchButton onClick={this.handleSwitch}>
-              {!toggle
-                ? I18N.get('council.voting.scan.ela')
-                : I18N.get('council.voting.scan.essentials')}
-            </SwitchButton>
-          </SwitchWrapper>
-        )}
+        {url ? <QRCode value={url} size={180} /> : <Spin />}
+        <Tip>{I18N.get('council.voting.essentials')}</Tip>
       </Content>
     )
   }
@@ -49,7 +29,7 @@ class OnChainButton extends Component {
     const { id, getReviewProposalUrl } = this.props
     const rs = await getReviewProposalUrl(id)
     if (rs && rs.success) {
-      this.setState({ url: rs.url, oldUrl: rs.oldUrl })
+      this.setState({ url: rs.url })
     }
   }
 
@@ -100,6 +80,8 @@ const VoteButton = styled.div`
 const Content = styled.div`
   padding: 24px 24px 14px;
   text-align: center;
+  border-radius: 16px;
+  background-color: #ffffff;
 `
 const Tip = styled.div`
   font-size: 12px;

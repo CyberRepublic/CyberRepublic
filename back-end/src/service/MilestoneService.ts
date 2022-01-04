@@ -7,11 +7,14 @@ import {
   mail,
   logger,
   user as userUtil,
-  utilCrypto,
   getPemPublicKey,
   permissions,
   getProposalReqToken
 } from '../utility'
+import { getProposerMessageHash } from '../utility/message-hash'
+import { getOpinionHash } from '../utility/opinion-hash'
+import { unzipFile } from '../utility/unzip-file'
+import * as moment from 'moment'
 const Big = require('big.js')
 const {
   WAITING_FOR_REQUEST,
@@ -33,6 +36,30 @@ export default class extends Base {
     const initiation = _.find(budget, ['type', 'ADVANCE'])
     const stage = parseInt(mKey)
     return initiation ? stage : stage + 1
+  }
+
+  // for full-text to chain
+  private async getMessageHash(
+    message: string,
+    proposalId: string,
+    proposalHash: string,
+    stage: number
+  ) {
+    const rs = await getProposerMessageHash(message)
+    if (rs && rs.error) {
+      return { error: rs.error }
+    }
+    if (rs && rs.content && rs.messageHash) {
+      const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
+      await zipFileModel.save({
+        proposalId,
+        messageHash: rs.messageHash,
+        content: rs.content,
+        proposalHash,
+        stage
+      })
+      return { messageHash: rs.messageHash }
+    }
   }
 
   public async applyPayment(param: any) {
@@ -66,16 +93,27 @@ export default class extends Base {
       }
 
       const currDate = Date.now()
-      const now = Math.floor(currDate / 1000)
-      const hashMsg = { date: now, message }
-      const messageHash = utilCrypto.sha256D(JSON.stringify(hashMsg))
+      const initiation = _.find(proposal.budget, ['type', 'ADVANCE'])
+      const stage = initiation
+        ? parseInt(milestoneKey)
+        : parseInt(milestoneKey) + 1
+      const messageHashObj = await this.getMessageHash(
+        message,
+        proposal._id,
+        proposal.proposalHash,
+        stage
+      )
+      if (messageHashObj && messageHashObj.error) {
+        return { success: false, message: messageHashObj.error }
+      }
       // update withdrawal history
       const history = {
         message,
         milestoneKey,
-        messageHash,
+        messageHash: messageHashObj.messageHash,
         createdAt: currDate
       }
+
       await this.model.update(
         { _id: id },
         { $push: { withdrawalHistory: history } }
@@ -83,6 +121,7 @@ export default class extends Base {
 
       const trackingStatus = budget.type === 'COMPLETION' ? FINALIZED : PROGRESS
 
+      const now = Math.floor(currDate / 1000)
       // generate jwt url
       const jwtClaims = {
         iat: now,
@@ -93,7 +132,7 @@ export default class extends Base {
         data: {
           userdid: _.get(this.currentUser, 'did.id'),
           proposalhash: proposal.proposalHash,
-          messagehash: messageHash,
+          messagehash: messageHashObj.messageHash,
           stage: this.paymentStage(proposal.budget, milestoneKey),
           ownerpubkey: proposal.ownerPublicKey,
           newownerpubkey: '',
@@ -105,10 +144,12 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, messageHash, oldUrl }
+      return {
+        success: true,
+        url,
+        messageHash: messageHashObj.messageHash
+      }
     } catch (error) {
       logger.error(error)
       return
@@ -208,6 +249,8 @@ export default class extends Base {
                 }
               }
 
+              const zipFileModel = this.getDBModel('Proposer_Message_Zip_File')
+
               await Promise.all([
                 this.model.update(
                   {
@@ -225,6 +268,10 @@ export default class extends Base {
                     'budget.milestoneKey': history.milestoneKey
                   },
                   { 'budget.$.status': WAITING_FOR_APPROVAL }
+                ),
+                zipFileModel.update(
+                  { proposalHash, messageHash },
+                  { $set: { ownerSignature: decoded.data, ownerPublicKey } }
                 )
               ])
 
@@ -271,6 +318,28 @@ export default class extends Base {
       }
     } else {
       return { success: false }
+    }
+  }
+
+  // for full-text to chain
+  private async getOpinionHash(
+    reason: string,
+    proposalId: string,
+    proposalHash: string
+  ) {
+    const rs = await getOpinionHash(reason)
+    if (rs && rs.error) {
+      return { error: rs.error }
+    }
+    if (rs && rs.content && rs.opinionHash) {
+      const zipFileModel = this.getDBModel('Secretary_Opinion_Zip_File')
+      await zipFileModel.save({
+        proposalId,
+        opinionHash: rs.opinionHash,
+        content: rs.content,
+        proposalHash
+      })
+      return { opinionHash: rs.opinionHash }
     }
   }
 
@@ -323,9 +392,15 @@ export default class extends Base {
 
       const currTime = Date.now()
       const now = Math.floor(currTime / 1000)
-      const reasonHash = utilCrypto.sha256D(
-        JSON.stringify({ date: now, reason })
+      const opinionHashObj = await this.getOpinionHash(
+        reason,
+        proposal._id,
+        proposal.proposalHash
       )
+
+      if (opinionHashObj && opinionHashObj.error) {
+        return { success: false, message: opinionHashObj.error }
+      }
 
       await this.model.update(
         {
@@ -336,7 +411,7 @@ export default class extends Base {
           $set: {
             'withdrawalHistory.$.review': {
               reason,
-              reasonHash,
+              reasonHash: opinionHashObj.opinionHash,
               opinion,
               createdAt: currTime
             }
@@ -366,7 +441,7 @@ export default class extends Base {
           ownersignature: history.signature,
           newownersignature: '',
           proposaltrackingtype: trackingStatus,
-          secretaryopinionhash: reasonHash
+          secretaryopinionhash: opinionHashObj.opinionHash
         }
       }
       const jwtToken = jwt.sign(
@@ -374,10 +449,12 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, messageHash: reasonHash, oldUrl }
+      return {
+        success: true,
+        url,
+        messageHash: opinionHashObj.opinionHash
+      }
     } catch (error) {
       logger.error(error)
       return
@@ -529,13 +606,122 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (error) {
       logger.error(error)
       return
     }
+  }
+
+  public async syncSecretaryOpinionFromChain() {
+    const db_ela = this.getDBModel('Ela_Transaction')
+    const db_cvote = this.getDBModel('CVote')
+    const db_zip_file = this.getDBModel('Secretary_Opinion_Zip_File')
+
+    let transactions = await db_ela
+      .getDBInstance()
+      .find({ type: constant.TRANSACTION_TYPE.SECRETARY_REVIEW })
+    if (_.isEmpty(transactions)) {
+      return
+    }
+    const reviewList = []
+    _.map(transactions, (o: any) => {
+      const data = {
+        txid: o.txid,
+        ...JSON.parse(o.payload)
+      }
+      reviewList.push(data)
+    })
+
+    const query = []
+    const byKeyElaList = _.keyBy(reviewList, 'proposalhash')
+    _.forEach(byKeyElaList, (v: any, k: any) => {
+      query.push(k)
+    })
+    console.log(`syncSecretaryOpinionFromChain query...`, query)
+    const proposalList = await db_cvote.getDBInstance().find({
+      proposalHash: { $in: query }
+    })
+    if (_.isEmpty(proposalList)) {
+      return
+    }
+    console.log(
+      `syncSecretaryOpinionFromChain proposalList....`,
+      proposalList.length
+    )
+    let histories = []
+    _.forEach(proposalList, (o: any) => {
+      _.forEach(o.withdrawalHistory, (v: any) => {
+        if (v.signature && (!v.review || (v.review && !v.review.txid))) {
+          histories.push({
+            messageHash: v.messageHash,
+            proposalHash: o.proposalHash,
+            proposalId: o._id
+          })
+        }
+      })
+    })
+    console.log(`histories...`, histories.length)
+
+    _.forEach(reviewList, async (o: any) => {
+      console.log(
+        `syncSecretaryOpinionFromChain proposalHash...`,
+        o.proposalhash
+      )
+      if (!o.secretarygeneralopiniondata) return
+      const history = _.find(histories, {
+        proposalHash: o.proposalhash,
+        messageHash: o.messagehash
+      })
+      console.log(`syncSecretaryOpinionFromChain history...`, history)
+      if (history) {
+        const opinionResult = await unzipFile(o.secretarygeneralopiniondata)
+        console.log(
+          `syncSecretaryOpinionFromChain opinionResult...`,
+          opinionResult
+        )
+        let opinion = o.proposaltrackingtype
+        if (opinion === 'Rejected') {
+          opinion = constant.REVIEW_OPINION.REJECTED
+        } else {
+          opinion = constant.REVIEW_OPINION.APPROVED
+        }
+        await db_cvote.update(
+          {
+            proposalHash: o.proposalhash,
+            'withdrawalHistory.messageHash': o.messagehash
+          },
+          {
+            $set: {
+              'withdrawalHistory.$.review': {
+                reason: opinionResult.opinion,
+                reasonHash: o.secretarygeneralopinionhash,
+                opinion,
+                createdAt: moment(opinionResult.date),
+                txid: o.txid
+              }
+            }
+          }
+        )
+        console.log(
+          `syncSecretaryOpinionFromChain begin to save opinion data...`
+        )
+        const doc = await db_zip_file
+          .getDBInstance()
+          .findOne({ opinionHash: o.secretarygeneralopinionhash })
+        if (!doc) {
+          await db_zip_file.save({
+            proposalId: history.proposalId,
+            opinionHash: o.secretarygeneralopinionhash,
+            content: Buffer.from(o.secretarygeneralopiniondata, 'hex'),
+            proposalHash: o.proposalhash
+          })
+        }
+
+        await db_ela.remove({ txid: o.txid })
+        console.log(`syncSecretaryOpinionFromChain done`)
+      }
+    })
   }
 }

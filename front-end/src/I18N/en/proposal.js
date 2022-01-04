@@ -28,6 +28,7 @@ export default {
     abstract: 'Abstract',
     goal: 'Goal',
     motivation: 'Motivation',
+    didNameList: 'Customized DID List',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',
@@ -171,6 +172,7 @@ export default {
     [PROPOSAL_TYPE.CHANGE_PROPOSAL]: 'Motion to change a proposal',
     [PROPOSAL_TYPE.CHANGE_SECRETARY]:
       'Motion for new CR Council Secretary General',
-    [PROPOSAL_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal'
+    [PROPOSAL_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
+    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`
   }
 }

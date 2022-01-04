@@ -3,6 +3,8 @@ import allSearch from './all_search'
 import getProposal from './get_proposal'
 import walletVote from './wallet_vote'
 import getOpinionData from './get_opinion_data'
+import updateMilestone from './update_milestone'
+import getMessageData from './get_message_data'
 
 export default Base.setRouter([
   {
@@ -23,6 +25,16 @@ export default Base.setRouter([
   {
     path: '/opinion_data/:opinionHash',
     router: getOpinionData,
+    method: 'get'
+  },
+  {
+    path: '/milestone',
+    router: updateMilestone,
+    method: 'post'
+  },
+  {
+    path: '/message_data/:messageHash',
+    router: getMessageData,
     method: 'get'
   }
 ])

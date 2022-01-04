@@ -16,7 +16,7 @@ import {
 import { unzipFile } from '../utility/unzip-file'
 import * as moment from 'moment'
 import * as jwt from 'jsonwebtoken'
-import { getCouncilMemberOpinionHash } from '../utility/opinion-hash'
+import { getOpinionHash } from '../utility/opinion-hash'
 
 const util = require('util')
 const request = require('request')
@@ -207,6 +207,11 @@ export default class extends Base {
       if (suggestion.newAddress) {
         doc.newAddress = suggestion.newAddress
       }
+    }
+    console.log(`makeSuggIntoProposal suggestion.type...`, suggestion.type)
+    if (suggestion.type === constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
+      doc.didNameList = suggestion.didNameList
+      console.log(`makeSuggIntoProposal doc.didNameList...`, doc.didNameList)
     }
 
     Object.assign(doc, _.pick(suggestion, BASE_FIELDS))
@@ -1160,7 +1165,7 @@ export default class extends Base {
     proposalHash: string,
     votedBy: string
   ) {
-    const rs = await getCouncilMemberOpinionHash(reason)
+    const rs = await getOpinionHash(reason)
     if (rs && rs.error) {
       return { error: rs.error }
     }
@@ -2656,6 +2661,15 @@ export default class extends Base {
       ['_id', 'title', 'proposalHash']
     )
     return proposalList
+  }
+
+  public async getCustomizedIDList() {
+    const db_cvote = this.getDBModel('CVote')
+    const proposal = await db_cvote.getDBInstance().findOne({
+      type: constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID
+    })
+    if (!proposal) return
+    return { didNameList: proposal.didNameList, success: true }
   }
 
   public async walletVote(param: any) {

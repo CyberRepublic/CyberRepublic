@@ -31,6 +31,8 @@ import Log from './Log'
 import Candidate from './Candidtate'
 import Suggestion_Zip_File from './Suggestion_Zip_File'
 import Council_Member_Opinion_Zip_File from './Council_Member_Opinion_Zip_File'
+import Proposer_Message_Zip_File from './Proposer_Message_Zip_File'
+import Secretary_Opinion_Zip_File from './Secretary_Opinion_Zip_File'
 
 import { utilCrypto } from '../utility'
 import * as uuid from 'uuid'
@@ -133,9 +135,10 @@ export default class {
     this.db.CVote_Tracking_Message = new CVote_Tracking_Message(db)
     this.db.Candidate = new Candidate(db)
     this.db.Suggestion_Zip_File = new Suggestion_Zip_File(db)
-    // ignore-prettier
-    this.db.Council_Member_Opinion_Zip_File =
-      new Council_Member_Opinion_Zip_File(db)
+    // prettier-ignore
+    this.db.Council_Member_Opinion_Zip_File = new Council_Member_Opinion_Zip_File(db)
+    this.db.Proposer_Message_Zip_File = new Proposer_Message_Zip_File(db)
+    this.db.Secretary_Opinion_Zip_File = new Secretary_Opinion_Zip_File(db)
   }
 
   public getModel(name: string) {

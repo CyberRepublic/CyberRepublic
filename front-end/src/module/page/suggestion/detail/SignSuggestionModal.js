@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Modal, Button, Spin } from 'antd'
 import I18N from '@/I18N'
-import SwitchSvgIcon from '@/module/common/SwitchSvgIcon'
 import QRCode from 'qrcode.react'
 
 class SignSuggestionModal extends Component {
@@ -10,11 +9,9 @@ class SignSuggestionModal extends Component {
     super(props)
     this.state = {
       url: '',
-      oldUrl: '',
       visible: true,
       message: '',
-      signNow: false,
-      toggle: false
+      signNow: false
     }
     this.timer = null
   }
@@ -53,7 +50,7 @@ class SignSuggestionModal extends Component {
     const { id, getSignatureUrl } = this.props
     const rs = await getSignatureUrl(id)
     if (rs && rs.success) {
-      this.setState({ url: rs.url, oldUrl: rs.oldUrl })
+      this.setState({ url: rs.url })
       this.timer = setTimeout(this.pollingSignature, 3000)
     }
     if (rs && rs.success === false && rs.message) {
@@ -71,26 +68,12 @@ class SignSuggestionModal extends Component {
     this.timer = null
   }
 
-  handleSwitch = () => {
-    this.setState({ toggle: !this.state.toggle })
-  }
-
   elaQrCode = () => {
-    const { url, oldUrl, toggle } = this.state
+    const { url } = this.state
     return (
       <Content>
-        {url ? <QRCode value={toggle ? oldUrl : url} size={300} /> : <Spin />}
+        {url ? <QRCode value={url} size={300} /> : <Spin />}
         <Tip>{I18N.get('suggestion.msg.signQRCode')}</Tip>
-        {url && (
-          <SwitchWrapper>
-            <SwitchSvgIcon />
-            <SwitchButton onClick={this.handleSwitch}>
-              {!toggle
-                ? I18N.get('suggestion.msg.scanEla')
-                : I18N.get('suggestion.msg.scanEssentials')}
-            </SwitchButton>
-          </SwitchWrapper>
-        )}
       </Content>
     )
   }
@@ -139,7 +122,7 @@ class SignSuggestionModal extends Component {
   render() {
     const { visible } = this.state
     return (
-      <Modal
+      <StyledModal
         maskClosable={false}
         visible={visible}
         onCancel={this.hideModal}
@@ -147,7 +130,7 @@ class SignSuggestionModal extends Component {
         width={500}
       >
         {this.modalContent()}
-      </Modal>
+      </StyledModal>
     )
   }
 }
@@ -171,17 +154,8 @@ const Notice = styled.div`
   margin-left: 50px;
   margin-right: 50px;
 `
-const SwitchWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-`
-const SwitchButton = styled.span`
-  color: #65bda3;
-  font-size: 12px;
-  padding-left: 4px;
-  cursor: pointer;
-  font-weight: 400;
-  line-height: 17px;
+const StyledModal = styled(Modal)`
+  .ant-modal-body {
+    background: #fff !important;
+  }
 `

@@ -44,7 +44,10 @@ const BASE_FIELDS = [
   'newSecretaryDID',
   'closeProposalNum',
   'newAddress',
-  'validPeriod'
+  'validPeriod',
+  'didNameList',
+  'customizedIDBindToDID',
+  'receivedCustomizedIDList'
 ]
 
 interface BudgetItem {
@@ -1491,7 +1494,7 @@ export default class extends Base {
     }
   }
 
-  private convertBudget(budget: [BudgetItem]) {
+  private convertBudget(budget: any) {
     const chainBudgetType = {
       ADVANCE: 'imprest',
       CONDITIONED: 'normalpayment',
@@ -1637,9 +1640,8 @@ export default class extends Base {
         { algorithm: 'ES256' }
       )
 
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
@@ -1878,6 +1880,12 @@ export default class extends Base {
             targetproposalhash: suggestion.targetProposalHash
           }
           break
+        case SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID:
+          jwtClaims.data = {
+            ...jwtClaims.data,
+            proposaltype: 'reservecustomizedid'
+          }
+          break
         default:
           const budget: [BudgetItem] = _.get(suggestion, 'budget')
           const hasBudget = !!budget && _.isArray(budget) && !_.isEmpty(budget)
@@ -1902,9 +1910,8 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
@@ -2227,9 +2234,8 @@ export default class extends Base {
         { _id: suggestion._id },
         { $push: { proposers: { did: councilMemberDid, timestamp: now } } }
       )
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
@@ -2294,9 +2300,8 @@ export default class extends Base {
         process.env.APP_PRIVATE_KEY,
         { algorithm: 'ES256' }
       )
-      const oldUrl = constant.oldProposalJwtPrefix + jwtToken
       const url = constant.proposalJwtPrefix + jwtToken
-      return { success: true, url, oldUrl }
+      return { success: true, url }
     } catch (err) {
       logger.error(err)
       return { success: false }
@@ -2435,7 +2440,10 @@ export default class extends Base {
       'newOwnerDID',
       'newAddress',
       'closeProposalNum',
-      'validPeriod'
+      'validPeriod',
+      'didNameList',
+      'customizedIDBindToDID',
+      'receivedCustomizedIDList'
     ]
     const user = _.get(this.currentUser, '_id')
     if (param.type === 'byNumber') {

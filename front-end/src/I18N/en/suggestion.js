@@ -35,6 +35,9 @@ export default {
     abstract: 'Abstract',
     goal: 'Goal',
     motivation: 'Motivation',
+    didNameList: 'Customized DID List',
+    customizedIDBindToDID: 'Bind to DID',
+    receivedCustomizedIDList: 'Received Customized DID List',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',
@@ -95,6 +98,8 @@ export default {
       [SUGGESTION_TYPE.CHANGE_PROPOSAL]: 'Motion to change a proposal',
       [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Motion for new CR Council Secretary General`,
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
+      [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
+      [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
       newMotion: 'New Motion',
       motionAgainst: 'Motion Against',
       anythingElse: 'Anything Else',
@@ -106,11 +111,14 @@ export default {
       newSecretary: 'New Secretary',
       ownerInfo: `Please input the new owner's DID`,
       secretaryInfo: `Please input the new secretary's DID`,
+      bindToDID: `Bind to DID`,
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `Topic regarding terminating proposals unable or should not be executed`,
-        [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`
+        [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
+        [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals Customized DID`,
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Enable reserved Customized DID`
       }
     },
     note: {
@@ -118,6 +126,8 @@ export default {
       abstract: `Provide a brief description of the proposal content (no more than 200 words).`,
       goal: `Describe the desired results achieved by implementing the proposal. Goals should be clear and measurable.`,
       motivation: `Describe why this proposal is proposed. Motivation is critical for proposals that try to improve Elastos or CR. It should be clearly explained here why the existing mechanism is not enough to solve the problems the proposal wants to solve.`,
+      didNameList: `Please enter Customized DID and use spaces to distinguish`,
+      receivedCustomizedIDList: `Please pick the selection of what you want to use`,
       motivationHighlight: `Proposals with insufficient motivation are highly likely to be rejected.`,
       relevance: `If the proposal is related to other CRC proposals, the proposal number of each related proposal should be provided here. The relationship between the proposal and each related proposal should be described. If there are conflicts with Elastos technology or other CRC proposals, the proposal must describe these conflicts and explain how to deal with them.`,
       budget: `If the implementation of the proposal requires financial support from the CRC, describe the overall budget and expenditure plan. This financial plan should be aligned with the implementation plan.`,
@@ -126,7 +136,9 @@ export default {
       planBudget: `Describe what methods and processes will be used to achieve goals, and a brief introduction of the executing person or team should be listed here as well. If proposal has a long implementation timeline, it should set some checkpoints in the implementation process. The interval between two checkpoints should be no more than 3 months. The checkpoints should be clear and measurable as the proposed goals.`,
       teamInfo: 'Team information',
       tracking: `This part is updated by the proposer according to the progress of the proposal, including the achievement of goal and budget usage. It is used to present the implementation status of proposal according to the checkpoints in the implementation plan or the goals of the proposal. The CRC Secretariat is responsible to review and verify this part.`,
-      summary: `When proposal is completed, its proposer should submit a summary of the proposal implementation, including the achievement of goals and financial report. The CRC Secretariat is responsible for the review of this part.`
+      summary: `When proposal is completed, its proposer should submit a summary of the proposal implementation, including the achievement of goals and financial report. The CRC Secretariat is responsible for the review of this part.`,
+      yourSelections: `Your selections:`,
+      searchDID: 'Search Customized DID'
     },
     error: {
       required: 'This field is required',
@@ -150,10 +162,13 @@ export default {
       noOwner: `The new owner does not exist.`,
       noSecretary: `The new secretary general does not exist.`,
       noProposal: `The proposal number is invalid.`,
-      proposalNum: 'The proposal number is emtpy.',
-      secretary: 'The new secretary general DID is emtpy.',
+      proposalNum: 'The proposal number is empty.',
+      secretary: 'The new secretary general DID is empty.',
       newOwner: 'The new owner DID is empty.',
-      changeWhat: `Please fill in the info of the change proposal`
+      changeWhat: `Please fill in the info of the change proposal`,
+      didNameList: `Please remove these following duplicates from the Customized DID list:`,
+      bindToDID: `The DID is empty.`,
+      customizedID: `Please select customized DID first`
     }
   },
   modal: {
@@ -184,11 +199,9 @@ export default {
     unarchived: 'Suggestion unarchived successfully.',
     revertVersion: 'Suggestion reverted successfully.',
     madeByOtherCM: `This suggestion had been made into proposal by other council member.`,
-    councilQRCode: `Scan the QR code above to make this suggestion into proposal. Then go to the proposal list page to view the proposal when it is saved on the chain.`,
+    councilQRCode: `Scan the QR code with Essentials to make this suggestion into proposal. Then go to the proposal list page to view the proposal when it is saved on the chain.`,
     toChain: 'Saving onto blockchain',
-    signQRCode: 'Scan the QR code above to sign your suggestion.',
-    scanEla: 'Switch to the ELA Wallet',
-    scanEssentials: 'Switch to the Essentials',
+    signQRCode: 'Scan the QR code with Essentials',
     associateDidFirst: 'Please associate your DID first.',
     cancelled: 'Suggestion cancelled successfully.',
     notCancelled: 'Failed to cancel the suggestion.'

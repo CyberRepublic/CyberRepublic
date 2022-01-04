@@ -38,6 +38,7 @@ export default class extends Base {
     ) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameters - status',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -89,7 +90,7 @@ export default class extends Base {
     const cursor = this.model
       .getDBInstance()
       .find(query, fields.join(' '))
-      .populate('createdBy', 'did')
+      .populate('createdBy', 'did username')
       .sort({ displayId: -1 })
 
     if (
@@ -114,7 +115,12 @@ export default class extends Base {
       const createdAt = _.get(o, 'createdAt')
       temp.createdAt = timestamp.second(createdAt)
       if (version === 'v2') {
-        temp.proposer = _.get(o, 'createdBy.did.didName')
+        const proposerDidName = _.get(o, 'createdBy.did.didName')
+        if (proposerDidName) {
+          temp.proposer = proposerDidName
+        } else {
+          temp.proposer = _.get(o, 'createdBy.username')
+        }
       } else {
         temp.proposedBy = _.get(o, 'createdBy.did.id')
       }
@@ -164,6 +170,7 @@ export default class extends Base {
     if (!draftHash) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameter',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -173,6 +180,7 @@ export default class extends Base {
     if (!rs) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid this draft hash',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -210,6 +218,7 @@ export default class extends Base {
     if (!suggestion) {
       return {
         code: 400,
+        success: false,
         message: 'Invalid request parameters',
         // tslint:disable-next-line:no-null-keyword
         data: null
@@ -285,7 +294,7 @@ export default class extends Base {
         .getDBInstance()
         .findOne({ vid: suggestion.targetProposalNum })
       data.targetProposalTitle = proposal.title
-      data.targetproposalhash = suggestion.targetProposalHash
+      data.targetProposalhash = suggestion.targetProposalHash
       data.targetProposalNum = suggestion.targetProposalNum.toString()
     }
 
@@ -295,7 +304,11 @@ export default class extends Base {
         .findOne({ vid: suggestion.closeProposalNum })
       data.targetProposalNum = suggestion.closeProposalNum.toString()
       data.targetProposalTitle = proposal.title
-      data.targetproposalhash = suggestion.targetProposalHash
+      data.targetProposalhash = suggestion.targetProposalHash
+    }
+
+    if (type === SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID) {
+      data.reservedCustomizedIDList = suggestion.didNameList.trim().split(/\s+/)
     }
 
     if (draftHash) {
@@ -364,6 +377,7 @@ export default class extends Base {
     return data
   }
 
+  // API-9
   public async signature(param: any) {
     try {
       const jwtToken = param.jwt

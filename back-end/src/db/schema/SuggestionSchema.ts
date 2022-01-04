@@ -115,5 +115,8 @@ export const Suggestion = {
   newRecipient: String,
   old: Boolean, // mark an old suggestion
   validPeriod: Number,
-  isUpdated: Boolean
+  isUpdated: Boolean,
+  didNameList: String, // reserved customized ID list
+  customizedIDBindToDID: String,
+  receivedCustomizedIDList: [String]
 }

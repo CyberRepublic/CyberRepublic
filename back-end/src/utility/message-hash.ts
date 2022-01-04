@@ -1,4 +1,5 @@
 import * as crypto from 'crypto'
+import * as _ from 'lodash'
 import * as admZip from 'adm-zip'
 
 function sha256(str: Buffer) {
@@ -10,7 +11,7 @@ async function compressFiles(reason: string) {
   const zip = new admZip()
   const opinion = { content: reason }
   zip.addFile(
-    'opinion.json',
+    'message.json',
     Buffer.from(JSON.stringify(opinion, null, 2), 'utf8')
   )
   // for testing
@@ -19,13 +20,13 @@ async function compressFiles(reason: string) {
   if (!content) {
     return {
       success: false,
-      error: `Cann't get this opinion's zip data`
+      error: `Cann't get this proposer message's  zip data`
     }
   }
   return { success: true, content }
 }
 
-export const getOpinionHash = async (reason: any) => {
+export const getProposerMessageHash = async (reason: any) => {
   try {
     const rs: any = await compressFiles(reason)
     if (rs.success === false) {
@@ -34,20 +35,20 @@ export const getOpinionHash = async (reason: any) => {
     // the size of a zip file should be less than 1M
     if (rs.content && rs.content.length >= 1048576) {
       return {
-        error: `The size of this opinion's zip data is bigger than 1M`
+        error: `The size of this proposer message's zip data is bigger than 1M`
       }
     }
     const hash0 = sha256(rs.content)
-    const opinionHash = sha256(Buffer.from(hash0, 'hex'))
-    const reverseHash = opinionHash
+    const messageHash = sha256(Buffer.from(hash0, 'hex'))
+    const reverseHash = messageHash
       .match(/[a-fA-F0-9]{2}/g)
       .reverse()
       .join('')
     return {
       content: rs.content,
-      opinionHash: reverseHash
+      messageHash: reverseHash
     }
   } catch (err) {
-    console.log(`getOpinionHash err...`, err)
+    console.log(`getProposerMessageHash err...`, err)
   }
 }
