@@ -610,6 +610,7 @@ class C extends BaseComponent {
     }
 
     return getFieldDecorator(id, {
+      rules,
       initialValue: initialValues[id]
     })(
       <CodeMirrorEditor
