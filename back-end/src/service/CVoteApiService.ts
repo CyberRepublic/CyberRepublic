@@ -264,17 +264,17 @@ export default class extends Base {
 
   public async getTracking(id) {
     const db_cvote = this.getDBModel('CVote')
-    const propoal = await db_cvote
+    const proposal = await db_cvote
       .getDBInstance()
       .findOne({ _id: id })
       .populate('proposer', constant.DB_SELECTED_FIELDS.USER.NAME_EMAIL_DID)
 
-    if (!propoal) {
+    if (!proposal) {
       return
     }
 
     try {
-      const { withdrawalHistory } = propoal
+      const { withdrawalHistory } = proposal
       if (withdrawalHistory.length === 0) return
       const withdrawalListByStage = _.groupBy(withdrawalHistory, 'milestoneKey')
       const keys = _.keys(withdrawalListByStage).sort().reverse()
