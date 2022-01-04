@@ -100,6 +100,7 @@ export default {
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
+      [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID registration fee`,
       newMotion: 'New Motion',
       motionAgainst: 'Motion Against',
       anythingElse: 'Anything Else',
@@ -112,13 +113,15 @@ export default {
       ownerInfo: `Please input the new owner's DID`,
       secretaryInfo: `Please input the new secretary's DID`,
       bindToDID: `Bind to DID`,
+      rateFactor: 'Rate factor',
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `Topic regarding terminating proposals unable or should not be executed`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals Customized DID`,
-        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Enable reserved Customized DID`
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Enable reserved Customized DID`,
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID registration fees based on market fluctuations`
       }
     },
     note: {
@@ -168,6 +171,7 @@ export default {
       changeWhat: `Please fill in the info of the change proposal`,
       didNameList: `Please remove these following duplicates from the Customized DID list:`,
       bindToDID: `The DID is empty.`,
+      rateFactor: 'The rate factor is empty',
       customizedID: `Please select customized DID first`
     }
   },

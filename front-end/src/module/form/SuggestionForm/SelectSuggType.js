@@ -11,7 +11,8 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE
 } = SUGGESTION_TYPE
 
 class SelectSuggType extends Component {
@@ -31,7 +32,8 @@ class SelectSuggType extends Component {
       isChange: false,
       changeType: (value && value.type) || '1',
       controVar: this.props.controVar,
-      customizedIDBindToDID: value && value.customizedIDBindToDID
+      customizedIDBindToDID: value && value.customizedIDBindToDID,
+      customizedIDFee: value && value.customizedIDFee
     }
   }
 
@@ -483,6 +485,39 @@ class SelectSuggType extends Component {
                       {customizedIDBindToDIDErr && (
                         <Error>
                           {I18N.get('suggestion.form.error.bindToDID')}
+                        </Error>
+                      )}
+                    </div>
+                  </div>
+                </Section>
+              )}
+            </div>
+            <div
+              key={CHANGE_CUSTOMIZED_ID_FEE}
+              className={type === CHANGE_CUSTOMIZED_ID_FEE ? 'selected' : null}
+            >
+              <Radio value={CHANGE_CUSTOMIZED_ID_FEE}>
+                {I18N.get(`suggestion.form.type.${CHANGE_CUSTOMIZED_ID_FEE}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(
+                  `suggestion.form.type.desc.${CHANGE_CUSTOMIZED_ID_FEE}`
+                )}
+              </Desc>
+              {type === CHANGE_CUSTOMIZED_ID_FEE && (
+                <Section>
+                  <div className="inline">
+                    <Label>{I18N.get('suggestion.form.type.rateFactor')}</Label>
+                    <div style={{ width: '100%' }}>
+                      <Input
+                        onChange={(e) =>
+                          this.handleChange(e, 'customizedIDFee')
+                        }
+                        value={customizedIDFee}
+                      />
+                      {customizedIDFeeErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.rateFactor')}
                         </Error>
                       )}
                     </div>
