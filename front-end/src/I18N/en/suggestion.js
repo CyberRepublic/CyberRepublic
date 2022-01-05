@@ -38,6 +38,7 @@ export default {
     didNameList: 'Customized DID List',
     customizedIDBindToDID: 'Bind to DID',
     receivedCustomizedIDList: 'Received Customized DID List',
+    customizedIDFee: 'Rate factor',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',
@@ -120,7 +121,7 @@ export default {
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `Topic regarding terminating proposals unable or should not be executed`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals Customized DID`,
-        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Enable reserved Customized DID`,
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Topic Enabling reserved Customized DID`,
         [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID registration fees based on market fluctuations`
       }
     },

@@ -146,12 +146,14 @@ class SelectSuggType extends Component {
       changeOwner,
       newAddress,
       customizedIDBindToDID,
+      customizedIDFee,
       proposalNumErr,
       terminationErr,
       newOwnerDIDErr,
       newAddressErr,
       newSecretaryDIDErr,
-      customizedIDBindToDIDErr
+      customizedIDBindToDIDErr,
+      customizedIDFeeErr
     } = this.state
     let data = { type }
     switch (type) {
@@ -196,6 +198,12 @@ class SelectSuggType extends Component {
       case RECEIVE_CUSTOMIZED_ID:
         data.customizedIDBindToDID = customizedIDBindToDID
         if (customizedIDBindToDIDErr) {
+          data.hasErr = true
+        }
+        break
+      case CHANGE_CUSTOMIZED_ID_FEE:
+        data.customizedIDFee = customizedIDFee
+        if (customizedIDFeeErr) {
           data.hasErr = true
         }
         break
@@ -261,12 +269,14 @@ class SelectSuggType extends Component {
       changeAddress,
       newAddress,
       customizedIDBindToDID,
+      customizedIDFee,
       proposalNumErr,
       newOwnerDIDErr,
       newAddressErr,
       terminationErr,
       newSecretaryDIDErr,
-      customizedIDBindToDIDErr
+      customizedIDBindToDIDErr,
+      customizedIDFeeErr
     } = this.state
 
     return (

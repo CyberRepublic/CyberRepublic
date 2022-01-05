@@ -273,6 +273,13 @@ class C extends BaseComponent {
           }
           values.customizedIDBindToDID = type.customizedIDBindToDID
           break
+        case CHANGE_CUSTOMIZED_ID_FEE:
+          if (!saveDraft && !type.customizedIDFee) {
+            message.error(I18N.get('suggestion.form.error.rateFactor'))
+            return
+          }
+          values.customizedIDFee = type.customizedIDFee
+          break
         default:
           break
       }
@@ -503,6 +510,12 @@ class C extends BaseComponent {
           data = {
             type: initialValues.type,
             customizedIDBindToDID: initialValues.customizedIDBindToDID
+          }
+          break
+        case CHANGE_CUSTOMIZED_ID_FEE:
+          data = {
+            type: initialValues.type,
+            customizedIDFee: initialValues.customizedIDFee
           }
           break
         default:

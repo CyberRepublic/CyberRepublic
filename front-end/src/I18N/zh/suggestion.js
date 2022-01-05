@@ -37,6 +37,7 @@ export default {
     motivation: '动机',
     didNameList: '自定义 DID 列表',
     receivedCustomizedIDList: '启用自定义 DID 列表',
+    customizedIDFee: '费率系数',
     relevance: '关联性',
     budget: '预算',
     type: '类型',

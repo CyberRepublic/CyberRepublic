@@ -71,7 +71,8 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE
 } = SUGGESTION_TYPE
 const { TextArea } = Input
 
@@ -137,6 +138,9 @@ export default class extends StandardPage {
         'customizedIDBindToDID',
         'receivedCustomizedIDList'
       ]
+    }
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
     }
     return (
       <StyledAnchor offsetTop={420}>
@@ -289,7 +293,9 @@ export default class extends StandardPage {
         'receivedCustomizedIDList'
       ]
     }
-
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
+    }
     const metaNode = this.renderMetaNode()
     const titleNode = this.renderTitleNode()
     const labelNode = this.renderLabelNode()
