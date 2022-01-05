@@ -17,8 +17,7 @@ class ReceivedCustomizedIDList extends Component {
     const { getCustomizedIDList } = this.props
     const rs = await getCustomizedIDList()
     if (rs && rs.success) {
-      const options = rs.didNameList.trim().split(/\s+/)
-      const sortedOptions = options.sort((a, b) => {
+      const options = rs.didNameList.sort((a, b) => {
         if (a < b) {
           return -1
         }
@@ -27,7 +26,7 @@ class ReceivedCustomizedIDList extends Component {
         }
         return 0
       })
-      this.setState({ data: sortedOptions })
+      this.setState({ data: options })
     }
   }
 

@@ -2673,11 +2673,42 @@ export default class extends Base {
 
   public async getCustomizedIDList() {
     const db_cvote = this.getDBModel('CVote')
-    const proposal = await db_cvote.getDBInstance().findOne({
-      type: constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID
-    })
-    if (!proposal) return
-    return { didNameList: proposal.didNameList, success: true }
+    const rs = await Promise.all([
+      db_cvote.getDBInstance().findOne(
+        {
+          type: constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID,
+          status: constant.CVOTE_STATUS.FINAL
+        },
+        'didNameList'
+      ),
+      db_cvote.getDBInstance().find(
+        {
+          type: constant.CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID,
+          status: constant.CVOTE_STATUS.FINAL
+        },
+        'receivedCustomizedIDList'
+      )
+    ])
+    if (_.isEmpty(rs)) return
+    let didNameList = rs[0] && rs[0].didNameList.trim().split(/\s+/)
+    if (_.isEmpty(didNameList)) return
+    if (!_.isEmpty(rs[1])) {
+      let received = ''
+      for (let i = 0; i < rs[1].length; i++) {
+        const proposal = rs[1][i]
+        received += proposal.receivedCustomizedIDList.join(' ') + ' '
+      }
+      const receivedIDList = received.trim().split(' ')
+      console.log(`getCustomizedIDList receivedIDList...`, receivedIDList)
+      if (!_.isEmpty(receivedIDList)) {
+        didNameList = _.remove(
+          didNameList,
+          (item: string) => !receivedIDList.includes(item)
+        )
+      }
+    }
+    console.log(`getCustomizedIDList didNameList...`, didNameList)
+    return { didNameList, success: true }
   }
 
   public async walletVote(param: any) {
