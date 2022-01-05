@@ -99,6 +99,7 @@ export default {
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: '终止提案动议',
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: '预留自定义 DID 动议',
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 动议`,
+      [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `自定义 DID 费率调整动议`,
       newMotion: '新动议',
       motionAgainst: '反对动议',
       anythingElse: '其它事宜',
@@ -111,13 +112,15 @@ export default {
       ownerInfo: `请输入提案新负责人的 DID`,
       secretaryInfo: `请输入新秘书长的 DID`,
       bindToDID: `绑定到 DID`,
+      rateFactor: '费率系数',
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `关于 CR 或亦来云技术发展相关的议题`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `更换提案负责人或提案经费接收地址的议题`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `关于终止无法执行或不应执行提案的议题`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `更换 CR 秘书长人选的议题`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `对部分知名企业、机构和个人 DID 短域名的防抢注保护议题`,
-        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 的议题`
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 的议题`,
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `基于市场行情波动，不定期调整自定义 DID 注册费率的议题`
       }
     },
     note: {
