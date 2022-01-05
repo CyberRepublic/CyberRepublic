@@ -36,6 +36,7 @@ export default {
     goal: '目标',
     motivation: '动机',
     didNameList: '自定义 DID 列表',
+    customizedIDBindToDID: '绑定 DID',
     receivedCustomizedIDList: '启用自定义 DID 列表',
     customizedIDFee: '费率系数',
     relevance: '关联性',

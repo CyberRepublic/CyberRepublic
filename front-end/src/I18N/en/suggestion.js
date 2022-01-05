@@ -101,7 +101,7 @@ export default {
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
-      [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID registration fee`,
+      [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID fee`,
       newMotion: 'New Motion',
       motionAgainst: 'Motion Against',
       anythingElse: 'Anything Else',

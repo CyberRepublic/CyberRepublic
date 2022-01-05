@@ -245,5 +245,8 @@ export const CVote = {
       id: { type: Schema.Types.ObjectId, ref: 'cvote' }
     }
   ],
-  didNameList: String
+  didNameList: String,
+  customizedIDBindToDID: String,
+  receivedCustomizedIDList: [String],
+  customizedIDFee: String
 }

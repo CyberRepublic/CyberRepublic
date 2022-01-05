@@ -80,7 +80,9 @@ const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
-  RESERVE_CUSTOMIZED_ID
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE
 } = SUGGESTION_TYPE
 
 const renderRichContent = (data, key, title, user, actions) => {
@@ -152,6 +154,8 @@ const renderRichContent = (data, key, title, user, actions) => {
         })}
       </div>
     )
+  } else if (key === 'receivedCustomizedIDList') {
+    rc = <MarkdownPreview content={data[key].join(' ')} key={key} />
   } else {
     rc = <MarkdownPreview content={data[key]} key={key} />
   }
@@ -551,13 +555,23 @@ class C extends StandardPage {
       'relevance',
       'budget'
     ]
-
     if (isNewType) {
       sections = ['preamble', 'abstract', 'motivation']
     }
-
     if (type === RESERVE_CUSTOMIZED_ID) {
       sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
     }
 
     return (
@@ -710,14 +724,25 @@ class C extends StandardPage {
       'relevance',
       'budget'
     ]
-
     if (isNewType) {
       sections = ['abstract', 'motivation']
     }
-
     if (type === RESERVE_CUSTOMIZED_ID) {
       sections = ['abstract', 'motivation', 'didNameList']
     }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
+    }
+
     return (
       <div>
         <Preamble {...data} user={user} copyFun={this.copyToClip} />
