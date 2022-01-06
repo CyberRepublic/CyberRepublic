@@ -311,6 +311,16 @@ export default class extends Base {
       data.reservedCustomizedIDList = suggestion.didNameList.trim().split(/\s+/)
     }
 
+    if (type === SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID) {
+      data.receivedCustomizedIDList = suggestion.receivedCustomizedIDList
+      data.receiverDID = suggestion.customizedIDBindToDID
+    }
+
+    if (type === SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE) {
+      data.rateOfCustomizedIDFee = parseInt(suggestion.customizedIDFee)
+      data.EIDEffectiveHeight = parseInt(suggestion.effectiveHeightOfEID)
+    }
+
     if (draftHash) {
       data.draftHash = draftHash
     }

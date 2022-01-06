@@ -437,6 +437,16 @@ export default class extends Base {
       data.reservedCustomizedIDList = proposal.didNameList.trim().split(/\s+/)
     }
 
+    if (type === CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID) {
+      data.receivedCustomizedIDList = proposal.receivedCustomizedIDList
+      data.receiverDID = proposal.customizedIDBindToDID
+    }
+
+    if (type === CVOTE_TYPE.CHANGE_CUSTOMIZED_ID_FEE) {
+      data.rateOfCustomizedIDFee = parseInt(proposal.customizedIDFee)
+      data.EIDEffectiveHeight = parseInt(proposal.effectiveHeightOfEID)
+    }
+
     if (budgetIntro) {
       data.budgetStatement = budgetIntro
     }

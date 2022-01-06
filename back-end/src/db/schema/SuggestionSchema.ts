@@ -119,5 +119,6 @@ export const Suggestion = {
   didNameList: String, // reserved customized ID list
   customizedIDBindToDID: String,
   receivedCustomizedIDList: [String],
-  customizedIDFee: String
+  customizedIDFee: String,
+  effectiveHeightOfEID: String
 }

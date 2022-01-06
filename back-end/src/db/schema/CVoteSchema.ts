@@ -248,5 +248,6 @@ export const CVote = {
   didNameList: String,
   customizedIDBindToDID: String,
   receivedCustomizedIDList: [String],
-  customizedIDFee: String
+  customizedIDFee: String,
+  effectiveHeightOfEID: String
 }
