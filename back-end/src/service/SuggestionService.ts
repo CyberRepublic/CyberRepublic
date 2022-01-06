@@ -48,7 +48,8 @@ const BASE_FIELDS = [
   'didNameList',
   'customizedIDBindToDID',
   'receivedCustomizedIDList',
-  'customizedIDFee'
+  'customizedIDFee',
+  'effectiveHeightOfEID'
 ]
 
 interface BudgetItem {
@@ -2445,7 +2446,8 @@ export default class extends Base {
       'didNameList',
       'customizedIDBindToDID',
       'receivedCustomizedIDList',
-      'customizedIDFee'
+      'customizedIDFee',
+      'effectiveHeightOfEID'
     ]
     const user = _.get(this.currentUser, '_id')
     if (param.type === 'byNumber') {

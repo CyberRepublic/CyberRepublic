@@ -33,7 +33,8 @@ class SelectSuggType extends Component {
       changeType: (value && value.type) || '1',
       controVar: this.props.controVar,
       customizedIDBindToDID: value && value.customizedIDBindToDID,
-      customizedIDFee: value && value.customizedIDFee
+      customizedIDFee: value && value.customizedIDFee,
+      effectiveHeightOfEID: value && value.effectiveHeightOfEID
     }
   }
 
@@ -57,7 +58,8 @@ class SelectSuggType extends Component {
       newOwnerDID,
       controVar,
       customizedIDBindToDID,
-      customizedIDFee
+      customizedIDFee,
+      effectiveHeightOfEID
     } = this.state
     if (preVar !== controVar) {
       if (value.type === CHANGE_SECRETARY) {
@@ -100,7 +102,7 @@ class SelectSuggType extends Component {
       }
 
       if (value.type === CHANGE_CUSTOMIZED_ID_FEE) {
-        const data = { type, customizedIDFee }
+        const data = { type, customizedIDFee, effectiveHeightOfEID }
         if (!_.isEqual(value, data)) {
           this.dupOperating(value, preVar)
         }
@@ -155,13 +157,15 @@ class SelectSuggType extends Component {
       newAddress,
       customizedIDBindToDID,
       customizedIDFee,
+      effectiveHeightOfEID,
       proposalNumErr,
       terminationErr,
       newOwnerDIDErr,
       newAddressErr,
       newSecretaryDIDErr,
       customizedIDBindToDIDErr,
-      customizedIDFeeErr
+      customizedIDFeeErr,
+      effectiveHeightOfEIDErr
     } = this.state
     let data = { type }
     switch (type) {
@@ -211,7 +215,8 @@ class SelectSuggType extends Component {
         break
       case CHANGE_CUSTOMIZED_ID_FEE:
         data.customizedIDFee = customizedIDFee
-        if (customizedIDFeeErr) {
+        data.effectiveHeightOfEID = effectiveHeightOfEID
+        if (customizedIDFeeErr || effectiveHeightOfEIDErr) {
           data.hasErr = true
         }
         break
@@ -278,13 +283,15 @@ class SelectSuggType extends Component {
       newAddress,
       customizedIDBindToDID,
       customizedIDFee,
+      effectiveHeightOfEID,
       proposalNumErr,
       newOwnerDIDErr,
       newAddressErr,
       terminationErr,
       newSecretaryDIDErr,
       customizedIDBindToDIDErr,
-      customizedIDFeeErr
+      customizedIDFeeErr,
+      effectiveHeightOfEIDErr
     } = this.state
 
     return (
@@ -540,6 +547,24 @@ class SelectSuggType extends Component {
                       )}
                     </div>
                   </div>
+                  <div className="inline">
+                    <Label>
+                      {I18N.get('suggestion.form.type.effectiveHeight')}
+                    </Label>
+                    <div style={{ width: '100%' }}>
+                      <Input
+                        onChange={(e) =>
+                          this.handleChange(e, 'effectiveHeightOfEID')
+                        }
+                        value={effectiveHeightOfEID}
+                      />
+                      {effectiveHeightOfEIDErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.effectiveHeight')}
+                        </Error>
+                      )}
+                    </div>
+                  </div>
                 </Section>
               )}
             </div>
@@ -589,7 +614,8 @@ const Label = styled.div`
   margin-bottom: 6px;
   color: #686868;
   flex-shrink: 0;
-  margin-right: 16px;
+  margin-right: 8px;
+  text-align: right;
 `
 const Section = styled.div`
   margin-left: 24px;
@@ -630,6 +656,7 @@ const Section = styled.div`
   }
   .inline {
     display: flex;
+    align-items: center;
     @media (max-width: 768px) {
       flex-direction: column;
     }

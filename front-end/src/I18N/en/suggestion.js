@@ -114,15 +114,16 @@ export default {
       ownerInfo: `Please input the new owner's DID`,
       secretaryInfo: `Please input the new secretary's DID`,
       bindToDID: `Bind to DID`,
-      rateFactor: 'Rate factor',
+      rateFactor: 'Fee Rate',
+      effectiveHeight: 'Effective Height',
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `Topic regarding terminating proposals unable or should not be executed`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals Customized DID`,
-        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Topic Enabling reserved Customized DID`,
-        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID registration fees based on market fluctuations`
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Topic enabling reserved Customized DID`,
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID basic fee rate based on market fluctuations`
       }
     },
     note: {
@@ -171,8 +172,9 @@ export default {
       newOwner: 'The new owner DID is empty.',
       changeWhat: `Please fill in the info of the change proposal`,
       didNameList: `Please remove these following duplicates from the Customized DID list:`,
-      bindToDID: `The DID is empty.`,
-      rateFactor: 'The rate factor is empty',
+      bindToDID: `The receiver DID is empty.`,
+      rateFactor: 'The fee rate is empty',
+      effectiveHeight: 'The effective height is empty',
       customizedID: `Please select customized DID first`
     }
   },

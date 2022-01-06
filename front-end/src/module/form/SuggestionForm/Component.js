@@ -278,7 +278,11 @@ class C extends BaseComponent {
             message.error(I18N.get('suggestion.form.error.rateFactor'))
             return
           }
-          values.customizedIDFee = type.customizedIDFee
+          if (!saveDraft && !type.effectiveHeightOfEID) {
+            message.error(I18N.get('suggestion.form.error.effectiveHeight'))
+            return
+          }
+          values.effectiveHeightOfEID = type.effectiveHeightOfEID
           break
         default:
           break
@@ -515,7 +519,8 @@ class C extends BaseComponent {
         case CHANGE_CUSTOMIZED_ID_FEE:
           data = {
             type: initialValues.type,
-            customizedIDFee: initialValues.customizedIDFee
+            customizedIDFee: initialValues.customizedIDFee,
+            effectiveHeightOfEID: initialValues.effectiveHeightOfEID
           }
           break
         default:

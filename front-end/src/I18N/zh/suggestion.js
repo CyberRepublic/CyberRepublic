@@ -114,7 +114,8 @@ export default {
       ownerInfo: `请输入提案新负责人的 DID`,
       secretaryInfo: `请输入新秘书长的 DID`,
       bindToDID: `绑定到 DID`,
-      rateFactor: '费率系数',
+      rateFactor: '基本费率',
+      effectiveHeight: '生效高度',
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `关于 CR 或亦来云技术发展相关的议题`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `更换提案负责人或提案经费接收地址的议题`,
@@ -172,7 +173,9 @@ export default {
       newOwner: '新负责人 DID 为空',
       changeWhat: '请填写变更提案的信息',
       didNameList: `请删除重复的自定义 DID, 如下所示：`,
-      bindToDID: `请输入要绑定的 DID`,
+      bindToDID: `请输入接收者的 DID`,
+      rateFactor: '请输入费率',
+      effectiveHeight: '请输入生效高度',
       customizedID: `请选择要启用的自定义 DID`
     }
   },
