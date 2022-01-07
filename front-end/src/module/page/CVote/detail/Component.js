@@ -571,7 +571,13 @@ class C extends StandardPage {
       ]
     }
     if (type === CHANGE_CUSTOMIZED_ID_FEE) {
-      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
     }
 
     return (
@@ -740,7 +746,13 @@ class C extends StandardPage {
       ]
     }
     if (type === CHANGE_CUSTOMIZED_ID_FEE) {
-      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
     }
 
     return (
