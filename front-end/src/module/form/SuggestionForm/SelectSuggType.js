@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Radio, Input, Checkbox, Select } from 'antd'
+import { Radio, Input, Checkbox, Select, InputNumber } from 'antd'
 import styled from 'styled-components'
 import I18N from '@/I18N'
 import { SUGGESTION_TYPE } from '@/constant'
 import _ from 'lodash'
+import cvoteTracking from '../../../store/redux/cvoteTracking'
 const { Option } = Select
 const {
   NEW_MOTION,
@@ -257,6 +258,24 @@ class SelectSuggType extends Component {
     this.setState({ proposalNum: value, proposalNumErr: !value }, () => {
       this.changeValue()
     })
+  }
+
+  handleRateFee = (value) => {
+    this.setState(
+      { customizedIDFee: value, customizedIDFeeErr: !value },
+      () => {
+        this.changeValue()
+      }
+    )
+  }
+
+  handleEffectiveHeight = (value) => {
+    this.setState(
+      { effectiveHeightOfEID: value, effectiveHeightOfEIDErr: !value },
+      () => {
+        this.changeValue()
+      }
+    )
   }
 
   handleTerminationChange = (value) => {
@@ -534,11 +553,10 @@ class SelectSuggType extends Component {
                   <div className="inline">
                     <Label>{I18N.get('suggestion.form.type.rateFactor')}</Label>
                     <div style={{ width: '100%' }}>
-                      <Input
-                        onChange={(e) =>
-                          this.handleChange(e, 'customizedIDFee')
-                        }
-                        value={customizedIDFee}
+                      <InputNumber
+                        onChange={this.handleRateFee}
+                        defaultValue={customizedIDFee}
+                        min={1}
                       />
                       {customizedIDFeeErr && (
                         <Error>
@@ -552,11 +570,10 @@ class SelectSuggType extends Component {
                       {I18N.get('suggestion.form.type.effectiveHeight')}
                     </Label>
                     <div style={{ width: '100%' }}>
-                      <Input
-                        onChange={(e) =>
-                          this.handleChange(e, 'effectiveHeightOfEID')
-                        }
-                        value={effectiveHeightOfEID}
+                      <InputNumber
+                        onChange={this.handleEffectiveHeight}
+                        defaultValue={effectiveHeightOfEID}
+                        min={1}
                       />
                       {effectiveHeightOfEIDErr && (
                         <Error>

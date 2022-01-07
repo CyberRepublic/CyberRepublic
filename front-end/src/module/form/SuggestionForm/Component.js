@@ -282,6 +282,7 @@ class C extends BaseComponent {
             message.error(I18N.get('suggestion.form.error.effectiveHeight'))
             return
           }
+          values.customizedIDFee = type.customizedIDFee
           values.effectiveHeightOfEID = type.effectiveHeightOfEID
           break
         default:
