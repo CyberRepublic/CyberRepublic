@@ -102,15 +102,20 @@ class C extends BaseComponent {
   handleSave = (e, callback, isNotDraft = true) => {
     e.preventDefault()
     const { form } = this.props
-
+    const { type } = this.state
     form.validateFields(async (err, values) => {
       if (err) {
-        this.setState({
-          loading: false,
-          errorKeys: err,
-          activeKey: this.getActiveKey(Object.keys(err)[0])
-        })
-        return
+        const keys = Object.keys(err)
+        const isGoalErr = keys.length === 1 && keys[0] === 'goal'
+        const condition = type !== '1' && isGoalErr
+        if (!condition) {
+          this.setState({
+            loading: false,
+            errorKeys: err,
+            activeKey: this.getActiveKey(Object.keys(err)[0])
+          })
+          return
+        }
       }
       if (isNotDraft) {
         this.setState({ loading: true })
@@ -470,7 +475,7 @@ class C extends BaseComponent {
 
   getTextarea(id) {
     const { dupData, controVar } = this.state
-    const { getFieldDecorator, getFieldsValue } = this.props.form
+    const { getFieldDecorator } = this.props.form
 
     let initialValues
     if (!_.isEmpty(dupData)) {
