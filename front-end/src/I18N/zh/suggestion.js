@@ -115,8 +115,8 @@ export default {
       ownerInfo: `请输入提案新负责人的 DID`,
       secretaryInfo: `请输入新秘书长的 DID`,
       bindToDID: `绑定到 DID`,
-      rateFactor: '基本费率',
-      effectiveHeight: '生效高度',
+      rateFactor: 'EID 侧链 ID 基本费率',
+      effectiveHeight: 'EID 侧链的生效高度',
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `关于 CR 或亦来云技术发展相关的议题`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `更换提案负责人或提案经费接收地址的议题`,

@@ -550,13 +550,14 @@ class SelectSuggType extends Component {
               </Desc>
               {type === CHANGE_CUSTOMIZED_ID_FEE && (
                 <Section>
-                  <div className="inline">
+                  <div className="inline-fee">
                     <Label>{I18N.get('suggestion.form.type.rateFactor')}</Label>
-                    <div style={{ width: '100%' }}>
+                    <div>
                       <InputNumber
                         onChange={this.handleRateFee}
                         defaultValue={customizedIDFee}
                         min={1}
+                        style={{ width: '60%' }}
                       />
                       {customizedIDFeeErr && (
                         <Error>
@@ -565,15 +566,16 @@ class SelectSuggType extends Component {
                       )}
                     </div>
                   </div>
-                  <div className="inline">
+                  <div className="inline-fee">
                     <Label>
                       {I18N.get('suggestion.form.type.effectiveHeight')}
                     </Label>
-                    <div style={{ width: '100%' }}>
+                    <div>
                       <InputNumber
                         onChange={this.handleEffectiveHeight}
                         defaultValue={effectiveHeightOfEID}
                         min={1}
+                        style={{ width: '60%' }}
                       />
                       {effectiveHeightOfEIDErr && (
                         <Error>
@@ -628,11 +630,9 @@ const Wrapper = styled.div`
 const Label = styled.div`
   font-size: 13px;
   line-height: 24px;
-  margin-bottom: 6px;
   color: #686868;
   flex-shrink: 0;
   margin-right: 8px;
-  text-align: right;
 `
 const Section = styled.div`
   margin-left: 24px;
@@ -675,7 +675,15 @@ const Section = styled.div`
     display: flex;
     align-items: center;
     @media (max-width: 768px) {
+      align-items: flex-start;
       flex-direction: column;
+    }
+  }
+  .inline-fee {
+    display: flex;
+    flex-direction: column;
+    &:last-child {
+      margin-top: 4px;
     }
   }
 `

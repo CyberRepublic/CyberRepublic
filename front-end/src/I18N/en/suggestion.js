@@ -115,8 +115,8 @@ export default {
       ownerInfo: `Please input the new owner's DID`,
       secretaryInfo: `Please input the new secretary's DID`,
       bindToDID: `Bind to DID`,
-      rateFactor: 'Fee Rate',
-      effectiveHeight: 'Effective Height',
+      rateFactor: 'Customized ID Fee Rate',
+      effectiveHeight: 'Effective Height of EID',
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
