@@ -66,12 +66,12 @@ class ReceivedCustomizedIDList extends Component {
             size="large"
             filterOption={false}
             onChange={this.handleChange}
-            suffixIcon={<Icon type="search" spin={false} />}
             defaultActiveFirstOption={false}
             placeholder={I18N.get(`suggestion.form.note.searchDID`)}
             notFoundContent={null}
             defaultOpen={false}
             style={{ fontSize: 14 }}
+            filterOption={true}
           >
             {options}
           </Select>
