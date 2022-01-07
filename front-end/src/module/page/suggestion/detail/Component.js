@@ -140,7 +140,13 @@ export default class extends StandardPage {
       ]
     }
     if (type === CHANGE_CUSTOMIZED_ID_FEE) {
-      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
     }
     return (
       <StyledAnchor offsetTop={420}>
@@ -294,7 +300,13 @@ export default class extends StandardPage {
       ]
     }
     if (type === CHANGE_CUSTOMIZED_ID_FEE) {
-      sections = ['preamble', 'abstract', 'motivation', 'customizedIDFee']
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
     }
     const metaNode = this.renderMetaNode()
     const titleNode = this.renderTitleNode()
