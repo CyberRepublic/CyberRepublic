@@ -38,6 +38,7 @@ export default {
     didNameList: 'Customized DID List',
     customizedIDBindToDID: 'Bind to DID',
     receivedCustomizedIDList: 'Received Customized DID List',
+    sideChainDetails: 'Details',
     customizedIDFee: 'Fee Rate',
     effectiveHeightOfEID: 'Effective Height',
     relevance: 'Relevance',
@@ -118,6 +119,14 @@ export default {
       bindToDID: `Bind to DID`,
       rateFactor: 'Customized ID Fee Rate',
       effectiveHeight: 'Effective Height of EID',
+      sideChain: {
+        name: 'Name',
+        magic: 'Magic',
+        genesisHash: 'Genesis hash',
+        effectiveHeight: 'Effective height',
+        exchangeRate: 'Exchange rate',
+        otherInfo: 'Other info'
+      },
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
@@ -146,7 +155,8 @@ export default {
       tracking: `This part is updated by the proposer according to the progress of the proposal, including the achievement of goal and budget usage. It is used to present the implementation status of proposal according to the checkpoints in the implementation plan or the goals of the proposal. The CRC Secretariat is responsible to review and verify this part.`,
       summary: `When proposal is completed, its proposer should submit a summary of the proposal implementation, including the achievement of goals and financial report. The CRC Secretariat is responsible for the review of this part.`,
       yourSelections: `Your selections:`,
-      searchDID: 'Select a Customized DID'
+      searchDID: 'Select a Customized DID',
+      sideChainDetails: 'Please fill the details of new side chain'
     },
     error: {
       required: 'This field is required',

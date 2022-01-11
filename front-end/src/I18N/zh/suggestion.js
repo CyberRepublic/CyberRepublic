@@ -38,6 +38,7 @@ export default {
     didNameList: '自定义 DID 列表',
     customizedIDBindToDID: '绑定 DID',
     receivedCustomizedIDList: '启用自定义 DID 列表',
+    sideChainDetails: '侧链详情',
     customizedIDFee: '基本费率',
     effectiveHeightOfEID: '生效高度',
     relevance: '关联性',
@@ -118,6 +119,14 @@ export default {
       bindToDID: `绑定到 DID`,
       rateFactor: 'EID 侧链 ID 基本费率',
       effectiveHeight: 'EID 侧链的生效高度',
+      sideChain: {
+        name: '侧链名称',
+        magic: 'magic',
+        genesisHash: '创世纪区块哈希',
+        effectiveHeight: '生效高度',
+        exchangeRate: '汇率',
+        otherInfo: '其它信息'
+      },
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `关于 CR 或亦来云技术发展相关的议题`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `更换提案负责人或提案经费接收地址的议题`,
@@ -145,7 +154,8 @@ export default {
       teamInfo: '团队信息',
       tracking: `当提案完成的时候，提案人应该在这里提交对提案执行状况的一个总结，包括目标达成状况和财务决算。CRC秘书处负责该部分内容的审核。`,
       yourSelections: `你已选择：`,
-      searchDID: '搜索自定义 DID'
+      searchDID: '搜索自定义 DID',
+      sideChainDetails: '请填写侧链详情信息'
     },
     error: {
       required: '必填项',

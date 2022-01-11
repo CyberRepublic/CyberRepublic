@@ -16,6 +16,7 @@ import TeamInfoSection from './TeamInfoSection'
 import DuplicateModal from '../DuplicateModalForm/Container'
 import { getDuplicatesFromArray } from '../../../util/index'
 import ReceivedCustomizedIDList from './ReceivedCustomizedIDList'
+import SideChainDetails from './SideChainDetails'
 
 const FormItem = Form.Item
 const { TabPane } = Tabs
@@ -31,7 +32,8 @@ const {
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
   RECEIVE_CUSTOMIZED_ID,
-  CHANGE_CUSTOMIZED_ID_FEE
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 
 class C extends BaseComponent {
@@ -44,6 +46,9 @@ class C extends BaseComponent {
     }
     if (type === RECEIVE_CUSTOMIZED_ID) {
       tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
+    }
+    if (type === REGISTER_SIDE_CHAIN) {
+      tabs = ['type', 'abstract', 'motivation', 'sideChainDetails']
     }
     const isNewType = _.includes(
       [
@@ -104,6 +109,7 @@ class C extends BaseComponent {
     const { form } = this.props
     const { type } = this.state
     form.validateFields(async (err, values) => {
+      console.log(`values...`, values)
       if (err) {
         const keys = Object.keys(err)
         const isGoalErr = keys.length === 1 && keys[0] === 'goal'
@@ -470,6 +476,9 @@ class C extends BaseComponent {
     if (type === RECEIVE_CUSTOMIZED_ID) {
       tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
     }
+    if (type === REGISTER_SIDE_CHAIN) {
+      tabs = ['type', 'abstract', 'motivation', 'sideChainDetails']
+    }
     this.setState({ type, tabs, errorKeys: {}, activeKey: 'type' })
   }
 
@@ -640,6 +649,26 @@ class C extends BaseComponent {
           callback={this.onTextareaChange}
           initialValue={receivedCustomizedIDList}
           getCustomizedIDList={this.props.getCustomizedIDList}
+        />
+      )
+    }
+
+    if (id === 'sideChainDetails') {
+      let sideChainDetails = []
+      if (initialValues.sideChainDetails) {
+        sideChainDetails = initialValues.sideChainDetails
+      }
+      return getFieldDecorator('sideChainDetails', {
+        rules: [
+          {
+            validator: this.validateSelectedID
+          }
+        ],
+        initialValue: initialValues[id]
+      })(
+        <SideChainDetails
+          initialValue={sideChainDetails}
+          callback={this.onTextareaChange}
         />
       )
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Select, Icon, Tag } from 'antd'
+import { Select, Tag } from 'antd'
 import I18N from '@/I18N'
 
 class ReceivedCustomizedIDList extends Component {
@@ -101,7 +101,6 @@ class ReceivedCustomizedIDList extends Component {
 }
 
 ReceivedCustomizedIDList.propTypes = {
-  title: PropTypes.string,
   onChange: PropTypes.func,
   initialValue: PropTypes.array
 }
