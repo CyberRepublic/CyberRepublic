@@ -10,13 +10,7 @@ class SideChainDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      details: props.initialValue ? props.initialValue : {},
-      nameErr: '',
-      magicErr: '',
-      genesisHashErr: '',
-      effectiveHeightErr: '',
-      exchangeRateErr: '',
-      otherInfoErr: ''
+      details: props.initialValue ? props.initialValue : {}
     }
   }
 
@@ -28,12 +22,10 @@ class SideChainDetails extends Component {
   }
 
   handleChange = (e, field) => {
-    const error = `${field}Err`
     const { details } = this.state
     this.setState(
       {
-        details: { ...details, [field]: e.target.value },
-        [error]: !e.target.value
+        details: { ...details, [field]: e.target.value }
       },
       () => {
         this.changeValue()
@@ -42,92 +34,34 @@ class SideChainDetails extends Component {
   }
 
   render() {
-    const {
-      details,
-      nameErr,
-      magicErr,
-      genesisHashErr,
-      effectiveHeightErr,
-      exchangeRateErr,
-      otherInfoErr
-    } = this.state
-    const {
-      name,
-      magic,
-      genesisHash,
-      exchangeRate,
-      effectiveHeight,
-      otherInfo
-    } = details
+    const { details } = this.state
+    const { otherInfo } = details
     return (
       <Wrapper>
-        <Section>
-          <Label>{I18N.get('suggestion.form.type.sideChain.name')}</Label>
-          <div style={{ width: '100%' }}>
-            <Input
-              onChange={(e) => this.handleChange(e, 'name')}
-              value={name}
-            />
-            {nameErr && (
-              <Error>{I18N.get('suggestion.form.error.required')}</Error>
-            )}
-          </div>
-        </Section>
-
-        <Section>
-          <Label>{I18N.get('suggestion.form.type.sideChain.magic')}</Label>
-          <div style={{ width: '100%' }}>
-            <Input
-              onChange={(e) => this.handleChange(e, 'magic')}
-              value={magic}
-            />
-            {magicErr && (
-              <Error>{I18N.get('suggestion.form.error.required')}</Error>
-            )}
-          </div>
-        </Section>
-        <Section>
-          <Label>
-            {I18N.get('suggestion.form.type.sideChain.genesisHash')}
-          </Label>
-          <div style={{ width: '100%' }}>
-            <Input
-              onChange={(e) => this.handleChange(e, 'genesisHash')}
-              value={genesisHash}
-            />
-            {genesisHashErr && (
-              <Error>{I18N.get('suggestion.form.error.required')}</Error>
-            )}
-          </div>
-        </Section>
-        <Section>
-          <Label>
-            {I18N.get('suggestion.form.type.sideChain.exchangeRate')}
-          </Label>
-          <div style={{ width: '100%' }}>
-            <Input
-              onChange={(e) => this.handleChange(e, 'exchangeRate')}
-              value={exchangeRate}
-            />
-            {exchangeRateErr && (
-              <Error>{I18N.get('suggestion.form.error.required')}</Error>
-            )}
-          </div>
-        </Section>
-        <Section>
-          <Label>
-            {I18N.get('suggestion.form.type.sideChain.effectiveHeight')}
-          </Label>
-          <div style={{ width: '100%' }}>
-            <Input
-              onChange={(e) => this.handleChange(e, 'effectiveHeight')}
-              value={effectiveHeight}
-            />
-            {effectiveHeightErr && (
-              <Error>{I18N.get('suggestion.form.error.required')}</Error>
-            )}
-          </div>
-        </Section>
+        {[
+          'name',
+          'magic',
+          'genesisHash',
+          'effectiveHeight',
+          'exchangeRate'
+        ].map((item) => {
+          return (
+            <Section key={item}>
+              <Label>
+                {I18N.get(`suggestion.form.type.sideChain.${item}`)}*
+              </Label>
+              <div style={{ width: '100%' }}>
+                <Input
+                  onChange={(e) => this.handleChange(e, item)}
+                  value={details[item]}
+                />
+                {!details[item] && (
+                  <Error>{I18N.get('suggestion.form.error.required')}</Error>
+                )}
+              </div>
+            </Section>
+          )
+        })}
         <Section>
           <Label>{I18N.get('suggestion.form.type.sideChain.otherInfo')}</Label>
           <div style={{ width: '100%' }}>
@@ -135,7 +69,7 @@ class SideChainDetails extends Component {
               onChange={(e) => this.handleChange(e, 'otherInfo')}
               value={otherInfo}
             />
-            {otherInfoErr && (
+            {!otherInfo && (
               <Error>{I18N.get('suggestion.form.error.required')}</Error>
             )}
           </div>
@@ -147,7 +81,7 @@ class SideChainDetails extends Component {
 
 SideChainDetails.propTypes = {
   onChange: PropTypes.func,
-  initialValue: PropTypes.array
+  initialValue: PropTypes.object
 }
 
 export default SideChainDetails
@@ -156,5 +90,16 @@ const Wrapper = styled.div`
   margin-bottom: 24px;
   max-width: 500px;
 `
-const Section = styled.div``
-const Label = styled.div``
+const Section = styled.div`
+  margin-bottom: 8px;
+`
+const Label = styled.div`
+  font-size: 13px;
+  line-height: 24px;
+  color: #686868;
+`
+const Error = styled.div`
+  color: red;
+  font-size: 12px;
+  line-height: 1;
+`

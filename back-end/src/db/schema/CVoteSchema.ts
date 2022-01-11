@@ -249,5 +249,13 @@ export const CVote = {
   customizedIDBindToDID: String,
   receivedCustomizedIDList: [String],
   customizedIDFee: String,
-  effectiveHeightOfEID: String
+  effectiveHeightOfEID: String,
+  sideChainDetails: {
+    name: String,
+    magic: String,
+    genesisHash: String,
+    effectiveHeight: String,
+    exchangeRate: String,
+    otherInfo: String
+  }
 }
