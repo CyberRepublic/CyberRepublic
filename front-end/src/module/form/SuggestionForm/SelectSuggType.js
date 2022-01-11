@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import I18N from '@/I18N'
 import { SUGGESTION_TYPE } from '@/constant'
 import _ from 'lodash'
-import cvoteTracking from '../../../store/redux/cvoteTracking'
 const { Option } = Select
 const {
   NEW_MOTION,
@@ -13,7 +12,8 @@ const {
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
   RECEIVE_CUSTOMIZED_ID,
-  CHANGE_CUSTOMIZED_ID_FEE
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 
 class SelectSuggType extends Component {
@@ -586,6 +586,17 @@ class SelectSuggType extends Component {
                   </div>
                 </Section>
               )}
+            </div>
+            <div
+              key={REGISTER_SIDE_CHAIN}
+              className={type === REGISTER_SIDE_CHAIN && 'selected'}
+            >
+              <Radio value={REGISTER_SIDE_CHAIN}>
+                {I18N.get(`suggestion.form.type.${REGISTER_SIDE_CHAIN}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${REGISTER_SIDE_CHAIN}`)}
+              </Desc>
             </div>
           </div>
         </Radio.Group>

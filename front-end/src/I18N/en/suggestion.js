@@ -103,6 +103,7 @@ export default {
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
       [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID fee`,
+      [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: `Motion to register new side chain`,
       newMotion: 'New Motion',
       motionAgainst: 'Motion Against',
       anythingElse: 'Anything Else',
@@ -124,7 +125,8 @@ export default {
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals Customized DID`,
         [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Topic enabling reserved Customized DID`,
-        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID basic fee rate based on market fluctuations`
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID basic fee rate based on market fluctuations`,
+        [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: `The non-stop upgrade application proposal for the launch of the new side chain, including the key information and resources required for building the new side chain`
       }
     },
     note: {

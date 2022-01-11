@@ -103,6 +103,7 @@ export default {
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: '预留自定义 DID 动议',
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 动议`,
       [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `自定义 DID 费率调整动议`,
+      [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: '新侧链注册动议',
       newMotion: '新动议',
       motionAgainst: '反对动议',
       anythingElse: '其它事宜',
@@ -124,7 +125,8 @@ export default {
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `更换 CR 秘书长人选的议题`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `对部分知名企业、机构和个人 DID 短域名的防抢注保护议题`,
         [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 的议题`,
-        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `基于市场行情波动，不定期调整自定义 DID 注册费率的议题`
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `基于市场行情波动，不定期调整自定义 DID 注册费率的议题`,
+        [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: `关于新侧链上线的不停机升级申请动议，包含搭建新侧链所需关键信息及资源展示`
       }
     },
     note: {
