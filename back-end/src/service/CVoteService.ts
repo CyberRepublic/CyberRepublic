@@ -208,7 +208,7 @@ export default class extends Base {
         doc.newAddress = suggestion.newAddress
       }
     }
-    console.log(`makeSuggIntoProposal suggestion.type...`, suggestion.type)
+
     if (suggestion.type === constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
       doc.didNameList = suggestion.didNameList
     }
@@ -221,6 +221,10 @@ export default class extends Base {
     if (suggestion.type === constant.CVOTE_TYPE.CHANGE_CUSTOMIZED_ID_FEE) {
       doc.customizedIDFee = suggestion.customizedIDFee
       doc.effectiveHeightOfEID = suggestion.effectiveHeightOfEID
+    }
+
+    if (suggestion.type === constant.CVOTE_TYPE.REGISTER_SIDE_CHAIN) {
+      doc.sideChainDetails = suggestion.sideChainDetails
     }
 
     Object.assign(doc, _.pick(suggestion, BASE_FIELDS))
