@@ -82,7 +82,8 @@ const {
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
   RECEIVE_CUSTOMIZED_ID,
-  CHANGE_CUSTOMIZED_ID_FEE
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 
 const renderRichContent = (data, key, title, user, actions) => {
@@ -156,6 +157,28 @@ const renderRichContent = (data, key, title, user, actions) => {
     )
   } else if (key === 'receivedCustomizedIDList') {
     rc = <MarkdownPreview content={data[key].join(' ')} key={key} />
+  } else if (key === 'sideChainDetails') {
+    rc = (
+      <div>
+        {[
+          'name',
+          'magic',
+          'genesisHash',
+          'effectiveHeight',
+          'exchangeRate',
+          'otherInfo'
+        ].map((item) => {
+          return (
+            <div key={item}>
+              <Subtitle>
+                {I18N.get(`suggestion.form.type.sideChain.${item}`)}
+              </Subtitle>
+              <Paragraph>{data.sideChainDetails[item]}</Paragraph>
+            </div>
+          )
+        })}
+      </div>
+    )
   } else {
     rc = <MarkdownPreview content={data[key]} key={key} />
   }
@@ -579,6 +602,9 @@ class C extends StandardPage {
         'effectiveHeightOfEID'
       ]
     }
+    if (type === REGISTER_SIDE_CHAIN) {
+      sections = ['preamble', 'abstract', 'motivation', 'sideChainDetails']
+    }
 
     return (
       <StyledAnchor offsetTop={300}>
@@ -753,6 +779,9 @@ class C extends StandardPage {
         'customizedIDFee',
         'effectiveHeightOfEID'
       ]
+    }
+    if (type === REGISTER_SIDE_CHAIN) {
+      sections = ['preamble', 'abstract', 'motivation', 'sideChainDetails']
     }
 
     return (

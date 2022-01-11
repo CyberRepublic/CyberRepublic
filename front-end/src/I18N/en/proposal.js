@@ -31,6 +31,7 @@ export default {
     didNameList: 'Customized DID List',
     customizedIDBindToDID: 'Bind to DID',
     receivedCustomizedIDList: 'Received Customized DID List',
+    sideChainDetails: 'Details',
     customizedIDFee: 'Fee Rate',
     effectiveHeightOfEID: 'Effective Height',
     relevance: 'Relevance',
@@ -179,6 +180,7 @@ export default {
     [PROPOSAL_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
     [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
     [PROPOSAL_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
-    [PROPOSAL_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID fee`
+    [PROPOSAL_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID fee`,
+    [PROPOSAL_TYPE.REGISTER_SIDE_CHAIN]: `Motion to register new side chain`
   }
 }
