@@ -455,6 +455,25 @@ class C extends BaseComponent {
     this.setState({ budgetValidator: x })
   }
 
+  validateSideChainDetails = (rule, value, cb) => {
+    if (!value) {
+      return cb(I18N.get('suggestion.form.error.required'))
+    }
+    const fields = [
+      'name',
+      'magic',
+      'genesisHash',
+      'effectiveHeight',
+      'exchangeRate'
+    ]
+    for (let i = 0; i < fields.length; i++) {
+      if (value && !value[fields[i]]) {
+        return cb(I18N.get('suggestion.form.error.required'))
+      }
+    }
+    return cb()
+  }
+
   changeType = (type) => {
     let tabs = TAB_KEYS
     const isNewType = _.includes(
@@ -660,7 +679,7 @@ class C extends BaseComponent {
       return getFieldDecorator('sideChainDetails', {
         rules: [
           {
-            validator: this.validateSelectedID
+            validator: this.validateSideChainDetails
           }
         ],
         initialValue: initialValues[id]
@@ -787,7 +806,7 @@ class C extends BaseComponent {
                   {item === 'teamInfo' ? null : (
                     <Note>{I18N.get(`suggestion.form.note.${item}`)}</Note>
                   )}
-                  <FormItem>{this.getTextarea(item)}</FormItem>
+                  <FormItem className={item}>{this.getTextarea(item)}</FormItem>
                   {item === 'abstract' ? this.renderWordLimit() : null}
                 </TabPaneInner>
               </TabPane>

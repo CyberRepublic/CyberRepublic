@@ -20,6 +20,9 @@ export const Container = styled.div`
   .ant-tabs {
     overflow: initial;
   }
+  .sideChainDetails .has-error .ant-input {
+    border-color: #d9d9d9 !important;
+  }
 `
 
 export const Btn = styled(Button)`
