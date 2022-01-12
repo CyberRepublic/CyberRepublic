@@ -22,10 +22,12 @@ class SideChainDetails extends Component {
   }
 
   handleChange = (e, field) => {
+    const error = `${field}Err`
     const { details } = this.state
     this.setState(
       {
-        details: { ...details, [field]: e.target.value }
+        details: { ...details, [field]: e.target.value },
+        [error]: !e.target.value
       },
       () => {
         this.changeValue()
@@ -55,7 +57,7 @@ class SideChainDetails extends Component {
                   onChange={(e) => this.handleChange(e, item)}
                   value={details[item]}
                 />
-                {!details[item] && (
+                {this.state[`${item}Err`] && (
                   <Error>{I18N.get('suggestion.form.error.required')}</Error>
                 )}
               </div>
@@ -69,9 +71,6 @@ class SideChainDetails extends Component {
               onChange={(e) => this.handleChange(e, 'otherInfo')}
               value={otherInfo}
             />
-            {!otherInfo && (
-              <Error>{I18N.get('suggestion.form.error.required')}</Error>
-            )}
           </div>
         </Section>
       </Wrapper>
@@ -80,7 +79,6 @@ class SideChainDetails extends Component {
 }
 
 SideChainDetails.propTypes = {
-  onChange: PropTypes.func,
   initialValue: PropTypes.object
 }
 

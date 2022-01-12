@@ -109,7 +109,6 @@ class C extends BaseComponent {
     const { form } = this.props
     const { type } = this.state
     form.validateFields(async (err, values) => {
-      console.log(`values...`, values)
       if (err) {
         const keys = Object.keys(err)
         const isGoalErr = keys.length === 1 && keys[0] === 'goal'
@@ -654,7 +653,7 @@ class C extends BaseComponent {
     }
 
     if (id === 'sideChainDetails') {
-      let sideChainDetails = []
+      let sideChainDetails = {}
       if (initialValues.sideChainDetails) {
         sideChainDetails = initialValues.sideChainDetails
       }

@@ -101,7 +101,6 @@ class ReceivedCustomizedIDList extends Component {
 }
 
 ReceivedCustomizedIDList.propTypes = {
-  onChange: PropTypes.func,
   initialValue: PropTypes.array
 }
 

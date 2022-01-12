@@ -589,7 +589,7 @@ class SelectSuggType extends Component {
             </div>
             <div
               key={REGISTER_SIDE_CHAIN}
-              className={type === REGISTER_SIDE_CHAIN && 'selected'}
+              className={type === REGISTER_SIDE_CHAIN ? 'selected' : null}
             >
               <Radio value={REGISTER_SIDE_CHAIN}>
                 {I18N.get(`suggestion.form.type.${REGISTER_SIDE_CHAIN}`)}
