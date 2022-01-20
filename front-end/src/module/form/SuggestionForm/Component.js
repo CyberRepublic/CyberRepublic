@@ -464,7 +464,8 @@ class C extends BaseComponent {
       'magic',
       'genesisHash',
       'effectiveHeight',
-      'exchangeRate'
+      'exchangeRate',
+      'resourcePath'
     ]
     for (let i = 0; i < fields.length; i++) {
       if (value && !value[fields[i]]) {

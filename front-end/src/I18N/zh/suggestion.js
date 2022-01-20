@@ -122,7 +122,7 @@ export default {
       sideChain: {
         name: '侧链名称',
         resourcePath: '资源路径',
-        magic: 'magic',
+        magic: 'Magic number',
         genesisHash: '创世纪区块哈希',
         effectiveHeight: '生效高度',
         exchangeRate: '汇率',

@@ -122,7 +122,7 @@ export default {
       sideChain: {
         name: 'Name',
         resourcePath: 'Resource path',
-        magic: 'Magic',
+        magic: 'Magic number',
         genesisHash: 'Genesis hash',
         effectiveHeight: 'Effective height',
         exchangeRate: 'Exchange rate',

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Input } from 'antd'
+import { Input, InputNumber } from 'antd'
 import I18N from '@/I18N'
 
 const { TextArea } = Input
@@ -35,6 +35,43 @@ class SideChainDetails extends Component {
     )
   }
 
+  handleMagicNumber = (value) => {
+    const { details } = this.state
+    this.setState(
+      {
+        details: { ...details, magic: value },
+        magicErr: !value
+      },
+      () => {
+        this.changeValue()
+      }
+    )
+  }
+  handleEffectiveHeight = (value) => {
+    const { details } = this.state
+    this.setState(
+      {
+        details: { ...details, effectiveHeight: value },
+        effectiveHeightErr: !value
+      },
+      () => {
+        this.changeValue()
+      }
+    )
+  }
+  handleExchangeRate = (value) => {
+    const { details } = this.state
+    this.setState(
+      {
+        details: { ...details, exchangeRate: value },
+        exchangeRateErr: !value
+      },
+      () => {
+        this.changeValue()
+      }
+    )
+  }
+
   render() {
     const { details } = this.state
     const { otherInfo } = details
@@ -54,10 +91,36 @@ class SideChainDetails extends Component {
                 {I18N.get(`suggestion.form.type.sideChain.${item}`)}*
               </Label>
               <div style={{ width: '100%' }}>
-                <Input
-                  onChange={(e) => this.handleChange(e, item)}
-                  value={details[item]}
-                />
+                {item === 'magic' && (
+                  <InputNumber
+                    onChange={this.handleMagicNumber}
+                    defaultValue={details[item]}
+                    style={{ width: '100%' }}
+                    min={1}
+                  />
+                )}
+                {item === 'effectiveHeight' && (
+                  <InputNumber
+                    onChange={this.handleEffectiveHeight}
+                    defaultValue={details[item]}
+                    style={{ width: '100%' }}
+                    min={1}
+                  />
+                )}
+                {item === 'exchangeRate' && (
+                  <InputNumber
+                    onChange={this.handleExchangeRate}
+                    defaultValue={details[item]}
+                    style={{ width: '100%' }}
+                    min={1}
+                  />
+                )}
+                {['name', 'resourcePath', 'genesisHash'].includes(item) && (
+                  <Input
+                    onChange={(e) => this.handleChange(e, item)}
+                    value={details[item]}
+                  />
+                )}
                 {this.state[`${item}Err`] && (
                   <Error>{I18N.get('suggestion.form.error.required')}</Error>
                 )}

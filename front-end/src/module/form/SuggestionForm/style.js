@@ -23,6 +23,9 @@ export const Container = styled.div`
   .sideChainDetails .has-error .ant-input {
     border-color: #d9d9d9 !important;
   }
+  .sideChainDetails .has-error .ant-input-number {
+    border-color: #d9d9d9 !important;
+  }
 `
 
 export const Btn = styled(Button)`
