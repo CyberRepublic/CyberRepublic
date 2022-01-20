@@ -42,6 +42,7 @@ class SideChainDetails extends Component {
       <Wrapper>
         {[
           'name',
+          'resourcePath',
           'magic',
           'genesisHash',
           'effectiveHeight',

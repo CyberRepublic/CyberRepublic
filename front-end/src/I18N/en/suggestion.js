@@ -121,6 +121,7 @@ export default {
       effectiveHeight: 'Effective Height of EID',
       sideChain: {
         name: 'Name',
+        resourcePath: 'Resource path',
         magic: 'Magic',
         genesisHash: 'Genesis hash',
         effectiveHeight: 'Effective height',

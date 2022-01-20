@@ -431,6 +431,7 @@ export default class extends StandardPage {
                 </DescLabel>
                 {[
                   'name',
+                  'resourcePath',
                   'magic',
                   'genesisHash',
                   'effectiveHeight',

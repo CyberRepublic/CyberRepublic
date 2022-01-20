@@ -127,6 +127,7 @@ export const Suggestion = {
     genesisHash: String,
     effectiveHeight: String,
     exchangeRate: String,
+    resourcePath: String,
     otherInfo: String
   }
 }

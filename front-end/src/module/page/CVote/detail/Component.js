@@ -162,6 +162,7 @@ const renderRichContent = (data, key, title, user, actions) => {
       <div>
         {[
           'name',
+          'resourcePath',
           'magic',
           'genesisHash',
           'effectiveHeight',
