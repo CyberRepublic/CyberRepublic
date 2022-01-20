@@ -256,6 +256,7 @@ export const CVote = {
     genesisHash: String,
     effectiveHeight: String,
     exchangeRate: String,
+    resourcePath: String,
     otherInfo: String
   }
 }

@@ -321,6 +321,30 @@ export default class extends Base {
       data.EIDEffectiveHeight = parseInt(suggestion.effectiveHeightOfEID)
     }
 
+    if (
+      type === SUGGESTION_TYPE.REGISTER_SIDE_CHAIN &&
+      suggestion.sideChainDetails
+    ) {
+      const {
+        name,
+        magic,
+        genesisHash,
+        effectiveHeight,
+        exchangeRate,
+        resourcePath,
+        otherInfo
+      } = suggestion.sideChainDetails
+      data.sideChainName = name
+      data.magicNumber = parseInt(magic)
+      data.genesisHash = genesisHash
+      data.effectiveHeight = parseInt(effectiveHeight)
+      data.exchangeRate = parseInt(exchangeRate)
+      data.resourcePath = resourcePath
+      if (otherInfo) {
+        data.otherInfo = otherInfo
+      }
+    }
+
     if (draftHash) {
       data.draftHash = draftHash
     }

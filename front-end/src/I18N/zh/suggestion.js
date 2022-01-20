@@ -121,7 +121,7 @@ export default {
       effectiveHeight: 'EID 侧链的生效高度',
       sideChain: {
         name: '侧链名称',
-        resourcePath: '代码路径',
+        resourcePath: '资源路径',
         magic: 'magic',
         genesisHash: '创世纪区块哈希',
         effectiveHeight: '生效高度',

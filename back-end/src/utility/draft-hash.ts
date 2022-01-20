@@ -96,7 +96,8 @@ function generateProposalData(data: any) {
     planIntro,
     relevance,
     budget,
-    budgetIntro
+    budgetIntro,
+    sideChainDetails
   } = data
   const newAbstract = getImageUrls(abstract)
   const newMotivation = getImageUrls(motivation)
@@ -171,6 +172,10 @@ function generateProposalData(data: any) {
     const newBudgetIntro = getImageUrls(budgetIntro)
     urls = [...urls, ...newBudgetIntro.urls]
     proposal.budgetStatement = newBudgetIntro.content
+  }
+
+  if (sideChainDetails && sideChainDetails.otherInfo) {
+    proposal.otherInfo = sideChainDetails.otherInfo
   }
 
   return { proposal, urls }

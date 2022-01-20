@@ -447,6 +447,27 @@ export default class extends Base {
       data.EIDEffectiveHeight = parseInt(proposal.effectiveHeightOfEID)
     }
 
+    if (type === CVOTE_TYPE.REGISTER_SIDE_CHAIN && proposal.sideChainDetails) {
+      const {
+        name,
+        magic,
+        genesisHash,
+        effectiveHeight,
+        exchangeRate,
+        resourcePath,
+        otherInfo
+      } = proposal.sideChainDetails
+      data.sideChainName = name
+      data.magicNumber = parseInt(magic)
+      data.genesisHash = genesisHash
+      data.effectiveHeight = parseInt(effectiveHeight)
+      data.exchangeRate = parseInt(exchangeRate)
+      data.resourcePath = resourcePath
+      if (otherInfo) {
+        data.otherInfo = otherInfo
+      }
+    }
+
     if (budgetIntro) {
       data.budgetStatement = budgetIntro
     }
