@@ -418,7 +418,7 @@ export default class extends Base {
       if (rs) {
         data.targetProposalTitle = rs.title
       }
-      data.targetProposalhash = proposal.targetProposalHash
+      data.targetProposalHash = proposal.targetProposalHash
       data.targetProposalID = proposal.targetProposalNum
     }
 
@@ -430,7 +430,7 @@ export default class extends Base {
         data.targetProposalTitle = rs.title
       }
       data.closeProposalID = proposal.closeProposalNum
-      data.targetProposalhash = proposal.targetProposalHash
+      data.targetProposalHash = proposal.targetProposalHash
     }
 
     if (type === CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
