@@ -287,9 +287,9 @@ export default class extends Base {
     if (type === SUGGESTION_TYPE.CHANGE_PROPOSAL) {
       if (suggestion.newOwnerDID) {
         data.newOwnerDID = suggestion.newOwnerDID
-        data.newOwnerPublicKey = suggestion.newOwnerPublicKey
       }
-      data.newrecipient = suggestion.newRecipient
+      data.newOwnerPublicKey = suggestion.newOwnerPublicKey
+      data.newRecipient = suggestion.newRecipient
       const proposal = await db_cvote
         .getDBInstance()
         .findOne({ vid: suggestion.targetProposalNum })
