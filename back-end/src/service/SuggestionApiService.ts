@@ -20,9 +20,11 @@ const {
 export default class extends Base {
   private model: any
   private zipFileModel: any
+  private proposalModel: any
   protected init() {
     this.model = this.getDBModel('Suggestion')
     this.zipFileModel = this.getDBModel('Suggestion_Zip_File')
+    this.proposalModel = this.getDBModel('CVote')
   }
 
   // API-0
@@ -512,63 +514,73 @@ export default class extends Base {
         )
       }
 
-      const newOwnerDID = _.get(suggestion, 'newOwnerDID')
-      if (iss === DID_PREFIX + newOwnerDID) {
-        if (suggestion.type !== SUGGESTION_TYPE.CHANGE_PROPOSAL) {
-          return {
-            code: 400,
-            success: false,
-            message: `This suggestion's type is not CHANGE PROPOSAL`
-          }
+      if (suggestion.type === SUGGESTION_TYPE.CHANGE_PROPOSAL) {
+        let newOwnerDID = _.get(suggestion, 'newOwnerDID')
+        if (!newOwnerDID) {
+          const proposal = await this.proposalModel
+            .getDBInstance()
+            .findOne({ vid: suggestion.targetProposalNum }, 'proposer')
+            .populate('proposer', 'did.id')
+          newOwnerDID = proposal.proposer.did.id
+        } else {
+          newOwnerDID = DID_PREFIX + newOwnerDID
         }
-        const signatureInfo = _.get(suggestion, 'newOwnerSignature.data')
-        if (signatureInfo) {
-          return {
-            code: 400,
-            success: false,
-            message: 'This suggestion had been signed.'
+        if (iss === newOwnerDID) {
+          const signatureInfo = _.get(suggestion, 'newOwnerSignature.data')
+          if (signatureInfo) {
+            return {
+              code: 400,
+              success: false,
+              message: 'This suggestion had been signed.'
+            }
           }
-        }
-        const compressedKey = _.get(suggestion, 'newOwnerPublicKey')
-        const pemPublicKey = compressedKey && getPemPublicKey(compressedKey)
-        if (!pemPublicKey) {
-          return {
-            code: 400,
-            success: false,
-            message: `Can not get your DID's public key.`
+          const compressedKey = _.get(suggestion, 'newOwnerPublicKey')
+          const pemPublicKey = compressedKey && getPemPublicKey(compressedKey)
+          if (!pemPublicKey) {
+            return {
+              code: 400,
+              success: false,
+              message: `Can not get your DID's public key.`
+            }
           }
-        }
 
-        return jwt.verify(
-          jwtToken,
-          pemPublicKey,
-          async (err: any, decoded: any) => {
-            if (err) {
-              return {
-                code: 401,
-                success: false,
-                message: 'Verify signature failed.'
-              }
-            } else {
-              try {
-                await this.model.update(
-                  { _id: sid },
-                  {
-                    newOwnerSignature: { data: decoded.signature }
-                  }
-                )
-                return { code: 200, success: true, message: 'Ok' }
-              } catch (err) {
-                console.log(`receive new owner signature err...`, err)
+          return jwt.verify(
+            jwtToken,
+            pemPublicKey,
+            async (err: any, decoded: any) => {
+              if (err) {
                 return {
-                  code: 500,
+                  code: 401,
                   success: false,
-                  message: 'Something went wrong'
+                  message: 'Verify signature failed.'
+                }
+              } else {
+                try {
+                  await this.model.update(
+                    { _id: sid },
+                    {
+                      newOwnerSignature: { data: decoded.signature }
+                    }
+                  )
+                  return { code: 200, success: true, message: 'Ok' }
+                } catch (err) {
+                  console.log(`receive new owner signature err...`, err)
+                  return {
+                    code: 500,
+                    success: false,
+                    message: 'Something went wrong'
+                  }
                 }
               }
             }
+          )
+        } else {
+          return {
+            code: 400,
+            success: false,
+            message: 'No this new owner DID'
           }
-        )
+        }
       }
 
       const secretaryDID = _.get(suggestion, 'newSecretaryDID')
@@ -625,6 +637,12 @@ export default class extends Base {
             }
           }
         )
+      }
+
+      return {
+        code: 400,
+        success: false,
+        message: `Unable to handle this request`
       }
     } catch (err) {
       console.log(`signature api err...`, err)
