@@ -308,7 +308,10 @@ export default class extends Base {
     }
 
     if (type === SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID) {
-      data.reservedCustomizedIDList = suggestion.didNameList.trim().split(/\s+/)
+      const list = suggestion.didNameList
+        ? suggestion.didNameList.trim().split(/\s+/)
+        : []
+      data.reservedCustomizedIDList = list
     }
 
     if (type === SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID) {
