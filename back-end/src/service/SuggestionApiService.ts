@@ -452,6 +452,7 @@ export default class extends Base {
         pemPublicKey,
         async (err: any, decoded: any) => {
           if (err) {
+            console.log(`verify the proposal new owner's signature err`, err)
             return {
               code: 401,
               success: false,
@@ -512,6 +513,7 @@ export default class extends Base {
         pemPublicKey,
         async (err: any, decoded: any) => {
           if (err) {
+            console.log(`verify the new secretary's signature err`, err)
             return {
               code: 401,
               success: false,
@@ -616,6 +618,7 @@ export default class extends Base {
           pemPublicKey,
           async (err: any, decoded: any) => {
             if (err) {
+              console.log(`verify the suggestion owner's signature err`, err)
               return {
                 code: 401,
                 success: false,
