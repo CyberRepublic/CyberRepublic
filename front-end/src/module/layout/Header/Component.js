@@ -220,7 +220,7 @@ export default class extends BaseComponent {
         'candidates',
         'whitepaper',
         'suggestion',
-        'elips',
+        // 'elips',
         'proposals',
         'blog'
       ],
@@ -338,9 +338,9 @@ export default class extends BaseComponent {
               {I18N.get('navigation.suggestion')}
             </Menu.Item>
 
-            <Menu.Item className="c_MenuItem link" key="elips">
+            {/* <Menu.Item className="c_MenuItem link" key="elips">
               {I18N.get('navigation.elips')}
-            </Menu.Item>
+            </Menu.Item> */}
 
             <Menu.Item className="c_MenuItem link" key="proposals">
               {I18N.get('navigation.proposal')}
@@ -456,7 +456,7 @@ export default class extends BaseComponent {
           'candidates',
           'constitution/1',
           'whitepaper',
-          'elips'
+          // 'elips'
         ],
         key
       )

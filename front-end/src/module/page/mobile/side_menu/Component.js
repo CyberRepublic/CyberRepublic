@@ -41,7 +41,7 @@ export default class extends BaseComponent {
           'council',
           'candidates',
           'what-is-new',
-          'elips'
+          // 'elips'
         ],
         key
       )
@@ -117,7 +117,7 @@ export default class extends BaseComponent {
                 {I18N.get('navigation.suggestion')}
               </Menu.Item>
 
-              <Menu.Item key="elips">{I18N.get('navigation.elips')}</Menu.Item>
+              {/* <Menu.Item key="elips">{I18N.get('navigation.elips')}</Menu.Item> */}
 
               <Menu.Item key="proposals">
                 {I18N.get('navigation.proposal')}
