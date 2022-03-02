@@ -416,6 +416,128 @@ export default class extends Base {
     return data
   }
 
+  async newOwnerSignature(data) {
+    const { suggestion, iss, jwtToken, sid } = data
+    const signatureInfo = _.get(suggestion, 'newOwnerSignature.data')
+    if (signatureInfo) {
+      return {
+        code: 400,
+        success: false,
+        message: 'This suggestion had been signed.'
+      }
+    }
+    let newOwnerDID = _.get(suggestion, 'newOwnerDID')
+    if (!newOwnerDID) {
+      const proposal = await this.proposalModel
+        .getDBInstance()
+        .findOne({ vid: suggestion.targetProposalNum }, 'proposer')
+        .populate('proposer', 'did.id')
+      newOwnerDID = proposal.proposer.did.id
+    } else {
+      newOwnerDID = DID_PREFIX + newOwnerDID
+    }
+    if (iss === newOwnerDID) {
+      const compressedKey = _.get(suggestion, 'newOwnerPublicKey')
+      const pemPublicKey = compressedKey && getPemPublicKey(compressedKey)
+      if (!pemPublicKey) {
+        return {
+          code: 400,
+          success: false,
+          message: `Can not get your DID's public key.`
+        }
+      }
+
+      return jwt.verify(
+        jwtToken,
+        pemPublicKey,
+        async (err: any, decoded: any) => {
+          if (err) {
+            return {
+              code: 401,
+              success: false,
+              message: 'Verify signature failed.'
+            }
+          } else {
+            try {
+              await this.model.update(
+                { _id: sid },
+                {
+                  newOwnerSignature: { data: decoded.signature }
+                }
+              )
+              return { code: 200, success: true, message: 'Ok' }
+            } catch (err) {
+              console.log(`receive new owner signature err...`, err)
+              return {
+                code: 500,
+                success: false,
+                message: 'Something went wrong'
+              }
+            }
+          }
+        }
+      )
+    } else {
+      return {
+        code: 400,
+        success: false,
+        message: 'No this new owner DID'
+      }
+    }
+  }
+
+  async newSecretarySignature(data) {
+    const { suggestion, iss, jwtToken, sid } = data
+    const secretaryDID = _.get(suggestion, 'newSecretaryDID')
+    if (iss === DID_PREFIX + secretaryDID) {
+      const signatureInfo = _.get(suggestion, 'newSecretarySignature.data')
+      if (signatureInfo) {
+        return {
+          code: 400,
+          success: false,
+          message: 'This suggestion had been signed.'
+        }
+      }
+      const compressedKey = _.get(suggestion, 'newSecretaryPublicKey')
+      const pemPublicKey = compressedKey && getPemPublicKey(compressedKey)
+      if (!pemPublicKey) {
+        return {
+          code: 400,
+          success: false,
+          message: `Can not get your DID's public key.`
+        }
+      }
+      return jwt.verify(
+        jwtToken,
+        pemPublicKey,
+        async (err: any, decoded: any) => {
+          if (err) {
+            return {
+              code: 401,
+              success: false,
+              message: 'Verify signatrue failed.'
+            }
+          } else {
+            try {
+              await this.model.update(
+                { _id: sid },
+                { newSecretarySignature: { data: decoded.signature } }
+              )
+              return { code: 200, success: true, message: 'Ok' }
+            } catch (err) {
+              console.log(`receive new secretary signature err...`, err)
+              return {
+                code: 500,
+                success: false,
+                message: 'DB can not save the signature.'
+              }
+            }
+          }
+        }
+      )
+    }
+  }
+
   // API-9
   public async signature(param: any) {
     try {
@@ -453,8 +575,25 @@ export default class extends Base {
 
       const ownerDID = _.get(suggestion, 'createdBy.did.id')
       if (iss === ownerDID) {
-        const signatureInfo = _.get(suggestion, 'signature.data')
-        if (signatureInfo) {
+        const ownerSignature = _.get(suggestion, 'signature.data')
+
+        if (ownerSignature) {
+          if (suggestion.type === SUGGESTION_TYPE.CHANGE_PROPOSAL) {
+            return await this.newOwnerSignature({
+              suggestion,
+              iss,
+              sid,
+              jwtToken
+            })
+          }
+          if (suggestion.type === SUGGESTION_TYPE.CHANGE_SECRETARY) {
+            return await this.newSecretarySignature({
+              suggestion,
+              iss,
+              sid,
+              jwtToken
+            })
+          }
           return {
             code: 400,
             success: false,
@@ -507,131 +646,6 @@ export default class extends Base {
                   code: 500,
                   success: false,
                   message: 'DB can not save your signature.'
-                }
-              }
-            }
-          }
-        )
-      }
-
-      if (suggestion.type === SUGGESTION_TYPE.CHANGE_PROPOSAL) {
-        let newOwnerDID = _.get(suggestion, 'newOwnerDID')
-        if (!newOwnerDID) {
-          const proposal = await this.proposalModel
-            .getDBInstance()
-            .findOne({ vid: suggestion.targetProposalNum }, 'proposer')
-            .populate('proposer', 'did.id')
-          newOwnerDID = proposal.proposer.did.id
-        } else {
-          newOwnerDID = DID_PREFIX + newOwnerDID
-        }
-        if (iss === newOwnerDID) {
-          const signatureInfo = _.get(suggestion, 'newOwnerSignature.data')
-          if (signatureInfo) {
-            return {
-              code: 400,
-              success: false,
-              message: 'This suggestion had been signed.'
-            }
-          }
-          const compressedKey = _.get(suggestion, 'newOwnerPublicKey')
-          const pemPublicKey = compressedKey && getPemPublicKey(compressedKey)
-          if (!pemPublicKey) {
-            return {
-              code: 400,
-              success: false,
-              message: `Can not get your DID's public key.`
-            }
-          }
-
-          return jwt.verify(
-            jwtToken,
-            pemPublicKey,
-            async (err: any, decoded: any) => {
-              if (err) {
-                return {
-                  code: 401,
-                  success: false,
-                  message: 'Verify signature failed.'
-                }
-              } else {
-                try {
-                  await this.model.update(
-                    { _id: sid },
-                    {
-                      newOwnerSignature: { data: decoded.signature }
-                    }
-                  )
-                  return { code: 200, success: true, message: 'Ok' }
-                } catch (err) {
-                  console.log(`receive new owner signature err...`, err)
-                  return {
-                    code: 500,
-                    success: false,
-                    message: 'Something went wrong'
-                  }
-                }
-              }
-            }
-          )
-        } else {
-          return {
-            code: 400,
-            success: false,
-            message: 'No this new owner DID'
-          }
-        }
-      }
-
-      const secretaryDID = _.get(suggestion, 'newSecretaryDID')
-      if (iss === DID_PREFIX + secretaryDID) {
-        if (suggestion.type !== SUGGESTION_TYPE.CHANGE_SECRETARY) {
-          return {
-            code: 400,
-            success: false,
-            message: `This suggestion's type is not CHANGE SECRETARY`
-          }
-        }
-        const signatureInfo = _.get(suggestion, 'newSecretarySignature.data')
-        if (signatureInfo) {
-          return {
-            code: 400,
-            success: false,
-            message: 'This suggestion had been signed.'
-          }
-        }
-        const compressedKey = _.get(suggestion, 'newSecretaryPublicKey')
-        const pemPublicKey = compressedKey && getPemPublicKey(compressedKey)
-        if (!pemPublicKey) {
-          return {
-            code: 400,
-            success: false,
-            message: `Can not get your DID's public key.`
-          }
-        }
-        return jwt.verify(
-          jwtToken,
-          pemPublicKey,
-          async (err: any, decoded: any) => {
-            if (err) {
-              return {
-                code: 401,
-                success: false,
-                message: 'Verify signatrue failed.'
-              }
-            } else {
-              try {
-                await this.model.update(
-                  { _id: sid },
-                  { newSecretarySignature: { data: decoded.signature } }
-                )
-                return { code: 200, success: true, message: 'Ok' }
-              } catch (err) {
-                console.log(`receive new secretary signature err...`, err)
-                return {
-                  code: 500,
-                  success: false,
-                  message: 'DB can not save the signature.'
                 }
               }
             }
