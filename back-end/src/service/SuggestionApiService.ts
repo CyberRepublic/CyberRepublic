@@ -578,6 +578,7 @@ export default class extends Base {
         const ownerSignature = _.get(suggestion, 'signature.data')
 
         if (ownerSignature) {
+          // deal with the owner's DID is same with new owner's
           if (suggestion.type === SUGGESTION_TYPE.CHANGE_PROPOSAL) {
             return await this.newOwnerSignature({
               suggestion,
@@ -586,6 +587,7 @@ export default class extends Base {
               jwtToken
             })
           }
+          // deal with the owner's DID is same with new secretary's
           if (suggestion.type === SUGGESTION_TYPE.CHANGE_SECRETARY) {
             return await this.newSecretarySignature({
               suggestion,
@@ -651,6 +653,23 @@ export default class extends Base {
             }
           }
         )
+      }
+      if (suggestion.type === SUGGESTION_TYPE.CHANGE_PROPOSAL) {
+        return await this.newOwnerSignature({
+          suggestion,
+          iss,
+          sid,
+          jwtToken
+        })
+      }
+
+      if (suggestion.type === SUGGESTION_TYPE.CHANGE_SECRETARY) {
+        return await this.newSecretarySignature({
+          suggestion,
+          iss,
+          sid,
+          jwtToken
+        })
       }
 
       return {
