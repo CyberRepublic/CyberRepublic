@@ -57,8 +57,6 @@ agenda.define(JOB_NAME.INTOPROPOSAL, async (job: any, done: any) => {
     let count = 0
     for (let i = 0; i < suggestions.length; i++) {
       const doc = suggestions[i]
-      console.log('doc display id', doc.displayId)
-
       const rs = await getProposalState({ drafthash: doc.draftHash })
       if (rs && rs.success && rs.status === 'Registered') {
         console.log('registered doc.displayId', doc.displayId)
@@ -68,15 +66,16 @@ agenda.define(JOB_NAME.INTOPROPOSAL, async (job: any, done: any) => {
           continue
         }
 
-        const newProposal = await cvoteService.makeSuggIntoProposal({
-          suggestion: doc,
-          proposalHash: rs.proposalHash,
-          chainDid: rs.proposal.crcouncilmemberdid
-        })
-        if (newProposal) {
-          console.log('newProposal.vid', newProposal.vid)
+        try {
+          await cvoteService.makeSuggIntoProposal({
+            suggestion: doc,
+            proposalHash: rs.proposalHash,
+            chainDid: rs.proposal.crcouncilmemberdid
+          })
+          count++
+        } catch (err) {
+          console.log('makeSuggIntoProposal err...', err)
         }
-        count++
       }
     }
     console.log('proposed suggestion count...', count)
