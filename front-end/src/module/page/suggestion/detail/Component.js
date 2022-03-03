@@ -59,7 +59,8 @@ import {
   Subtitle,
   CreateProposalText,
   Paragraph,
-  StyledRow
+  StyledRow,
+  Item
 } from './style'
 
 import './style.scss'
@@ -71,7 +72,9 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 const { TextArea } = Input
 
@@ -137,6 +140,18 @@ export default class extends StandardPage {
         'customizedIDBindToDID',
         'receivedCustomizedIDList'
       ]
+    }
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
+    }
+    if (type === REGISTER_SIDE_CHAIN) {
+      sections = ['preamble', 'abstract', 'motivation', 'sideChainDetails']
     }
     return (
       <StyledAnchor offsetTop={420}>
@@ -289,7 +304,18 @@ export default class extends StandardPage {
         'receivedCustomizedIDList'
       ]
     }
-
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
+    }
+    if (type === REGISTER_SIDE_CHAIN) {
+      sections = ['preamble', 'abstract', 'motivation', 'sideChainDetails']
+    }
     const metaNode = this.renderMetaNode()
     const titleNode = this.renderTitleNode()
     const labelNode = this.renderLabelNode()
@@ -391,6 +417,34 @@ export default class extends StandardPage {
                         <MarkdownPreview content={item.relevanceDetail} />
                       </StyledRow>
                     )
+                  )
+                })}
+              </div>
+            )
+          }
+
+          if (section === 'sideChainDetails' && detail.sideChainDetails) {
+            return (
+              <div key={section}>
+                <DescLabel id={section}>
+                  {I18N.get(`suggestion.fields.${section}`)}
+                </DescLabel>
+                {[
+                  'name',
+                  'resourcePath',
+                  'magic',
+                  'genesisHash',
+                  'effectiveHeight',
+                  'exchangeRate',
+                  'otherInfo'
+                ].map((item) => {
+                  return (
+                    <div key={item}>
+                      <Subtitle>
+                        {I18N.get(`suggestion.form.type.sideChain.${item}`)}
+                      </Subtitle>
+                      <Paragraph>{detail.sideChainDetails[item]}</Paragraph>
+                    </div>
                   )
                 })}
               </div>

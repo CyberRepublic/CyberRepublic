@@ -418,7 +418,7 @@ export default class extends Base {
       if (rs) {
         data.targetProposalTitle = rs.title
       }
-      data.targetProposalhash = proposal.targetProposalHash
+      data.targetProposalHash = proposal.targetProposalHash
       data.targetProposalID = proposal.targetProposalNum
     }
 
@@ -430,11 +430,42 @@ export default class extends Base {
         data.targetProposalTitle = rs.title
       }
       data.closeProposalID = proposal.closeProposalNum
-      data.targetProposalhash = proposal.targetProposalHash
+      data.targetProposalHash = proposal.targetProposalHash
     }
 
     if (type === CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
       data.reservedCustomizedIDList = proposal.didNameList.trim().split(/\s+/)
+    }
+
+    if (type === CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID) {
+      data.receivedCustomizedIDList = proposal.receivedCustomizedIDList
+      data.receiverDID = proposal.customizedIDBindToDID
+    }
+
+    if (type === CVOTE_TYPE.CHANGE_CUSTOMIZED_ID_FEE) {
+      data.rateOfCustomizedIDFee = parseInt(proposal.customizedIDFee)
+      data.EIDEffectiveHeight = parseInt(proposal.effectiveHeightOfEID)
+    }
+
+    if (type === CVOTE_TYPE.REGISTER_SIDE_CHAIN && proposal.sideChainDetails) {
+      const {
+        name,
+        magic,
+        genesisHash,
+        effectiveHeight,
+        exchangeRate,
+        resourcePath,
+        otherInfo
+      } = proposal.sideChainDetails
+      data.sideChainName = name
+      data.magicNumber = parseInt(magic)
+      data.genesisHash = genesisHash
+      data.effectiveHeight = parseInt(effectiveHeight)
+      data.exchangeRate = parseInt(exchangeRate)
+      data.resourcePath = resourcePath
+      if (otherInfo) {
+        data.otherInfo = otherInfo
+      }
     }
 
     if (budgetIntro) {

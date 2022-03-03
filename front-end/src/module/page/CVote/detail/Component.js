@@ -80,7 +80,10 @@ const {
   CHANGE_PROPOSAL,
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
-  RESERVE_CUSTOMIZED_ID
+  RESERVE_CUSTOMIZED_ID,
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 
 const renderRichContent = (data, key, title, user, actions) => {
@@ -148,6 +151,31 @@ const renderRichContent = (data, key, title, user, actions) => {
                 <MarkdownPreview content={item.relevanceDetail} />
               </StyledRow>
             )
+          )
+        })}
+      </div>
+    )
+  } else if (key === 'receivedCustomizedIDList') {
+    rc = <MarkdownPreview content={data[key].join(' ')} key={key} />
+  } else if (key === 'sideChainDetails') {
+    rc = (
+      <div>
+        {[
+          'name',
+          'resourcePath',
+          'magic',
+          'genesisHash',
+          'effectiveHeight',
+          'exchangeRate',
+          'otherInfo'
+        ].map((item) => {
+          return (
+            <div key={item}>
+              <Subtitle>
+                {I18N.get(`suggestion.form.type.sideChain.${item}`)}
+              </Subtitle>
+              <Paragraph>{data.sideChainDetails[item]}</Paragraph>
+            </div>
           )
         })}
       </div>
@@ -551,13 +579,32 @@ class C extends StandardPage {
       'relevance',
       'budget'
     ]
-
     if (isNewType) {
       sections = ['preamble', 'abstract', 'motivation']
     }
-
     if (type === RESERVE_CUSTOMIZED_ID) {
       sections = ['preamble', 'abstract', 'motivation', 'didNameList']
+    }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
+    }
+    if (type === REGISTER_SIDE_CHAIN) {
+      sections = ['preamble', 'abstract', 'motivation', 'sideChainDetails']
     }
 
     return (
@@ -710,14 +757,34 @@ class C extends StandardPage {
       'relevance',
       'budget'
     ]
-
     if (isNewType) {
       sections = ['abstract', 'motivation']
     }
-
     if (type === RESERVE_CUSTOMIZED_ID) {
       sections = ['abstract', 'motivation', 'didNameList']
     }
+    if (type === RECEIVE_CUSTOMIZED_ID) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDBindToDID',
+        'receivedCustomizedIDList'
+      ]
+    }
+    if (type === CHANGE_CUSTOMIZED_ID_FEE) {
+      sections = [
+        'preamble',
+        'abstract',
+        'motivation',
+        'customizedIDFee',
+        'effectiveHeightOfEID'
+      ]
+    }
+    if (type === REGISTER_SIDE_CHAIN) {
+      sections = ['preamble', 'abstract', 'motivation', 'sideChainDetails']
+    }
+
     return (
       <div>
         <Preamble {...data} user={user} copyFun={this.copyToClip} />

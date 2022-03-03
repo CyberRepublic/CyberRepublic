@@ -8,22 +8,19 @@ require('../dist/src/config')
   const db_cvote = DB.getModel('CVote')
   try {
     const query = {
-      vid: 57,
+      vid: 56,
       old: { $exists: false }
     }
     const proposal = await db_cvote.findOne(query)
-    console.log(`proposal`, proposal)
+    const oldHistory = proposal.withdrawalHistory
+    const newHistory = oldHistory.filter((el) => el.messageHash !== 'xxx')
+    console.log('newHistory', newHistory)
     await db_cvote.getDBInstance().updateOne(
       {
-        vid: 44,
-        old: { $exists: false },
-        'budget.milestoneKey': '4'
+        vid: 56,
+        old: { $exists: false }
       },
-      {
-        $set: {
-          'budget.$.status': 'xxx'
-        }
-      }
+      { $set: { withdrawalHistory: newHistory } }
     )
   } catch (err) {
     console.error(err)

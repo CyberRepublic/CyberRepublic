@@ -29,6 +29,11 @@ export default {
     goal: '目标',
     motivation: '动机',
     didNameList: '自定义 DID 列表',
+    customizedIDBindToDID: '绑定 DID',
+    receivedCustomizedIDList: '启用自定义 DID 列表',
+    customizedIDFee: '基本费率',
+    effectiveHeightOfEID: 'Effective Height',
+    sideChainDetails: '侧链详情',
     relevance: '关联性',
     budget: '预算',
     type: '类型',
@@ -168,6 +173,9 @@ export default {
     [PROPOSAL_TYPE.CHANGE_PROPOSAL]: '变更提案动议',
     [PROPOSAL_TYPE.CHANGE_SECRETARY]: '变更秘书长动议',
     [PROPOSAL_TYPE.TERMINATE_PROPOSAL]: '终止提案动议',
-    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: '预留自定义 DID 动议'
+    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: '预留自定义 DID 动议',
+    [PROPOSAL_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 动议`,
+    [PROPOSAL_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `自定义 DID 费率调整动议`,
+    [PROPOSAL_TYPE.REGISTER_SIDE_CHAIN]: `新侧链注册动议`
   }
 }

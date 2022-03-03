@@ -1,60 +1,34 @@
-import * as Mailgun from 'mailgun-js'
 import * as _ from 'lodash'
+import * as nodemailer from 'nodemailer'
+
+// create reusable transporter object using the default SMTP transport
+const transporter = nodemailer.createTransport({
+  host: process.env.NODEMAILER_HOST,
+  port: 465,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: process.env.NODEMAILER_USER, // generated ethereal user
+    pass: process.env.NODEMAILER_PASS // generated ethereal password
+  }
+})
 
 export default {
-
-    /**
-     *
-     * @param {any} to
-     * @param {any} toName
-     * @param {any} subject
-     * @param {any} body
-     * @param {any} replyTo - {name, email}
-     * @param {any} recVariables - multiple receipent metadata
-     * @returns {Promise<any>}
-     */
-    async send(options) {
-        const {to, toName, subject, body, replyTo, recVariables} = options
-
-        if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_URL) {
-            return
-        }
-
-        const mailgun = Mailgun({
-            apiKey: process.env.MAILGUN_API_KEY,
-            domain: process.env.MAILGUN_URL
-        })
-
-        const data = {
-            from: 'Cyber Republic - Elastos <no-reply@elastosjs.com>',
-            to: _.isArray(to) ? to : `${toName} <${to}>`,
-            subject: subject,
-            html: body,
-            'recipient-variables': _.isArray(to) && recVariables
-        }
-
-        if (replyTo && !_.isEmpty(replyTo)) {
-            data['h:Reply-To'] = `${replyTo.name} <${replyTo.email}>`
-        }
-
-        if (process.env.NODE_ENV === 'dev') {
-            console.log('Debug - Sending Mail:', data)
-        }
-
-        return new Promise((resolve, reject) => {
-
-            resolve()
-
-            mailgun.messages().send(data, function (err, body) {
-                if (err) {
-                    console.error(err)
-                    reject(err)
-                    return
-                }
-                // console.log(body);
-                resolve()
-            })
-        })
-
+  async send(options) {
+    try {
+      const { to, toName, subject, body } = options
+      const data = {
+        from: 'Cyber Republic - Elastos <no-reply@cyberrepublic.org>',
+        to: _.isArray(to) ? to : `${toName} <${to}>`,
+        subject: subject,
+        html: body
+      }
+      if (process.env.NODE_ENV === 'dev') {
+        console.log('Debug - Sending Mail:', data)
+      }
+      // send mail with defined transport object
+      await transporter.sendMail(data)
+    } catch (err) {
+      console.log('nodemiler sending email err...', err)
     }
+  }
 }

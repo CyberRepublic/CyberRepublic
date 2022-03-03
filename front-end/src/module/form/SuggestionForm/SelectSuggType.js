@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Radio, Input, Checkbox, Select } from 'antd'
+import { Radio, Input, Checkbox, Select, InputNumber } from 'antd'
 import styled from 'styled-components'
 import I18N from '@/I18N'
 import { SUGGESTION_TYPE } from '@/constant'
@@ -11,7 +11,9 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 
 class SelectSuggType extends Component {
@@ -31,7 +33,9 @@ class SelectSuggType extends Component {
       isChange: false,
       changeType: (value && value.type) || '1',
       controVar: this.props.controVar,
-      customizedIDBindToDID: value && value.customizedIDBindToDID
+      customizedIDBindToDID: value && value.customizedIDBindToDID,
+      customizedIDFee: value && value.customizedIDFee,
+      effectiveHeightOfEID: value && value.effectiveHeightOfEID
     }
   }
 
@@ -54,7 +58,9 @@ class SelectSuggType extends Component {
       newAddress,
       newOwnerDID,
       controVar,
-      customizedIDBindToDID
+      customizedIDBindToDID,
+      customizedIDFee,
+      effectiveHeightOfEID
     } = this.state
     if (preVar !== controVar) {
       if (value.type === CHANGE_SECRETARY) {
@@ -91,6 +97,13 @@ class SelectSuggType extends Component {
           type,
           customizedIDBindToDID
         }
+        if (!_.isEqual(value, data)) {
+          this.dupOperating(value, preVar)
+        }
+      }
+
+      if (value.type === CHANGE_CUSTOMIZED_ID_FEE) {
+        const data = { type, customizedIDFee, effectiveHeightOfEID }
         if (!_.isEqual(value, data)) {
           this.dupOperating(value, preVar)
         }
@@ -144,12 +157,16 @@ class SelectSuggType extends Component {
       changeOwner,
       newAddress,
       customizedIDBindToDID,
+      customizedIDFee,
+      effectiveHeightOfEID,
       proposalNumErr,
       terminationErr,
       newOwnerDIDErr,
       newAddressErr,
       newSecretaryDIDErr,
-      customizedIDBindToDIDErr
+      customizedIDBindToDIDErr,
+      customizedIDFeeErr,
+      effectiveHeightOfEIDErr
     } = this.state
     let data = { type }
     switch (type) {
@@ -197,6 +214,13 @@ class SelectSuggType extends Component {
           data.hasErr = true
         }
         break
+      case CHANGE_CUSTOMIZED_ID_FEE:
+        data.customizedIDFee = customizedIDFee
+        data.effectiveHeightOfEID = effectiveHeightOfEID
+        if (customizedIDFeeErr || effectiveHeightOfEIDErr) {
+          data.hasErr = true
+        }
+        break
       default:
         break
     }
@@ -236,6 +260,24 @@ class SelectSuggType extends Component {
     })
   }
 
+  handleRateFee = (value) => {
+    this.setState(
+      { customizedIDFee: value, customizedIDFeeErr: !value },
+      () => {
+        this.changeValue()
+      }
+    )
+  }
+
+  handleEffectiveHeight = (value) => {
+    this.setState(
+      { effectiveHeightOfEID: value, effectiveHeightOfEIDErr: !value },
+      () => {
+        this.changeValue()
+      }
+    )
+  }
+
   handleTerminationChange = (value) => {
     this.setState({ termination: value, terminationErr: !value }, () => {
       this.changeValue()
@@ -259,12 +301,16 @@ class SelectSuggType extends Component {
       changeAddress,
       newAddress,
       customizedIDBindToDID,
+      customizedIDFee,
+      effectiveHeightOfEID,
       proposalNumErr,
       newOwnerDIDErr,
       newAddressErr,
       terminationErr,
       newSecretaryDIDErr,
-      customizedIDBindToDIDErr
+      customizedIDBindToDIDErr,
+      customizedIDFeeErr,
+      effectiveHeightOfEIDErr
     } = this.state
 
     return (
@@ -459,7 +505,7 @@ class SelectSuggType extends Component {
                 {I18N.get(`suggestion.form.type.desc.${RESERVE_CUSTOMIZED_ID}`)}
               </Desc>
             </div>
-            {/* <div
+            <div
               key={RECEIVE_CUSTOMIZED_ID}
               className={type === RECEIVE_CUSTOMIZED_ID ? 'selected' : null}
             >
@@ -489,7 +535,69 @@ class SelectSuggType extends Component {
                   </div>
                 </Section>
               )}
-            </div> */}
+            </div>
+            <div
+              key={CHANGE_CUSTOMIZED_ID_FEE}
+              className={type === CHANGE_CUSTOMIZED_ID_FEE ? 'selected' : null}
+            >
+              <Radio value={CHANGE_CUSTOMIZED_ID_FEE}>
+                {I18N.get(`suggestion.form.type.${CHANGE_CUSTOMIZED_ID_FEE}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(
+                  `suggestion.form.type.desc.${CHANGE_CUSTOMIZED_ID_FEE}`
+                )}
+              </Desc>
+              {type === CHANGE_CUSTOMIZED_ID_FEE && (
+                <Section>
+                  <div className="inline-fee">
+                    <Label>{I18N.get('suggestion.form.type.rateFactor')}</Label>
+                    <div>
+                      <InputNumber
+                        onChange={this.handleRateFee}
+                        defaultValue={customizedIDFee}
+                        min={1}
+                        style={{ width: '60%' }}
+                      />
+                      {customizedIDFeeErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.rateFactor')}
+                        </Error>
+                      )}
+                    </div>
+                  </div>
+                  <div className="inline-fee">
+                    <Label>
+                      {I18N.get('suggestion.form.type.effectiveHeight')}
+                    </Label>
+                    <div>
+                      <InputNumber
+                        onChange={this.handleEffectiveHeight}
+                        defaultValue={effectiveHeightOfEID}
+                        min={1}
+                        style={{ width: '60%' }}
+                      />
+                      {effectiveHeightOfEIDErr && (
+                        <Error>
+                          {I18N.get('suggestion.form.error.effectiveHeight')}
+                        </Error>
+                      )}
+                    </div>
+                  </div>
+                </Section>
+              )}
+            </div>
+            <div
+              key={REGISTER_SIDE_CHAIN}
+              className={type === REGISTER_SIDE_CHAIN ? 'selected' : null}
+            >
+              <Radio value={REGISTER_SIDE_CHAIN}>
+                {I18N.get(`suggestion.form.type.${REGISTER_SIDE_CHAIN}`)}
+              </Radio>
+              <Desc>
+                {I18N.get(`suggestion.form.type.desc.${REGISTER_SIDE_CHAIN}`)}
+              </Desc>
+            </div>
           </div>
         </Radio.Group>
       </Wrapper>
@@ -533,10 +641,9 @@ const Wrapper = styled.div`
 const Label = styled.div`
   font-size: 13px;
   line-height: 24px;
-  margin-bottom: 6px;
   color: #686868;
   flex-shrink: 0;
-  margin-right: 16px;
+  margin-right: 8px;
 `
 const Section = styled.div`
   margin-left: 24px;
@@ -577,8 +684,17 @@ const Section = styled.div`
   }
   .inline {
     display: flex;
+    align-items: center;
     @media (max-width: 768px) {
+      align-items: flex-start;
       flex-direction: column;
+    }
+  }
+  .inline-fee {
+    display: flex;
+    flex-direction: column;
+    &:last-child {
+      margin-top: 4px;
     }
   }
 `

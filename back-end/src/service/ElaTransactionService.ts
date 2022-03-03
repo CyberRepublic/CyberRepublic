@@ -35,7 +35,6 @@ export default class extends Base {
             constant.TRANSACTION_TYPE.SECRETARY_REVIEW
           ].includes(e.type)
         ) {
-          console.log(`ELA transaction e....`, e)
           allTransactions.push({
             txid: e.txid,
             payload: e.payload && JSON.stringify(e.payload),

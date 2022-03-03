@@ -38,6 +38,9 @@ export default {
     didNameList: 'Customized DID List',
     customizedIDBindToDID: 'Bind to DID',
     receivedCustomizedIDList: 'Received Customized DID List',
+    sideChainDetails: 'Details',
+    customizedIDFee: 'Fee Rate',
+    effectiveHeightOfEID: 'Effective Height',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',
@@ -100,6 +103,8 @@ export default {
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
+      [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID fee`,
+      [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: `Motion to register new side chain`,
       newMotion: 'New Motion',
       motionAgainst: 'Motion Against',
       anythingElse: 'Anything Else',
@@ -112,13 +117,26 @@ export default {
       ownerInfo: `Please input the new owner's DID`,
       secretaryInfo: `Please input the new secretary's DID`,
       bindToDID: `Bind to DID`,
+      rateFactor: 'Customized ID Fee Rate',
+      effectiveHeight: 'Effective Height of EID',
+      sideChain: {
+        name: 'Name',
+        resourcePath: 'Resource path',
+        magic: 'Magic number',
+        genesisHash: 'Genesis hash',
+        effectiveHeight: 'Effective height',
+        exchangeRate: 'Exchange rate',
+        otherInfo: 'Other info'
+      },
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `Topic regarding CR or Elastos technology development`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `Topic regarding changing proposal owner or ELA receive address`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `Topic regarding terminating proposals unable or should not be executed`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `Topic regarding changing the secretary general`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `Anti-squatting protection issues for some well-known companies, institutions and individuals Customized DID`,
-        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Enable reserved Customized DID`
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `Topic enabling reserved Customized DID`,
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Topic adjusting Customized DID basic fee rate based on market fluctuations`,
+        [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: `The non-stop upgrade application proposal for the launch of the new side chain, including the key information and resources required for building the new side chain`
       }
     },
     note: {
@@ -138,7 +156,8 @@ export default {
       tracking: `This part is updated by the proposer according to the progress of the proposal, including the achievement of goal and budget usage. It is used to present the implementation status of proposal according to the checkpoints in the implementation plan or the goals of the proposal. The CRC Secretariat is responsible to review and verify this part.`,
       summary: `When proposal is completed, its proposer should submit a summary of the proposal implementation, including the achievement of goals and financial report. The CRC Secretariat is responsible for the review of this part.`,
       yourSelections: `Your selections:`,
-      searchDID: 'Search Customized DID'
+      searchDID: 'Select a Customized DID',
+      sideChainDetails: 'Please fill the details of new side chain'
     },
     error: {
       required: 'This field is required',
@@ -167,7 +186,9 @@ export default {
       newOwner: 'The new owner DID is empty.',
       changeWhat: `Please fill in the info of the change proposal`,
       didNameList: `Please remove these following duplicates from the Customized DID list:`,
-      bindToDID: `The DID is empty.`,
+      bindToDID: `The receiver DID is empty.`,
+      rateFactor: 'The fee rate is empty',
+      effectiveHeight: 'The effective height is empty',
       customizedID: `Please select customized DID first`
     }
   },

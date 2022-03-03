@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Button, Modal, Select, Icon, Radio, Row, Col, Form } from 'antd'
+import { Button, Modal, Select, Icon, Radio, Row, Col } from 'antd'
 import I18N from '@/I18N'
 import { SUGGESTION_TYPE } from '@/constant'
 import _ from 'lodash'
@@ -11,7 +11,9 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 const suggestion_type = [
   NEW_MOTION,
@@ -19,7 +21,9 @@ const suggestion_type = [
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 ]
 class DuplicateModal extends Component {
   constructor(props) {

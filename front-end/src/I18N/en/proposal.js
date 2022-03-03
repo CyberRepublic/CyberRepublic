@@ -29,6 +29,11 @@ export default {
     goal: 'Goal',
     motivation: 'Motivation',
     didNameList: 'Customized DID List',
+    customizedIDBindToDID: 'Bind to DID',
+    receivedCustomizedIDList: 'Received Customized DID List',
+    sideChainDetails: 'Details',
+    customizedIDFee: 'Fee Rate',
+    effectiveHeightOfEID: 'Effective Height',
     relevance: 'Relevance',
     budget: 'Budget',
     type: 'Type',
@@ -173,6 +178,9 @@ export default {
     [PROPOSAL_TYPE.CHANGE_SECRETARY]:
       'Motion for new CR Council Secretary General',
     [PROPOSAL_TYPE.TERMINATE_PROPOSAL]: 'Motion to terminate a proposal',
-    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`
+    [PROPOSAL_TYPE.RESERVE_CUSTOMIZED_ID]: `Motion to reserve Customized DID`,
+    [PROPOSAL_TYPE.RECEIVE_CUSTOMIZED_ID]: `Motion to enable Customized DID`,
+    [PROPOSAL_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `Motion to change Customized DID fee`,
+    [PROPOSAL_TYPE.REGISTER_SIDE_CHAIN]: `Motion to register new side chain`
   }
 }

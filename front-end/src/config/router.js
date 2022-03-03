@@ -95,10 +95,10 @@ const SuggestionDetailPage = React.lazy(() => import('@/module/page/suggestion/d
 const SuggestionEditHistoryPage = React.lazy(() => import('@/module/page/suggestion/edit_history/Container'))
 
 // elips
-const ElipListPage = React.lazy(() => import('@/module/page/elip/Container'))
-const ElipNewPage = React.lazy(() => import('@/module/page/elip/new/Container'))
-const ElipDetailPage = React.lazy(() => import('@/module/page/elip/detail/Container'))
-const ElipEditPage = React.lazy(() => import('@/module/page/elip/edit/Container'))
+// const ElipListPage = React.lazy(() => import('@/module/page/elip/Container'))
+// const ElipNewPage = React.lazy(() => import('@/module/page/elip/new/Container'))
+// const ElipDetailPage = React.lazy(() => import('@/module/page/elip/detail/Container'))
+// const ElipEditPage = React.lazy(() => import('@/module/page/elip/edit/Container'))
 
 const WhitepaperPage = React.lazy(() => import('@/module/page/whitepaper/Container'))
 
@@ -290,22 +290,22 @@ export default [
    * ELIP page
    ********************************************************************************
    */
-  {
-    path: '/elips',
-    page: ElipListPage,
-  },
-  {
-    path: '/elips/new',
-    page: ElipNewPage,
-  },
-  {
-    path: '/elips/:id',
-    page: ElipDetailPage,
-  },
-  {
-    path: '/elips/:id/edit',
-    page: ElipEditPage,
-  },
+  // {
+  //   path: '/elips',
+  //   page: ElipListPage,
+  // },
+  // {
+  //   path: '/elips/new',
+  //   page: ElipNewPage,
+  // },
+  // {
+  //   path: '/elips/:id',
+  //   page: ElipDetailPage,
+  // },
+  // {
+  //   path: '/elips/:id/edit',
+  //   page: ElipEditPage,
+  // },
   /*
     ********************************************************************************
     * Profile page

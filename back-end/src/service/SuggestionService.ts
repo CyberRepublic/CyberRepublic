@@ -47,7 +47,10 @@ const BASE_FIELDS = [
   'validPeriod',
   'didNameList',
   'customizedIDBindToDID',
-  'receivedCustomizedIDList'
+  'receivedCustomizedIDList',
+  'customizedIDFee',
+  'effectiveHeightOfEID',
+  'sideChainDetails'
 ]
 
 interface BudgetItem {
@@ -1886,6 +1889,24 @@ export default class extends Base {
             proposaltype: 'reservecustomizedid'
           }
           break
+        case SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID:
+          jwtClaims.data = {
+            ...jwtClaims.data,
+            proposaltype: 'receivecustomizedid'
+          }
+          break
+        case SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE:
+          jwtClaims.data = {
+            ...jwtClaims.data,
+            proposaltype: 'changecustomizedidfee'
+          }
+          break
+        case SUGGESTION_TYPE.REGISTER_SIDE_CHAIN:
+          jwtClaims.data = {
+            ...jwtClaims.data,
+            proposaltype: 'registersidechain'
+          }
+          break
         default:
           const budget: [BudgetItem] = _.get(suggestion, 'budget')
           const hasBudget = !!budget && _.isArray(budget) && !_.isEmpty(budget)
@@ -2443,7 +2464,10 @@ export default class extends Base {
       'validPeriod',
       'didNameList',
       'customizedIDBindToDID',
-      'receivedCustomizedIDList'
+      'receivedCustomizedIDList',
+      'customizedIDFee',
+      'effectiveHeightOfEID',
+      'sideChainDetails'
     ]
     const user = _.get(this.currentUser, '_id')
     if (param.type === 'byNumber') {

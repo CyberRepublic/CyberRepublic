@@ -82,21 +82,15 @@ export default class extends BaseComponent {
                   </a>
                 </div>
                 <div className="footer-color-dark">
-                  {I18N.get('landing.footer.community')}:{' '}
-                  <a href="mailto:global-community@elastos.org">
-                    global-community@elastos.org
+                  Twitter:{' '}
+                  <a href="https://twitter.com/cyber__republic">
+                    https://twitter.com/cyber__republic
                   </a>
                 </div>
                 <div className="footer-color-dark">
-                  {I18N.get('landing.footer.support')}:{' '}
-                  <a href="mailto:support@cyberrepublic.org">
-                    support@cyberrepublic.org
-                  </a>
-                </div>
-                <div className="footer-color-dark">
-                  {I18N.get('landing.footer.contacts')}:{' '}
-                  <a href="mailto:contact@cyberrepublic.org">
-                    contact@cyberrepublic.org
+                  Discord:{' '}
+                  <a href="https://discord.gg/elastos">
+                    https://discord.gg/elastos
                   </a>
                 </div>
               </div>

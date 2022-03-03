@@ -118,5 +118,16 @@ export const Suggestion = {
   isUpdated: Boolean,
   didNameList: String, // reserved customized ID list
   customizedIDBindToDID: String,
-  receivedCustomizedIDList: [String]
+  receivedCustomizedIDList: [String],
+  customizedIDFee: String,
+  effectiveHeightOfEID: String,
+  sideChainDetails: {
+    name: String,
+    magic: String,
+    genesisHash: String,
+    effectiveHeight: String,
+    exchangeRate: String,
+    resourcePath: String,
+    otherInfo: String
+  }
 }

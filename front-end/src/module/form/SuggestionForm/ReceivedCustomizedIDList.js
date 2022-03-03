@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Select, Icon, Tag } from 'antd'
+import { Select, Tag } from 'antd'
 import I18N from '@/I18N'
 
 class ReceivedCustomizedIDList extends Component {
@@ -17,8 +17,7 @@ class ReceivedCustomizedIDList extends Component {
     const { getCustomizedIDList } = this.props
     const rs = await getCustomizedIDList()
     if (rs && rs.success) {
-      const options = rs.didNameList.trim().split(/\s+/)
-      const sortedOptions = options.sort((a, b) => {
+      const options = rs.didNameList.sort((a, b) => {
         if (a < b) {
           return -1
         }
@@ -27,7 +26,7 @@ class ReceivedCustomizedIDList extends Component {
         }
         return 0
       })
-      this.setState({ data: sortedOptions })
+      this.setState({ data: options })
     }
   }
 
@@ -67,12 +66,12 @@ class ReceivedCustomizedIDList extends Component {
             size="large"
             filterOption={false}
             onChange={this.handleChange}
-            suffixIcon={<Icon type="search" spin={false} />}
             defaultActiveFirstOption={false}
             placeholder={I18N.get(`suggestion.form.note.searchDID`)}
             notFoundContent={null}
             defaultOpen={false}
             style={{ fontSize: 14 }}
+            filterOption={true}
           >
             {options}
           </Select>
@@ -102,8 +101,6 @@ class ReceivedCustomizedIDList extends Component {
 }
 
 ReceivedCustomizedIDList.propTypes = {
-  title: PropTypes.string,
-  onChange: PropTypes.func,
   initialValue: PropTypes.array
 }
 

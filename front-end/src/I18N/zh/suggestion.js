@@ -36,7 +36,11 @@ export default {
     goal: '目标',
     motivation: '动机',
     didNameList: '自定义 DID 列表',
+    customizedIDBindToDID: '绑定 DID',
     receivedCustomizedIDList: '启用自定义 DID 列表',
+    sideChainDetails: '侧链详情',
+    customizedIDFee: '基本费率',
+    effectiveHeightOfEID: '生效高度',
     relevance: '关联性',
     budget: '预算',
     type: '类型',
@@ -99,6 +103,8 @@ export default {
       [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: '终止提案动议',
       [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: '预留自定义 DID 动议',
       [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 动议`,
+      [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `自定义 DID 费率调整动议`,
+      [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: '新侧链注册动议',
       newMotion: '新动议',
       motionAgainst: '反对动议',
       anythingElse: '其它事宜',
@@ -111,13 +117,26 @@ export default {
       ownerInfo: `请输入提案新负责人的 DID`,
       secretaryInfo: `请输入新秘书长的 DID`,
       bindToDID: `绑定到 DID`,
+      rateFactor: 'EID 侧链 ID 基本费率',
+      effectiveHeight: 'EID 侧链的生效高度',
+      sideChain: {
+        name: '侧链名称',
+        resourcePath: '资源路径',
+        magic: 'Magic number',
+        genesisHash: '创世纪区块哈希',
+        effectiveHeight: '生效高度',
+        exchangeRate: '汇率',
+        otherInfo: '其它信息'
+      },
       desc: {
         [SUGGESTION_TYPE.NEW_MOTION]: `关于 CR 或亦来云技术发展相关的议题`,
         [SUGGESTION_TYPE.CHANGE_PROPOSAL]: `更换提案负责人或提案经费接收地址的议题`,
         [SUGGESTION_TYPE.TERMINATE_PROPOSAL]: `关于终止无法执行或不应执行提案的议题`,
         [SUGGESTION_TYPE.CHANGE_SECRETARY]: `更换 CR 秘书长人选的议题`,
         [SUGGESTION_TYPE.RESERVE_CUSTOMIZED_ID]: `对部分知名企业、机构和个人 DID 短域名的防抢注保护议题`,
-        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 的议题`
+        [SUGGESTION_TYPE.RECEIVE_CUSTOMIZED_ID]: `启用预留自定义 DID 的议题`,
+        [SUGGESTION_TYPE.CHANGE_CUSTOMIZED_ID_FEE]: `基于市场行情波动，不定期调整自定义 DID 注册费率的议题`,
+        [SUGGESTION_TYPE.REGISTER_SIDE_CHAIN]: `关于新侧链上线的不停机升级申请动议，包含搭建新侧链所需关键信息及资源展示`
       }
     },
     note: {
@@ -136,7 +155,8 @@ export default {
       teamInfo: '团队信息',
       tracking: `当提案完成的时候，提案人应该在这里提交对提案执行状况的一个总结，包括目标达成状况和财务决算。CRC秘书处负责该部分内容的审核。`,
       yourSelections: `你已选择：`,
-      searchDID: '搜索自定义 DID'
+      searchDID: '搜索自定义 DID',
+      sideChainDetails: '请填写侧链详情信息'
     },
     error: {
       required: '必填项',
@@ -167,7 +187,9 @@ export default {
       newOwner: '新负责人 DID 为空',
       changeWhat: '请填写变更提案的信息',
       didNameList: `请删除重复的自定义 DID, 如下所示：`,
-      bindToDID: `请输入要绑定的 DID`,
+      bindToDID: `请输入接收者的 DID`,
+      rateFactor: '请输入费率',
+      effectiveHeight: '请输入生效高度',
       customizedID: `请选择要启用的自定义 DID`
     }
   },

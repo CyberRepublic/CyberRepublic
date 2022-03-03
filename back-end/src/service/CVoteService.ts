@@ -208,10 +208,23 @@ export default class extends Base {
         doc.newAddress = suggestion.newAddress
       }
     }
-    console.log(`makeSuggIntoProposal suggestion.type...`, suggestion.type)
+
     if (suggestion.type === constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID) {
       doc.didNameList = suggestion.didNameList
-      console.log(`makeSuggIntoProposal doc.didNameList...`, doc.didNameList)
+    }
+
+    if (suggestion.type === constant.CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID) {
+      doc.customizedIDBindToDID = suggestion.customizedIDBindToDID
+      doc.receivedCustomizedIDList = suggestion.receivedCustomizedIDList
+    }
+
+    if (suggestion.type === constant.CVOTE_TYPE.CHANGE_CUSTOMIZED_ID_FEE) {
+      doc.customizedIDFee = suggestion.customizedIDFee
+      doc.effectiveHeightOfEID = suggestion.effectiveHeightOfEID
+    }
+
+    if (suggestion.type === constant.CVOTE_TYPE.REGISTER_SIDE_CHAIN) {
+      doc.sideChainDetails = suggestion.sideChainDetails
     }
 
     Object.assign(doc, _.pick(suggestion, BASE_FIELDS))
@@ -2665,11 +2678,42 @@ export default class extends Base {
 
   public async getCustomizedIDList() {
     const db_cvote = this.getDBModel('CVote')
-    const proposal = await db_cvote.getDBInstance().findOne({
-      type: constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID
-    })
-    if (!proposal) return
-    return { didNameList: proposal.didNameList, success: true }
+    const rs = await Promise.all([
+      db_cvote.getDBInstance().findOne(
+        {
+          type: constant.CVOTE_TYPE.RESERVE_CUSTOMIZED_ID,
+          status: constant.CVOTE_STATUS.FINAL
+        },
+        'didNameList'
+      ),
+      db_cvote.getDBInstance().find(
+        {
+          type: constant.CVOTE_TYPE.RECEIVE_CUSTOMIZED_ID,
+          status: constant.CVOTE_STATUS.FINAL
+        },
+        'receivedCustomizedIDList'
+      )
+    ])
+    if (_.isEmpty(rs)) return
+    let didNameList = rs[0] && rs[0].didNameList.trim().split(/\s+/)
+    if (_.isEmpty(didNameList)) return
+    if (!_.isEmpty(rs[1])) {
+      let received = ''
+      for (let i = 0; i < rs[1].length; i++) {
+        const proposal = rs[1][i]
+        received += proposal.receivedCustomizedIDList.join(' ') + ' '
+      }
+      const receivedIDList = received.trim().split(' ')
+      console.log(`getCustomizedIDList receivedIDList...`, receivedIDList)
+      if (!_.isEmpty(receivedIDList)) {
+        didNameList = _.remove(
+          didNameList,
+          (item: string) => !receivedIDList.includes(item)
+        )
+      }
+    }
+    console.log(`getCustomizedIDList didNameList...`, didNameList)
+    return { didNameList, success: true }
   }
 
   public async walletVote(param: any) {

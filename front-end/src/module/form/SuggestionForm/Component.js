@@ -16,6 +16,7 @@ import TeamInfoSection from './TeamInfoSection'
 import DuplicateModal from '../DuplicateModalForm/Container'
 import { getDuplicatesFromArray } from '../../../util/index'
 import ReceivedCustomizedIDList from './ReceivedCustomizedIDList'
+import SideChainDetails from './SideChainDetails'
 
 const FormItem = Form.Item
 const { TabPane } = Tabs
@@ -30,7 +31,9 @@ const {
   CHANGE_SECRETARY,
   TERMINATE_PROPOSAL,
   RESERVE_CUSTOMIZED_ID,
-  RECEIVE_CUSTOMIZED_ID
+  RECEIVE_CUSTOMIZED_ID,
+  CHANGE_CUSTOMIZED_ID_FEE,
+  REGISTER_SIDE_CHAIN
 } = SUGGESTION_TYPE
 
 class C extends BaseComponent {
@@ -44,8 +47,16 @@ class C extends BaseComponent {
     if (type === RECEIVE_CUSTOMIZED_ID) {
       tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
     }
+    if (type === REGISTER_SIDE_CHAIN) {
+      tabs = ['type', 'abstract', 'motivation', 'sideChainDetails']
+    }
     const isNewType = _.includes(
-      [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
+      [
+        CHANGE_PROPOSAL,
+        CHANGE_SECRETARY,
+        TERMINATE_PROPOSAL,
+        CHANGE_CUSTOMIZED_ID_FEE
+      ],
       type
     )
     if (isNewType) {
@@ -96,15 +107,20 @@ class C extends BaseComponent {
   handleSave = (e, callback, isNotDraft = true) => {
     e.preventDefault()
     const { form } = this.props
-
+    const { type } = this.state
     form.validateFields(async (err, values) => {
       if (err) {
-        this.setState({
-          loading: false,
-          errorKeys: err,
-          activeKey: this.getActiveKey(Object.keys(err)[0])
-        })
-        return
+        const keys = Object.keys(err)
+        const isGoalErr = keys.length === 1 && keys[0] === 'goal'
+        const condition = type !== '1' && isGoalErr
+        if (!condition) {
+          this.setState({
+            loading: false,
+            errorKeys: err,
+            activeKey: this.getActiveKey(Object.keys(err)[0])
+          })
+          return
+        }
       }
       if (isNotDraft) {
         this.setState({ loading: true })
@@ -267,6 +283,18 @@ class C extends BaseComponent {
           }
           values.customizedIDBindToDID = type.customizedIDBindToDID
           break
+        case CHANGE_CUSTOMIZED_ID_FEE:
+          if (!saveDraft && !type.customizedIDFee) {
+            message.error(I18N.get('suggestion.form.error.rateFactor'))
+            return
+          }
+          if (!saveDraft && !type.effectiveHeightOfEID) {
+            message.error(I18N.get('suggestion.form.error.effectiveHeight'))
+            return
+          }
+          values.customizedIDFee = type.customizedIDFee
+          values.effectiveHeightOfEID = type.effectiveHeightOfEID
+          break
         default:
           break
       }
@@ -427,10 +455,35 @@ class C extends BaseComponent {
     this.setState({ budgetValidator: x })
   }
 
+  validateSideChainDetails = (rule, value, cb) => {
+    if (!value) {
+      return cb(I18N.get('suggestion.form.error.required'))
+    }
+    const fields = [
+      'name',
+      'magic',
+      'genesisHash',
+      'effectiveHeight',
+      'exchangeRate',
+      'resourcePath'
+    ]
+    for (let i = 0; i < fields.length; i++) {
+      if (value && !value[fields[i]]) {
+        return cb(I18N.get('suggestion.form.error.required'))
+      }
+    }
+    return cb()
+  }
+
   changeType = (type) => {
     let tabs = TAB_KEYS
     const isNewType = _.includes(
-      [CHANGE_PROPOSAL, CHANGE_SECRETARY, TERMINATE_PROPOSAL],
+      [
+        CHANGE_PROPOSAL,
+        CHANGE_SECRETARY,
+        TERMINATE_PROPOSAL,
+        CHANGE_CUSTOMIZED_ID_FEE
+      ],
       type
     )
     if (isNewType) {
@@ -442,12 +495,15 @@ class C extends BaseComponent {
     if (type === RECEIVE_CUSTOMIZED_ID) {
       tabs = ['type', 'abstract', 'motivation', 'receivedCustomizedIDList']
     }
+    if (type === REGISTER_SIDE_CHAIN) {
+      tabs = ['type', 'abstract', 'motivation', 'sideChainDetails']
+    }
     this.setState({ type, tabs, errorKeys: {}, activeKey: 'type' })
   }
 
   getTextarea(id) {
     const { dupData, controVar } = this.state
-    const { getFieldDecorator, getFieldsValue } = this.props.form
+    const { getFieldDecorator } = this.props.form
 
     let initialValues
     if (!_.isEmpty(dupData)) {
@@ -492,6 +548,13 @@ class C extends BaseComponent {
           data = {
             type: initialValues.type,
             customizedIDBindToDID: initialValues.customizedIDBindToDID
+          }
+          break
+        case CHANGE_CUSTOMIZED_ID_FEE:
+          data = {
+            type: initialValues.type,
+            customizedIDFee: initialValues.customizedIDFee,
+            effectiveHeightOfEID: initialValues.effectiveHeightOfEID
           }
           break
         default:
@@ -605,6 +668,26 @@ class C extends BaseComponent {
           callback={this.onTextareaChange}
           initialValue={receivedCustomizedIDList}
           getCustomizedIDList={this.props.getCustomizedIDList}
+        />
+      )
+    }
+
+    if (id === 'sideChainDetails') {
+      let sideChainDetails = {}
+      if (initialValues.sideChainDetails) {
+        sideChainDetails = initialValues.sideChainDetails
+      }
+      return getFieldDecorator('sideChainDetails', {
+        rules: [
+          {
+            validator: this.validateSideChainDetails
+          }
+        ],
+        initialValue: initialValues[id]
+      })(
+        <SideChainDetails
+          initialValue={sideChainDetails}
+          callback={this.onTextareaChange}
         />
       )
     }
@@ -724,7 +807,7 @@ class C extends BaseComponent {
                   {item === 'teamInfo' ? null : (
                     <Note>{I18N.get(`suggestion.form.note.${item}`)}</Note>
                   )}
-                  <FormItem>{this.getTextarea(item)}</FormItem>
+                  <FormItem className={item}>{this.getTextarea(item)}</FormItem>
                   {item === 'abstract' ? this.renderWordLimit() : null}
                 </TabPaneInner>
               </TabPane>
