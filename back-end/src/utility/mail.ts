@@ -1,17 +1,6 @@
 import * as _ from 'lodash'
 import * as nodemailer from 'nodemailer'
 
-// create reusable transporter object using the default SMTP transport
-const transporter = nodemailer.createTransport({
-  host: process.env.NODEMAILER_HOST,
-  port: 465,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: process.env.NODEMAILER_USER, // generated ethereal user
-    pass: process.env.NODEMAILER_PASS // generated ethereal password
-  }
-})
-
 export default {
   async send(options) {
     try {
@@ -22,9 +11,23 @@ export default {
         subject: subject,
         html: body
       }
-      if (process.env.NODE_ENV === 'dev') {
-        console.log('Debug - Sending Mail:', data)
-      }
+      console.log('Debug - Sending Mail:', data)
+
+      //   if (process.env.NODE_ENV === 'dev') {
+      //     console.log('Debug - Sending Mail:', data)
+      //   }
+
+      // create reusable transporter object using the default SMTP transport
+      const transporter = nodemailer.createTransport({
+        host: process.env.NODEMAILER_HOST,
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+          user: process.env.NODEMAILER_USER, // generated ethereal user
+          pass: process.env.NODEMAILER_PASS // generated ethereal password
+        }
+      })
+
       // send mail with defined transport object
       await transporter.sendMail(data)
     } catch (err) {
