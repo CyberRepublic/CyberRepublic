@@ -1,12 +1,12 @@
 import * as _ from 'lodash'
-import nodemailer from 'nodemailer'
+import * as nodemailer from 'nodemailer'
 
 export default {
   async send(options) {
     const { to, toName, subject, body } = options
 
     const data = {
-      from: 'Cyber Republic - Elastos <no-reply@elastosjs.com>',
+      from: 'Cyber Republic - Elastos <no-reply@cyberrepublic.org>',
       to: _.isArray(to) ? to : `${toName} <${to}>`,
       subject: subject,
       html: body
