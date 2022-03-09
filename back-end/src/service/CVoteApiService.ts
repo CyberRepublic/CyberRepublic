@@ -408,18 +408,23 @@ export default class extends Base {
     }
 
     if (type === CVOTE_TYPE.CHANGE_PROPOSAL) {
-      if (proposal.newOwnerDID) {
-        data.newOwnerDID = proposal.newOwnerDID
-      }
-      data.newrecipient = proposal.newRecipient
       const rs = await db_cvote
         .getDBInstance()
-        .findOne({ vid: parseInt(proposal.targetProposalNum) })
+        .findOne({ vid: parseInt(proposal.targetProposalNum) }, 'title')
+        .populate('proposer', 'did.id')
+      console.log('rs...', rs)
       if (rs) {
         data.targetProposalTitle = rs.title
       }
       data.targetProposalHash = proposal.targetProposalHash
       data.targetProposalID = proposal.targetProposalNum
+      if (proposal.newOwnerDID) {
+        data.newOwnerDID = proposal.newOwnerDID
+      } else if (rs) {
+        console.log('rs.proposer.did.id', rs.proposer.did.id)
+        data.newOwnerDID = rs.proposer.did.id.slice(DID_PREFIX.length - 1)
+      }
+      data.newRecipient = proposal.newAddress
     }
 
     if (type === CVOTE_TYPE.TERMINATE_PROPOSAL) {
