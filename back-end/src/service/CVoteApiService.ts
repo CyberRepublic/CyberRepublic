@@ -412,7 +412,6 @@ export default class extends Base {
         .getDBInstance()
         .findOne({ vid: parseInt(proposal.targetProposalNum) }, 'title')
         .populate('proposer', 'did.id')
-      console.log('rs...', rs)
       if (rs) {
         data.targetProposalTitle = rs.title
       }
@@ -421,8 +420,7 @@ export default class extends Base {
       if (proposal.newOwnerDID) {
         data.newOwnerDID = proposal.newOwnerDID
       } else if (rs) {
-        console.log('rs.proposer.did.id', rs.proposer.did.id)
-        data.newOwnerDID = rs.proposer.did.id.slice(DID_PREFIX.length - 1)
+        data.newOwnerDID = rs.proposer.did.id.slice(DID_PREFIX.length)
       }
       data.newRecipient = proposal.newAddress
     }
