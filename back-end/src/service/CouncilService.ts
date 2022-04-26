@@ -3,7 +3,6 @@ import { constant } from '../constant'
 import { CVOTE_STATUS_TO_WALLET_STATUS } from './CVoteService'
 import { ela, getInformationByDid, getDidName } from '../utility'
 import * as moment from 'moment'
-import { isNumber } from 'lodash'
 
 const _ = require('lodash')
 

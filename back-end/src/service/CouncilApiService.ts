@@ -8,14 +8,15 @@ import { timestamp, ela } from '../utility'
  * API v1 and v2 for ELA Wallet and Essentials
  */
 
-export const CVOTE_STATUS_TO_WALLET_STATUS = {
-  [constant.CVOTE_STATUS.PROPOSED]: 'VOTING',
-  [constant.CVOTE_STATUS.NOTIFICATION]: 'NOTIFICATION',
-  [constant.CVOTE_STATUS.ACTIVE]: 'ACTIVE',
-  [constant.CVOTE_STATUS.FINAL]: 'FINAL',
-  [constant.CVOTE_STATUS.REJECT]: 'REJECTED',
-  [constant.CVOTE_STATUS.DEFERRED]: 'REJECTED',
-  [constant.CVOTE_STATUS.VETOED]: 'VETOED'
+const PROPOSAL_STATUS_TO_CHAIN_STATUS = {
+  [constant.CVOTE_STATUS.PROPOSED]: 'registered',
+  [constant.CVOTE_STATUS.NOTIFICATION]: 'cragreed',
+  [constant.CVOTE_STATUS.ACTIVE]: 'voteragreed',
+  [constant.CVOTE_STATUS.FINAL]: 'finished',
+  [constant.CVOTE_STATUS.REJECT]: 'crcanceled',
+  [constant.CVOTE_STATUS.VETOED]: 'votercanceled',
+  [constant.CVOTE_STATUS.TERMINATED]: 'terminated',
+  [constant.CVOTE_STATUS.ABORTED]: 'aborted'
 }
 
 export default class extends Base {
@@ -37,7 +38,6 @@ export default class extends Base {
 
   public async term(): Promise<any> {
     const fields = ['index', 'startDate', 'endDate', 'status']
-
     const result = await this.model.getDBInstance().find({}, fields)
 
     const currentConfig = await this.configModel.getDBInstance().findOne()
@@ -196,6 +196,7 @@ export default class extends Base {
     }
   }
 
+  // API-6
   public async councilInformation(param: any): Promise<any> {
     const db_cvote_history = this.getDBModel('CVote_Vote_History')
     let { id, did } = param
@@ -372,7 +373,7 @@ export default class extends Base {
               id: o.vid,
               title: o.title,
               didName,
-              status: CVOTE_STATUS_TO_WALLET_STATUS[o.status],
+              status: PROPOSAL_STATUS_TO_CHAIN_STATUS[o.status],
               voteResult: currentVoteResult,
               createdAt: moment(o.createdAt).unix()
             }
