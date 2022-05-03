@@ -14,7 +14,6 @@ const { analytics, location } = window
 export default class extends BaseComponent {
   handleMenuClick(ev) {
     const key = ev.key
-    const { isLogin } = this.props
 
     if (
       _.includes(
@@ -40,7 +39,7 @@ export default class extends BaseComponent {
           'whitepaper',
           'council',
           'candidates',
-          'what-is-new',
+          'what-is-new'
           // 'elips'
         ],
         key
@@ -123,9 +122,9 @@ export default class extends BaseComponent {
                 {I18N.get('navigation.proposal')}
               </Menu.Item>
 
-              <Menu.Item key="blog">
+              {/* <Menu.Item key="blog">
                 {I18N.get('navigation.resources.submenu.blog')}
-              </Menu.Item>
+              </Menu.Item> */}
             </Menu>
           </Col>
         </Row>
@@ -137,9 +136,6 @@ export default class extends BaseComponent {
               )}
               {!isLogin && (
                 <Menu.Item key="login">{I18N.get('0201')}</Menu.Item>
-              )}
-              {!isLogin && (
-                <Menu.Item key="register">{I18N.get('0202')}</Menu.Item>
               )}
               {isLogin && (
                 <Menu.Item key="logout" style={{ color: 'red' }}>

@@ -3,7 +3,9 @@ import BaseComponent from '@/model/BaseComponent'
 import { Col, Row } from 'antd'
 import I18N from '@/I18N'
 import { ELASTOS_LINKS } from '@/constant'
-
+import Mail from '@/assets/svg/mail'
+import Twitter from '@/assets/svg/twitter'
+import Discord from '../../../assets/svg/discord'
 import './style.scss'
 
 export default class extends BaseComponent {
@@ -13,12 +15,6 @@ export default class extends BaseComponent {
         <div className="horizGap" />
         <div className="footer-box">
           <Row className="d_rowFooter d_footerSection">
-            <Col className="shield" xs={24} sm={12} md={5}>
-              <img
-                className="logo_own"
-                src="/assets/images/footer-shield.svg"
-              />
-            </Col>
             <Col className="resources" xs={24} sm={12} md={5}>
               <div className="links footer-vertical-section">
                 <div className="title brand-color">
@@ -28,33 +24,8 @@ export default class extends BaseComponent {
                   <a href="/vision">{I18N.get('vision.00')}</a>
                 </div>
                 <div className="footer-color-dark">
-                  <a href={ELASTOS_LINKS.WALLET} target="_blank">
-                    {I18N.get('landing.footer.wallet')}
-                  </a>
-                </div>
-                <div className="footer-color-dark">
-                  <a href={ELASTOS_LINKS.EXPLORER} target="_blank">
-                    {I18N.get('landing.footer.explorer')}
-                  </a>
-                </div>
-                <div className="footer-color-dark">
                   <a href={ELASTOS_LINKS.GITHUB} target="_blank">
                     {I18N.get('landing.footer.github')}
-                  </a>
-                </div>
-                <div className="footer-color-dark">
-                  <a
-                    href={`${
-                      ELASTOS_LINKS.GITHUB
-                    }/Elastos.Community/tree/master/CyberRepublicLogoAssets`}
-                    target="_blank"
-                  >
-                    {I18N.get('landing.footer.assets')}
-                  </a>
-                </div>
-                <div className="footer-color-dark">
-                  <a href={ELASTOS_LINKS.NEWS} target="_blank">
-                    {I18N.get('landing.footer.elaNews')}
                   </a>
                 </div>
                 <div className="footer-color-dark">
@@ -76,21 +47,14 @@ export default class extends BaseComponent {
                   {I18N.get('landing.footer.contact')}
                 </div>
                 <div className="footer-color-dark">
-                  {I18N.get('landing.cr')}:{' '}
                   <a href="mailto:cyberrepublic@elastos.org">
-                    cyberrepublic@elastos.org
+                    <Mail fill="#5E6C86" />
                   </a>
-                </div>
-                <div className="footer-color-dark">
-                  Twitter:{' '}
                   <a href="https://twitter.com/cyber__republic">
-                    https://twitter.com/cyber__republic
+                    <Twitter fill="#5E6C86" />
                   </a>
-                </div>
-                <div className="footer-color-dark">
-                  Discord:{' '}
                   <a href="https://discord.gg/elastos">
-                    https://discord.gg/elastos
+                    <Discord fill="#5E6C86" />
                   </a>
                 </div>
               </div>

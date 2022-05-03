@@ -483,24 +483,6 @@ export default class extends StandardPage {
                 {I18N.get('suggestion.intro.1.proposals')}
               </Link>
               {I18N.get('suggestion.intro.1.1')}
-              <br />
-              <br />
-              {I18N.get('suggestion.intro.3')}
-              {localStorage.getItem('lang') === 'en' ? (
-                <a
-                  href="https://www.cyberrepublic.org/docs/#/guide/suggestions"
-                  target="_blank"
-                >
-                  https://www.cyberrepublic.org/docs/#/guide/suggestions
-                </a>
-              ) : (
-                <a
-                  href="https://www.cyberrepublic.org/docs/#/zh/guide/suggestions"
-                  target="_blank"
-                >
-                  https://www.cyberrepublic.org/docs/#/zh/guide/suggestions
-                </a>
-              )}
             </HeaderDesc>
           </SuggestionContainer>
         </HeaderDiagramContainer>

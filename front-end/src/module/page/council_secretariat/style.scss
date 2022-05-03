@@ -16,7 +16,7 @@ $maxWithContent: 888px;
     color: white;
     cursor: pointer;
   }
-  
+
   /*
   ************************************************************************
   Sections / General
@@ -146,7 +146,7 @@ $maxWithContent: 888px;
 
     .big-rect {
       width: 260px;
-      height: 344px;
+      height: 300px;
       background: #172c3b;
       .content {
         padding: 125px 20px 0;
@@ -162,18 +162,10 @@ $maxWithContent: 888px;
           font-size: 30px;
           color: #ffffff;
         }
-        
+
         .self-intro {
           font-family: 'synthese', sans-serif;
-          // display: -webkit-box;
-          // /*!autoprefixer:off*/
-          // -webkit-box-orient: vertical;
-          // /*autoprefixer:on*/
-          // -webkit-line-clamp: 3;
-          // overflow: hidden;
-          // text-overflow: ellipsis;
-          /*! autoprefixer: off */
-          -webkit-box-orient: vertical; 
+          -webkit-box-orient: vertical;
           -webkit-line-clamp: 3;
           overflow: hidden;
           text-overflow: ellipsis;

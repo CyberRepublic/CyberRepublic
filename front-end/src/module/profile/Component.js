@@ -3,14 +3,14 @@ import _ from 'lodash'
 import BaseComponent from '@/model/BaseComponent'
 import UserEditForm from '@/module/form/UserEditForm/Container'
 import I18N from '@/I18N'
-import {Col, Row, Icon, Spin, Modal, Upload, Avatar} from 'antd'
+import { Col, Row, Icon, Spin, Modal, Upload, Avatar } from 'antd'
 import moment from 'moment-timezone'
 import { upload_file } from '@/util'
 import { getSafeUrl } from '@/util/url'
 import {
   USER_AVATAR_DEFAULT,
   LINKIFY_OPTION,
-  USER_ROLE_TO_TEXT,
+  USER_ROLE_TO_TEXT
 } from '@/constant'
 import config from '@/config'
 import MediaQuery from 'react-responsive'
@@ -34,7 +34,7 @@ export default class extends BaseComponent {
     super(props)
 
     this.state = {
-      editing: false,
+      editing: false
     }
   }
 
@@ -220,7 +220,7 @@ export default class extends BaseComponent {
           style={{
             backgroundImage: this.getBannerWithFallback(
               url || this.props.user.profile.banner
-            ),
+            )
           }}
         />
         <Icon
@@ -241,39 +241,40 @@ export default class extends BaseComponent {
             profile: {
               avatar: d.url,
               avatarFilename: d.filename,
-              avatarFileType: d.type,
-            },
+              avatarFileType: d.type
+            }
           })
 
           await this.props.getCurrentUser()
         })
-      },
+      }
     }
 
     const renderAvatar = () => {
-      const { avatar, firstName, lastName} = this.props.user.profile || {}
+      const { avatar, firstName, lastName } = this.props.user.profile || {}
 
       if (avatar || (!firstName && !lastName)) {
         return (
           <Avatar
-                src={avatar || USER_AVATAR_DEFAULT}
-                shape="square"
-                size={142}
-            />
+            src={avatar || USER_AVATAR_DEFAULT}
+            shape="square"
+            size={142}
+          />
         )
       }
 
       if (firstName || lastName) {
         return (
           <Avatar
-                style={{
-                  backgroundColor: '#000',
-                  fontSize: 64
-                }}
-                shape="square"
-                size={142}
-            >
-            {`${firstName && firstName.toUpperCase().substr(0, 1)}${lastName && lastName.toUpperCase().substr(0, 1)}`}
+            style={{
+              backgroundColor: '#000',
+              fontSize: 64
+            }}
+            shape="square"
+            size={142}
+          >
+            {`${firstName && firstName.toUpperCase().substr(0, 1)}${lastName &&
+              lastName.toUpperCase().substr(0, 1)}`}
           </Avatar>
         )
       }
@@ -388,10 +389,7 @@ export default class extends BaseComponent {
     return (
       <div className="skillset-container">
         {_.map(this.props.user.profile.skillset || [], (skillset) => (
-          <div key={skillset}>
-+
-            {I18N.get(`user.skillset.${skillset}`)}
-          </div>
+          <div key={skillset}>+{I18N.get(`user.skillset.${skillset}`)}</div>
         ))}
       </div>
     )
@@ -414,13 +412,8 @@ export default class extends BaseComponent {
               target="_blank"
               className="link-container"
             >
-              <Icon type="link" />
-              {' '}
-              <span>
-                {' '}
-                {I18N.get('profile.portfolio')}
-                {' '}
-              </span>
+              <Icon type="link" />{' '}
+              <span> {I18N.get('profile.portfolio')} </span>
             </a>
           </div>
         )}
@@ -443,7 +436,7 @@ export default class extends BaseComponent {
     const user = this.props.user
     const localTime = user.profile.timezone
       ? now.tz(user.profile.timezone).format('LT z')
-      : 'Unknown'
+      : now.format('LT z')
 
     return (
       <div
@@ -453,9 +446,7 @@ export default class extends BaseComponent {
       >
         <Icon type="clock-circle" />
         <span>
-          {I18N.get('profile.localTime')}
-          {' '}
-          {localTime}
+          {I18N.get('profile.localTime')} {localTime}
         </span>
       </div>
     )
@@ -525,7 +516,7 @@ export default class extends BaseComponent {
 
   switchEditMode() {
     this.setState({
-      editing: !this.state.editing,
+      editing: !this.state.editing
     })
   }
 }
