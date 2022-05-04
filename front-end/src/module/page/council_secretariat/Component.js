@@ -138,11 +138,11 @@ export default class extends StandardPage {
                           <Label>{I18N.get('cs.did')}:</Label> {item.did}
                         </Popover>
                       </Did>
-                      {/* <Email>
+                      <Email>
                         <Popover content={item.email} placement="topLeft">
                           <Label>{I18N.get('cs.contact')}:</Label> {item.email}
                         </Popover>
-                      </Email> */}
+                      </Email>
                     </div>
                   </div>
                 </Col>
