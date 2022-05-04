@@ -18,7 +18,7 @@ export default class extends StandardPage {
     this.state = {
       // save the page you are on
       tab: this.props.council.tab || '1',
-      councils: {},
+      councils: [],
       secretariat: {}
     }
   }
@@ -81,9 +81,17 @@ export default class extends StandardPage {
       <div className="incumbent">
         <div className="title">{I18N.get('cs.incumbent')}</div>
         <Row className="members">
-          {councils !== undefined
-            ? councils.councilMembers &&
-              councils.councilMembers.map((item) => (
+          {councils &&
+            councils.map((item) => {
+              let name = item.didName ? item.didName : ''
+              if (!name && item.user && item.user.did) {
+                name = item.user.did.didName
+              }
+              let email = item.email ? item.email : ''
+              if (!email && item.user) {
+                email = item.user.email
+              }
+              return (
                 <Col lg={8} md={8} sm={24} className="member" key={item.index}>
                   <div className="small-rect">
                     <Avatar
@@ -96,7 +104,7 @@ export default class extends StandardPage {
 
                   <div className="big-rect">
                     <div className="content">
-                      <h3 className="name">{item.didName}</h3>
+                      <h3 className="name">{name}</h3>
 
                       {/* <div className="self-intro">
                         <Popover
@@ -139,15 +147,15 @@ export default class extends StandardPage {
                         </Popover>
                       </Did>
                       <Email>
-                        <Popover content={item.email} placement="topLeft">
-                          <Label>{I18N.get('cs.contact')}:</Label> {item.email}
+                        <Popover content={email} placement="topLeft">
+                          <Label>{I18N.get('cs.contact')}:</Label> {email}
                         </Popover>
                       </Email>
                     </div>
                   </div>
                 </Col>
-              ))
-            : null}
+              )
+            })}
         </Row>
       </div>
     )
