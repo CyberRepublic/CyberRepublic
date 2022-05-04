@@ -1,10 +1,9 @@
 import React from 'react'
-import { Col, Row, Avatar, Tabs, Button, Popover } from 'antd'
+import { Col, Row, Avatar, Tabs, Popover } from 'antd'
 import styled from 'styled-components'
 import Footer from '@/module/layout/Footer/Container'
 import I18N from '@/I18N'
 import StandardPage from '../StandardPage'
-import PersonCard from './PersonCard'
 import BGImg from './BGImg'
 import { text, border } from '@/constants/color'
 import { breakPoint } from '@/constants/breakPoint'
@@ -33,23 +32,6 @@ export default class extends StandardPage {
   }
 
   ord_renderContent() {
-    const toastMsg = (
-      <div>
-        {I18N.get('cs.secretariat.positions.toastMsg')}
-        <Button
-          className="btn-view-open"
-          onClick={async () => {
-            this.tabChange('SECRETARIAT')
-            window.scrollTo(
-              0,
-              document.getElementById('open-positions').offsetTop
-            )
-          }}
-        >
-          {I18N.get('cs.secretariat.positions.open')}
-        </Button>
-      </div>
-    )
     return (
       <div className="p_cs">
         <div className="ebp-header-divider" />
@@ -75,7 +57,6 @@ export default class extends StandardPage {
 
   buildIncumbent() {
     const { councils } = this.state
-    const lang = localStorage.getItem('lang') || 'en'
 
     return (
       <div className="incumbent">
@@ -83,19 +64,34 @@ export default class extends StandardPage {
         <Row className="members">
           {councils &&
             councils.map((item) => {
-              let name = item.didName ? item.didName : ''
-              if (!name && item.user && item.user.did) {
-                name = item.user.did.didName
-              }
-              let email = item.email ? item.email : ''
-              if (!email && item.user) {
-                email = item.user.email
-              }
+              let email = item.email
+                ? item.email
+                : item.user && item.user.email
+                  ? item.user.email
+                  : ''
+
+              const profile = item.user && item.user.profile
+              let avatar = item.avatar
+                ? item.avatar
+                : profile && profile.avatar
+                  ? profile.avatar
+                  : ''
+
+              const firstname =
+                profile && profile.firstName ? profile.firstName : ''
+              const lastname =
+                profile && profile.lastName ? profile.lastName : ''
+              let did = item.user && item.user.did
+              let name = item.didName
+                ? item.didName
+                : did && did.didName
+                  ? did.didName
+                  : firstname + ' ' + lastname
               return (
                 <Col lg={8} md={8} sm={24} className="member" key={item.index}>
                   <div className="small-rect">
                     <Avatar
-                      src={item.avatar}
+                      src={avatar}
                       shape="square"
                       size={220}
                       icon="user"
@@ -105,42 +101,6 @@ export default class extends StandardPage {
                   <div className="big-rect">
                     <div className="content">
                       <h3 className="name">{name}</h3>
-
-                      {/* <div className="self-intro">
-                        <Popover
-                          content={
-                            lang === 'en'
-                              ? item.introduction
-                                ? item.introduction.split('\n').length > 1
-                                  ? item.introduction.split('\n')[0]
-                                  : item.introduction.split('\n')[0]
-                                : null
-                              : item.introduction
-                                ? item.introduction.split('\n').length > 1
-                                  ? item.introduction.split('\n')[1]
-                                  : item.introduction.split('\n')[0]
-                                : null
-                          }
-                          title={I18N.get('cs.intro')}
-                          overlayStyle={{
-                            width: 400 + 'px',
-                            padding: 10 + 'px',
-                            wordBreak: 'keep-all'
-                          }}
-                        >
-                          {lang === 'en'
-                            ? item.introduction
-                              ? item.introduction.split('\n').length > 1
-                                ? item.introduction.split('\n')[0]
-                                : item.introduction.split('\n')[0]
-                              : null
-                            : item.introduction
-                              ? item.introduction.split('\n').length > 1
-                                ? item.introduction.split('\n')[1]
-                                : item.introduction.split('\n')[0]
-                              : null}
-                        </Popover>
-                      </div> */}
                       <Did>
                         <Popover content={item.did} placement="topLeft">
                           <Label>{I18N.get('cs.did')}:</Label> {item.did}
@@ -163,19 +123,21 @@ export default class extends StandardPage {
 
   buildSecretariat() {
     const { secretariat } = this.state
-    const lang = localStorage.getItem('lang') || 'en'
 
-    const avatar = secretariat.avatar
+    const profile = secretariat.user && secretariat.user.profile
+
+    let avatar = secretariat.avatar
       ? secretariat.avatar
-      : secretariat.user && secretariat.user.avatar
+      : profile && profile.avatar
+        ? profile.avatar
+        : ''
 
     const email = secretariat.email
       ? secretariat.email
-      : secretariat.user
+      : secretariat.user && secretariat.user.email
         ? secretariat.user.email
         : ''
 
-    const profile = secretariat.user && secretariat.user.profile
     const firstname = profile && profile.firstName ? profile.firstName : ''
     const lastname = profile && profile.lastName ? profile.lastName : ''
 
@@ -195,43 +157,6 @@ export default class extends StandardPage {
             <div className="big-rect">
               <div className="content">
                 <h3 className="name">{name}</h3>
-                {/* {secretariat.introduction && (
-                  <div className="self-intro">
-                    <Popover
-                      content={
-                        lang === 'en'
-                          ? secretariat.introduction
-                            ? secretariat.introduction.split('\n').length > 1
-                              ? secretariat.introduction.split('\n')[0]
-                              : secretariat.introduction.split('\n')[0]
-                            : null
-                          : secretariat.introduction
-                            ? secretariat.introduction.split('\n').length > 1
-                              ? secretariat.introduction.split('\n')[1]
-                              : secretariat.introduction.split('\n')[0]
-                            : null
-                      }
-                      title={I18N.get('cs.intro')}
-                      overlayStyle={{
-                        width: 400 + 'px',
-                        padding: 10 + 'px',
-                        wordBreak: 'keep-all'
-                      }}
-                    >
-                      {lang === 'en'
-                        ? secretariat.introduction
-                          ? secretariat.introduction.split('\n').length > 1
-                            ? secretariat.introduction.split('\n')[0]
-                            : secretariat.introduction.split('\n')[0]
-                          : null
-                        : secretariat.introduction
-                          ? secretariat.introduction.split('\n').length > 1
-                            ? secretariat.introduction.split('\n')[1]
-                            : secretariat.introduction.split('\n')[0]
-                          : null}
-                    </Popover>
-                  </div>
-                )} */}
                 <Did>
                   <Popover content={secretariat.did} placement="topLeft">
                     <Label>{I18N.get('cs.did')}:</Label> {secretariat.did}
