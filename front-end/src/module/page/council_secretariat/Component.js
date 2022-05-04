@@ -98,7 +98,7 @@ export default class extends StandardPage {
                     <div className="content">
                       <h3 className="name">{item.didName}</h3>
 
-                      <div className="self-intro">
+                      {/* <div className="self-intro">
                         <Popover
                           content={
                             lang === 'en'
@@ -132,17 +132,17 @@ export default class extends StandardPage {
                                 : item.introduction.split('\n')[0]
                               : null}
                         </Popover>
-                      </div>
+                      </div> */}
                       <Did>
                         <Popover content={item.did} placement="topLeft">
                           <Label>{I18N.get('cs.did')}:</Label> {item.did}
                         </Popover>
                       </Did>
-                      <Email>
+                      {/* <Email>
                         <Popover content={item.email} placement="topLeft">
                           <Label>{I18N.get('cs.contact')}:</Label> {item.email}
                         </Popover>
-                      </Email>
+                      </Email> */}
                     </div>
                   </div>
                 </Col>
@@ -187,7 +187,7 @@ export default class extends StandardPage {
             <div className="big-rect">
               <div className="content">
                 <h3 className="name">{name}</h3>
-                {secretariat.introduction && (
+                {/* {secretariat.introduction && (
                   <div className="self-intro">
                     <Popover
                       content={
@@ -223,7 +223,7 @@ export default class extends StandardPage {
                           : null}
                     </Popover>
                   </div>
-                )}
+                )} */}
                 <Did>
                   <Popover content={secretariat.did} placement="topLeft">
                     <Label>{I18N.get('cs.did')}:</Label> {secretariat.did}

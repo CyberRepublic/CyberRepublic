@@ -712,6 +712,7 @@ export default class extends Base {
   public async didCallbackEla(param: any) {
     try {
       const jwtToken = param.jwt
+      console.log('didCallbackEla jwtToken...', param.jwt)
       const claims: any = jwt.decode(jwtToken)
       if (!claims || !claims.req) {
         return {
@@ -728,7 +729,20 @@ export default class extends Base {
           message: 'The payload of jwt token is not correct.'
         }
       }
-      const reqToken = claims.req.slice(constant.accessJwtPrefix.length)
+      let reqToken: any
+      if (
+        claims.req.slice(0, constant.oldAccessJwtPrefix.length) ===
+        constant.oldAccessJwtPrefix
+      ) {
+        reqToken = claims.req.slice(constant.oldAccessJwtPrefix.length)
+      } else if (
+        claims.req.slice(0, constant.accessJwtPrefix.length) ===
+        constant.accessJwtPrefix
+      ) {
+        reqToken = claims.req.slice(constant.accessJwtPrefix.length)
+      } else {
+        reqToken = claims.req
+      }
       console.log('didCallbackEla reqToken...', reqToken)
       const payload: any = jwt.decode(reqToken)
       if (!payload || (payload && !payload.userId)) {
@@ -748,8 +762,10 @@ export default class extends Base {
           message: 'User ID does not exist.'
         }
       }
+      console.log('didCallbackEla user.email...', user.email)
 
       const rs: any = await getDidPublicKey(claims.iss)
+      console.log('didCallbackEla rs...', rs)
       if (!rs) {
         const did = {
           message: `Can not get your did's public key.`
@@ -767,6 +783,7 @@ export default class extends Base {
         jwtToken,
         rs.publicKey,
         async (err: any, decoded: any) => {
+          console.log('didCallbackEla err...', err)
           if (err) {
             const did = { message: 'Verify signatrue failed.' }
             await db_user.update({ _id: payload.userId }, { $set: { did } })
@@ -778,6 +795,7 @@ export default class extends Base {
           } else {
             try {
               const doc = await this.findUserByDid(decoded.iss)
+              console.log('didCallbackEla doc._id...', doc._id)
               if (doc && !doc._id.equals(payload.userId)) {
                 const did = {
                   message: 'This DID had been used by other user.'
@@ -793,7 +811,9 @@ export default class extends Base {
                 id: decoded.iss,
                 compressedPublicKey: rs.compressedPublicKey
               }
+              console.log('didCallbackEla did...', did)
               await db_user.update({ _id: payload.userId }, { $set: { did } })
+              console.log('didCallbackEla done')
               return { code: 200, success: true, message: 'Ok' }
             } catch (err) {
               logger.error(err)

@@ -21,7 +21,7 @@ export const CR_LINKS = {
 
 export const ELASTOS_LINKS = {
   EXPLORER: 'https://blockchain.elastos.org/status',
-  GITHUB: 'https://github.com/elastos',
+  GITHUB: 'https://github.com/cyber-republic',
   NEWS: 'https://news.elastos.org',
   WALLET: ' https://www.trinity-tech.io ',
   WWW: 'https://www.elastos.org'

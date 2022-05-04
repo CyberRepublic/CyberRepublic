@@ -1,6 +1,5 @@
-
-@import "../../../style/variable";
-@import "../../../style/color";
+@import '../../../style/variable';
+@import '../../../style/color';
 
 .d_rowFooter {
   padding-bottom: $gap_2;
@@ -38,7 +37,6 @@
   }
 
   .footer-vertical-section {
-
     margin-top: 8px;
 
     .title {
@@ -62,9 +60,11 @@
 
   .footer-color-dark {
     margin-top: 8px;
-    color: $cr_light_color;
-
+    display: flex;
+    justify-items: center;
     > a {
+      display: inline-block;
+      margin-right: 10px;
       color: $cr_light_color;
     }
   }
@@ -72,5 +72,4 @@
   .contact-container .footer-color-dark > a {
     text-decoration: underline;
   }
-
 }

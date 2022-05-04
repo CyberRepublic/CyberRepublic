@@ -175,12 +175,6 @@ export default class extends BaseComponent {
 
     return (
       <Menu onClick={this.clickItem.bind(this)} className="help-menu">
-        <Menu.Item key="developer">{I18N.get('0102')}</Menu.Item>
-
-        <Menu.Item key="developer/learn">
-          {I18N.get('developer.learn')}
-        </Menu.Item>
-
         {this.props.isLogin && (
           <Menu.Item key="logout" style={{ color: 'red' }}>
             {I18N.get('0204')}
@@ -221,8 +215,8 @@ export default class extends BaseComponent {
         'whitepaper',
         'suggestion',
         // 'elips',
-        'proposals',
-        'blog'
+        'proposals'
+        // 'blog'
       ],
       (key) => ((this.props.pathname || '').indexOf(`/${key}`) === 0 ? key : '')
     )
@@ -241,6 +235,7 @@ export default class extends BaseComponent {
 
   ord_render() {
     const helpDropdown = this.buildHelpDropdown()
+    const isLogin = this.props.isLogin
     return (
       <Headroom>
         <Header className="c_Header">
@@ -262,15 +257,20 @@ export default class extends BaseComponent {
           </Menu>
 
           <Menu className="c_Header_Menu c_Side_Menu pull-right">
-            <Menu.Item className="c_MenuItem help no-margin" key="help">
-              <MediaQuery minWidth={MIN_WIDTH_PC}>
-                <Dropdown overlay={helpDropdown} style={{ marginTop: '24px' }}>
-                  <a className="ant-dropdown-link">
-                    <Hamburger />
-                  </a>
-                </Dropdown>
-              </MediaQuery>
-            </Menu.Item>
+            {isLogin && (
+              <Menu.Item className="c_MenuItem help no-margin" key="help">
+                <MediaQuery minWidth={MIN_WIDTH_PC}>
+                  <Dropdown
+                    overlay={helpDropdown}
+                    style={{ marginTop: '24px' }}
+                  >
+                    <a className="ant-dropdown-link">
+                      <Hamburger />
+                    </a>
+                  </Dropdown>
+                </MediaQuery>
+              </Menu.Item>
+            )}
             <Menu.Item
               className="c_MenuItem mobile"
               key="mobileMenu"
@@ -346,9 +346,9 @@ export default class extends BaseComponent {
               {I18N.get('navigation.proposal')}
             </Menu.Item>
 
-            <Menu.Item className="c_MenuItem link" key="blog">
+            {/* <Menu.Item className="c_MenuItem link" key="blog">
               {I18N.get('navigation.resources.submenu.blog')}
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
           <div className="clearfix" />
           {this.renderProfileToast()}
@@ -455,7 +455,7 @@ export default class extends BaseComponent {
           'council',
           'candidates',
           'constitution/1',
-          'whitepaper',
+          'whitepaper'
           // 'elips'
         ],
         key
