@@ -2,10 +2,10 @@ import React from 'react'
 import BaseComponent from '@/model/BaseComponent'
 import MediaQuery from 'react-responsive'
 import I18N from '@/I18N'
-import { Menu, Affix, Badge } from 'antd'
+import { Menu, Affix } from 'antd'
 import './style.scss'
 
-import _ from 'lodash'
+// import _ from 'lodash'
 
 import { MAX_WIDTH_MOBILE, MIN_WIDTH_PC } from '../../../../config/constant'
 
@@ -42,16 +42,17 @@ export default class extends BaseComponent {
     route && this.props.history.push(route)
   }
 
-  isProfileIncomplete() {
-    const isEmptyChecks = ['firstName', 'lastName', 'country', 'avatar']
+  // isProfileIncomplete() {
+  //   const isEmptyChecks = ['firstName', 'lastName', 'country', 'avatar']
 
-    return !_.every(
-      _.map(isEmptyChecks, (prop) => !_.isEmpty(this.props.user.profile[prop]))
-    )
-  }
+  //   return !_.every(
+  //     _.map(isEmptyChecks, (prop) => !_.isEmpty(this.props.user.profile[prop]))
+  //   )
+  // }
 
   ord_render() {
     // TODO check why we can not use redirect use this.props.history
+    console.log('profile page this.props...', this.props)
     return (
       <div className="navigator">
         <MediaQuery minWidth={MIN_WIDTH_PC}>
@@ -66,11 +67,8 @@ export default class extends BaseComponent {
               mode="inline"
             >
               <Menu.Item key="profileInfo">
-                {this.isProfileIncomplete() ? (
-                  <Badge status="processing" text={I18N.get('2300')} />
-                ) : (
-                  I18N.get('2300')
-                )}
+                {/* {this.isProfileIncomplete() ? <Badge status="processing" text={I18N.get('2300')} /> : I18N.get('2300')} */}
+                {I18N.get('2300')}
               </Menu.Item>
               <Menu.Item key="profileSuggestions">
                 {I18N.get('profile.suggestion')}

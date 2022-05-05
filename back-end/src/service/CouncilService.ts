@@ -874,10 +874,25 @@ export default class extends Base {
   }
 
   public async getCouncilSecretariat() {
-    const councils = await this.model
+    const currCouncils = await this.model
       .getDBInstance()
       .findOne({ status: constant.TERM_COUNCIL_STATUS.CURRENT })
 
+    const members = await this.userMode
+      .getDBInstance()
+      .find(
+        { role: constant.USER_ROLE.COUNCIL },
+        'did email profile.avatar profile.firstName profile.lastName'
+      )
+    let councils = currCouncils.councilMembers.map((c) => {
+      if (members) {
+        let rs = members.filter((m) => m.did.id === 'did:elastos:' + c.did)
+        if (rs[0]) {
+          c.user = rs[0]
+        }
+      }
+      return c
+    })
     const secretariat = await this.secretariatModel
       .getDBInstance()
       .findOne({ status: 'CURRENT' })
