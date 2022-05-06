@@ -70,9 +70,9 @@ export default class extends BaseComponent {
 
       let linkToBlog = 'https://blog.cyberrepublic.org'
 
-      if (I18N.getLang() === USER_LANGUAGE.zh) {
-        linkToBlog += `/${USER_LANGUAGE.zh}`
-      }
+      // if (I18N.getLang() === USER_LANGUAGE.zh) {
+      //   linkToBlog += `/${USER_LANGUAGE.zh}`
+      // }
 
       window.location.href = linkToBlog
     } else if (key === 'landing') {
@@ -122,9 +122,9 @@ export default class extends BaseComponent {
                 {I18N.get('navigation.proposal')}
               </Menu.Item>
 
-              {/* <Menu.Item key="blog">
+              <Menu.Item key="blog">
                 {I18N.get('navigation.resources.submenu.blog')}
-              </Menu.Item> */}
+              </Menu.Item>
             </Menu>
           </Col>
         </Row>
