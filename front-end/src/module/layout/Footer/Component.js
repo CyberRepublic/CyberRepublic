@@ -29,11 +29,6 @@ export default class extends BaseComponent {
                   </a>
                 </div>
                 <div className="footer-color-dark">
-                  <a href="/privacy">
-                    {I18N.get('landing.footer.privacyPolicy')}
-                  </a>
-                </div>
-                <div className="footer-color-dark">
                   <a href="/terms">
                     {I18N.get('landing.footer.termsAndConditions')}
                   </a>
@@ -47,7 +42,7 @@ export default class extends BaseComponent {
                   {I18N.get('landing.footer.contact')}
                 </div>
                 <div className="footer-color-dark">
-                  <a href="mailto:cyberrepublic@elastos.org">
+                  <a href="mailto:secretariat@cyberrepublic.org">
                     <Mail fill="#5E6C86" />
                   </a>
                   <a href="https://twitter.com/cyber__republic">

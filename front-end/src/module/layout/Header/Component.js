@@ -346,9 +346,9 @@ export default class extends BaseComponent {
               {I18N.get('navigation.proposal')}
             </Menu.Item>
 
-            {/* <Menu.Item className="c_MenuItem link" key="blog">
+            <Menu.Item className="c_MenuItem link" key="blog">
               {I18N.get('navigation.resources.submenu.blog')}
-            </Menu.Item> */}
+            </Menu.Item>
           </Menu>
           <div className="clearfix" />
           {this.renderProfileToast()}
@@ -422,8 +422,6 @@ export default class extends BaseComponent {
 
   clickItem = (e) => {
     const { key } = e
-    const { isLogin, user } = this.props
-
     if (
       _.includes(
         [
@@ -503,9 +501,9 @@ export default class extends BaseComponent {
 
       let linkToBlog = 'https://blog.cyberrepublic.org'
 
-      if (I18N.getLang() === USER_LANGUAGE.zh) {
-        linkToBlog += `/${USER_LANGUAGE.zh}`
-      }
+      // if (I18N.getLang() === USER_LANGUAGE.zh) {
+      //   linkToBlog += `/${USER_LANGUAGE.zh}`
+      // }
 
       window.open(linkToBlog, '_blank')
     } else if (_.includes(['en', 'zh'], key)) {
