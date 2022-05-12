@@ -795,8 +795,7 @@ export default class extends Base {
           } else {
             try {
               const doc = await this.findUserByDid(decoded.iss)
-              console.log('didCallbackEla doc._id...', doc._id)
-              if (doc && !doc._id.equals(payload.userId)) {
+              if (doc) {
                 const did = {
                   message: 'This DID had been used by other user.'
                 }
@@ -816,7 +815,7 @@ export default class extends Base {
               console.log('didCallbackEla done')
               return { code: 200, success: true, message: 'Ok' }
             } catch (err) {
-              logger.error(err)
+              console.log('didCallbackEla exception err...', err)
               return {
                 code: 500,
                 success: false,
