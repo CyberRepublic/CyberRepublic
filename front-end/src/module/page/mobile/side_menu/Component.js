@@ -82,10 +82,12 @@ export default class extends BaseComponent {
 
   ord_render() {
     const isLogin = this.props.user.is_login
-
     // animateStyle is passed in and handled by react-motion
     return (
-      <div className="c_mobileMenu" style={this.props.animateStyle}>
+      <div
+        className="c_mobileMenu"
+        style={{ ...this.props.animateStyle, zIndex: 1000 }}
+      >
         <Row>
           <Col className="right-align">
             <Icon
