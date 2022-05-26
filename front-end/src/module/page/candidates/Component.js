@@ -40,7 +40,7 @@ export default class extends StandardPage {
   handlePaginationChange = (pageNum) => {
     const start = (pageNum - 1) * PAGE_SIZE
     const end = pageNum * PAGE_SIZE
-    this.setState({ pageNum, list: candidates.slice(start, end) })
+    this.setState({ pageNum, list: this.state.candidates.slice(start, end) })
   }
 
   refetch = async (isShowLoading = false) => {

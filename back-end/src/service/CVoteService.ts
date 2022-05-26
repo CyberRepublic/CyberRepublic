@@ -1303,7 +1303,6 @@ export default class extends Base {
 
   public async listcrcandidates(param: { state: string }) {
     const { state } = param
-
     const crRelatedStageStatus = await ela.getCrrelatedStage()
     if (!crRelatedStageStatus) return
     // prettier-ignore
@@ -1325,7 +1324,12 @@ export default class extends Base {
         return null
       }
       const totalvotes = candidatesList.crcandidatesinfo.reduce(
-        (sum: number, el) => (sum = sum + el.votes),
+        (sum: number, el) => {
+          if (el.votes) {
+            return sum + el.votes
+          }
+          return sum
+        },
         0
       )
       return {
@@ -1334,11 +1338,15 @@ export default class extends Base {
         totalcounts: candidatesList.crcandidatesinfo.length
       }
     } else {
-      const members = doc.members.filter((el) => el.state === state)
-      const totalvotes = members.crcandidatesinfo.reduce(
-        (sum: number, el) => (sum = sum + el.votes),
-        0
+      const members = doc.members.filter(
+        (el) => el.state.toLowerCase() === state
       )
+      const totalvotes = members.reduce((sum: number, el) => {
+        if (el.votes) {
+          return sum + el.votes
+        }
+        return sum
+      }, 0)
       return {
         crcandidatesinfo: members,
         totalvotes,

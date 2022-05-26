@@ -48,7 +48,7 @@ export default class extends BaseService {
       method: 'post',
       data: param
     })
-    return JSON.parse(rs).data.result
+    return rs
   }
 
   async getCouncilsAndSecretariat() {
