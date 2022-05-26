@@ -18,8 +18,6 @@ import * as moment from 'moment'
 import * as jwt from 'jsonwebtoken'
 import { getOpinionHash } from '../utility/opinion-hash'
 
-const util = require('util')
-const request = require('request')
 const Big = require('big.js')
 let tm = undefined
 
@@ -1303,21 +1301,50 @@ export default class extends Base {
     )
   }
 
-  public async listcrcandidates(param) {
-    const { pageNum, pageSize, state } = param
-    let ret = null
-    let url = 'https://unionsquare.elastos.org'
-    if (process.env.NODE_ENV !== 'production') {
-      url = 'http://cen.longrunweather.com:18080'
-    }
-    const postPromise = util.promisify(request.post, { multiArgs: true })
-    await postPromise({
-      url: `${url}/api/dposnoderpc/check/listcrcandidates`,
-      form: { pageNum, pageSize, state },
-      encoding: 'utf8'
-    }).then((value) => (ret = value.body))
+  public async listcrcandidates(param: { state: string }) {
+    const { state } = param
 
-    return ret
+    const crRelatedStageStatus = await ela.getCrrelatedStage()
+    if (!crRelatedStageStatus) return
+    // prettier-ignore
+    const {
+      invoting,
+      votingstartheight,
+    } = crRelatedStageStatus
+    if (!invoting) {
+      return null
+    }
+
+    const doc = await this.getDBModel('Candidate').findOne({
+      votingstartheight
+    })
+
+    if (!doc) {
+      const candidatesList = await ela.currentCandidates(state)
+      if (!candidatesList) {
+        return null
+      }
+      const totalvotes = candidatesList.crcandidatesinfo.reduce(
+        (sum: number, el) => (sum = sum + el.votes),
+        0
+      )
+      return {
+        crcandidatesinfo: candidatesList.crcandidatesinfo,
+        totalvotes: totalvotes,
+        totalcounts: candidatesList.crcandidatesinfo.length
+      }
+    } else {
+      const members = doc.members.filter((el) => el.state === state)
+      const totalvotes = members.crcandidatesinfo.reduce(
+        (sum: number, el) => (sum = sum + el.votes),
+        0
+      )
+      return {
+        crcandidatesinfo: members,
+        totalvotes,
+        totalcounts: members.length
+      }
+    }
   }
 
   // council vote onchain

@@ -27,7 +27,8 @@ export default class extends StandardPage {
       list: [],
       totalVotes: 0,
       pageNum: 1,
-      total: 0
+      total: 0,
+      candidates: []
     }
     this.ord_loading = _.debounce(this.ord_loading, 500)
   }
@@ -37,22 +38,22 @@ export default class extends StandardPage {
   }
 
   handlePaginationChange = (pageNum) => {
-    this.setState({ pageNum }, () => this.refetch())
-  }
-
-  getQuery = () => {
-    const { pageNum } = this.state
-    return { pageNum, pageSize: PAGE_SIZE, state: 'active' }
+    const start = (pageNum - 1) * PAGE_SIZE
+    const end = pageNum * PAGE_SIZE
+    this.setState({ pageNum, list: candidates.slice(start, end) })
   }
 
   refetch = async (isShowLoading = false) => {
     if (isShowLoading) this.ord_loading(true)
     const { listData } = this.props
-    const param = this.getQuery()
     try {
-      const result = await listData(param)
+      const result = await listData({ state: 'active' })
+      const candidates = result.crcandidatesinfo.sort(
+        (a, b) => b.votes - a.votes
+      )
       this.setState({
-        list: result.crcandidatesinfo,
+        list: candidates.slice(0, PAGE_SIZE),
+        candidates,
         totalVotes: result.totalvotes,
         total: result.totalcounts
       })

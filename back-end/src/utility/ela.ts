@@ -107,12 +107,10 @@ const ela = {
     }
   },
 
-  async currentCandidates() {
+  async currentCandidates(state = 'all') {
     const data = {
       method: 'listcrcandidates',
-      params: {
-        state: 'all'
-      }
+      params: { state }
     }
     try {
       const res = await axios.post(process.env.ELA_NODE_URL, data, {
