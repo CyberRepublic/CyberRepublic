@@ -4,7 +4,6 @@
 .c_Header {
   height: auto !important;
   width: 100%;
-
   .top-toast {
     background: $cr_dark_color;
     color: $primary_color;
@@ -55,10 +54,29 @@
       vertical-align: middle;
     }
   }
+  .ant-menu-horizontal > .ant-menu-item > a {
+    color: #ffffff;
+    &:hover {
+      color: #43af92;
+    }
+  }
+
+  .ant-menu-horizontal > .ant-menu-item-selected > a {
+    color: #43af92;
+  }
 
   .c_MenuItem {
     padding-left: 20px;
     padding-right: 20px;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .c_MenuItem .new_logo {
+    width: 180px;
+    @media only screen and (max-width: $mobile-width) {
+      width: 120px;
+    }
   }
 
   .language-us {
@@ -70,10 +88,8 @@
 .language-menu {
   max-height: 196px;
   overflow: auto;
-
   background: #ffffff;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-  // border-radius: 4px;
   .language {
     display: flex;
     justify-content: center;
@@ -103,5 +119,15 @@
 .ant-menu-vertical .ant-menu-item.mobile-language-dropdown {
   @media only screen and (min-width: $mobile-width) {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .ant-menu-horizontal > .ant-menu-item:hover {
+    border-bottom: unset;
+    color: #ffffff;
+    &:hover {
+      color: #43af92;
+    }
   }
 }

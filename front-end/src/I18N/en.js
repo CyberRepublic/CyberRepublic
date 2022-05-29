@@ -896,7 +896,7 @@ const en = {
   'landing.footer.resources': 'Resources',
   'landing.footer.wallet': 'Wallet',
   'landing.footer.explorer': 'Block Explorer',
-  'landing.footer.github': 'Github',
+  'landing.footer.github': 'GitHub',
   'landing.footer.assets': 'Logo Assets',
   'landing.footer.elaNews': 'ELA News',
   'landing.footer.contact': 'Contact',

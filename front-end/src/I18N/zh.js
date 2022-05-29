@@ -869,7 +869,7 @@ const zh = {
   'landing.footer.resources': '资源',
   'landing.footer.wallet': '钱包',
   'landing.footer.explorer': '区块浏览器',
-  'landing.footer.github': 'Github',
+  'landing.footer.github': 'GitHub',
   'landing.footer.assets': 'Logo 资源',
   'landing.footer.elaNews': 'ELA 新闻',
   'landing.footer.contact': '联系我们',

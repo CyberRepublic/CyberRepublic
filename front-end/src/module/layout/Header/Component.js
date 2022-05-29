@@ -5,9 +5,8 @@ import _ from 'lodash'
 import I18N from '@/I18N'
 import MediaQuery from 'react-responsive'
 import { MAX_WIDTH_MOBILE, MIN_WIDTH_PC } from '@/config/constant'
-import { USER_ROLE, USER_LANGUAGE } from '@/constant'
+import { USER_ROLE } from '@/constant'
 import UserEditForm from '@/module/form/UserEditForm/Container'
-import Headroom from 'react-headroom'
 
 import ChinaFlag from './ChinaFlag'
 import UsFlag from './UsFlag'
@@ -237,8 +236,8 @@ export default class extends BaseComponent {
     const helpDropdown = this.buildHelpDropdown()
     const isLogin = this.props.isLogin
     return (
-      <Headroom>
-        <Header className="c_Header">
+      <div>
+        <Header className="c_Header" style={{ backgroundColor: '#000000' }}>
           <Menu
             onClick={this.clickItem.bind(this)}
             className="c_Header_Menu pull-left"
@@ -246,13 +245,11 @@ export default class extends BaseComponent {
             mode="horizontal"
           >
             <Menu.Item className="c_MenuItem logo" key="landing">
-              <MediaQuery minWidth={MIN_WIDTH_PC}>
-                <img src="/assets/images/logo.svg" alt="Cyber Republic" />
-              </MediaQuery>
-              <MediaQuery maxWidth={MAX_WIDTH_MOBILE}>
-                <img src="/assets/images/logo-mark.svg" alt="Cyber Republic" />
-              </MediaQuery>
-              {/* <div className="alpha-tag dsk">ALPHA</div> */}
+              <img
+                src="/assets/images/new_logo.svg"
+                alt="Cyber Republic"
+                className="new_logo"
+              />
             </Menu.Item>
           </Menu>
 
@@ -338,10 +335,6 @@ export default class extends BaseComponent {
               {I18N.get('navigation.suggestion')}
             </Menu.Item>
 
-            {/* <Menu.Item className="c_MenuItem link" key="elips">
-              {I18N.get('navigation.elips')}
-            </Menu.Item> */}
-
             <Menu.Item className="c_MenuItem link" key="proposals">
               {I18N.get('navigation.proposal')}
             </Menu.Item>
@@ -355,7 +348,7 @@ export default class extends BaseComponent {
           {this.renderCompleteProfileModal()}
           {this.renderDidModal()}
         </Header>
-      </Headroom>
+      </div>
     )
   }
 
@@ -383,7 +376,6 @@ export default class extends BaseComponent {
       !this.isPermanentlyDismissed() &&
       this.props.isLogin &&
       _.isEmpty(this.props.user.did)
-    // this.hasIncompleteProfile()
     return (
       isShow && (
         <div className="top-toast">
@@ -500,10 +492,6 @@ export default class extends BaseComponent {
       })
 
       let linkToBlog = 'https://blog.cyberrepublic.org'
-
-      // if (I18N.getLang() === USER_LANGUAGE.zh) {
-      //   linkToBlog += `/${USER_LANGUAGE.zh}`
-      // }
 
       window.open(linkToBlog, '_blank')
     } else if (_.includes(['en', 'zh'], key)) {
