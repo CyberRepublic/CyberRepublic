@@ -10,7 +10,7 @@ const FundingProcess = () => (
       from the Elastos community.
     </Intro>
     <VideoPlayer
-      src={`//org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/create_suggestion.mp4`}
+      src={`https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/create_suggestion.mp4`}
     />
     <Title>The Suggestion and Proposal Process</Title>
     <List>
@@ -23,7 +23,7 @@ const FundingProcess = () => (
       If you have a question about the process, email
       <Email>secretariat@cyberrepublic.org</Email>
     </Contact>
-    <Img src="//org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/funding_process.jpg" />
+    <Img src="https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/funding_process.jpg" />
   </Wrapper>
 )
 
