@@ -88,7 +88,7 @@ const AddSuggestionDoc = () => (
       suggestion link on social media and in Elastos' official channels below:
     </p>
     <VideoPlayer
-      src={`https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/suggestion_to_proposal.mp4`}
+      src={`https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/sugg_to_proposal_v1.mp4`}
     />
     <p>
       Watch Kiran from Tuum Tech explain what happens after you create a
