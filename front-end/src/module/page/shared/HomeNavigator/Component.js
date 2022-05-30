@@ -52,7 +52,6 @@ export default class extends BaseComponent {
 
   ord_render() {
     // TODO check why we can not use redirect use this.props.history
-    console.log('profile page this.props...', this.props)
     return (
       <div className="navigator">
         <MediaQuery minWidth={MIN_WIDTH_PC}>
