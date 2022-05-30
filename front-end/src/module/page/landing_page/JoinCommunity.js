@@ -46,7 +46,8 @@ const Icons = styled.div`
   margin-bottom: 3em;
 `
 
-const Icon = styled.div`
+const Icon = styled.a`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
