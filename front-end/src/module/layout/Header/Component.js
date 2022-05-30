@@ -21,14 +21,13 @@ const Hamburger = () => (
     width="14"
     height="11"
     viewBox="0 0 14 11"
-    fill="none"
+    fill="#ffffff"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
       d="M0 0H14V1H0V0ZM0 5H14V6H0V5ZM14 10H0V11H14V10Z"
-      fill="black"
     />
   </svg>
 )
@@ -141,7 +140,7 @@ export default class extends BaseComponent {
       <Menu onClick={this.clickItem.bind(this)} className="language-menu">
         <Menu.Item key="en">
           <div className="language">
-            <UsFlag width={28} height={28} />
+            <UsFlag width={30} height={30} />
             <span className="language-us">English</span>
           </div>
         </Menu.Item>
@@ -158,7 +157,7 @@ export default class extends BaseComponent {
       <Dropdown overlay={menu} placement="bottomCenter">
         <a className="ant-dropdown-link">
           {this.props.lang === 'en' ? (
-            <UsFlag width={28} height={28} />
+            <UsFlag width={30} height={30} />
           ) : (
             <ChinaFlag width={24} height={24} />
           )}

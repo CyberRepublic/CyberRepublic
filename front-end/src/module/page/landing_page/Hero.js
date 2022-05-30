@@ -26,6 +26,7 @@ const HeroTitle = styled.h1`
   line-height: 0.5em;
   @media (max-width: 768px) {
     font-size: 45px;
+    line-height: 0.2em;
   }
   color: #ffffff;
   text-shadow: 0px 0px 35px rgba(255, 255, 255, 0.44);

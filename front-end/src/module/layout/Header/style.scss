@@ -23,6 +23,9 @@
       padding: 0;
     }
   }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #000000;
+  }
 
   .toast-close-container {
     margin-right: $gap_1;
@@ -69,7 +72,6 @@
     padding-left: 20px;
     padding-right: 20px;
     color: #ffffff;
-    background-color: #000000;
   }
 
   .c_MenuItem .new_logo {
