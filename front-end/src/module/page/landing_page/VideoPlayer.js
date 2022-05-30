@@ -1,6 +1,5 @@
 import React from 'react'
 import Videojs from './video'
-import 'video.js/dist/video-js.css'
 import styled from 'styled-components'
 
 const VideoPlayer = (props) => {
