@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import I18N from '@/I18N'
 
 const Main = styled.div`
   display: flex;
@@ -23,10 +24,9 @@ const HeroTitle = styled.h1`
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 80px;
-  line-height: 0.5em;
+  line-height: 1.2em;
   @media (max-width: 768px) {
     font-size: 45px;
-    line-height: 0.2em;
   }
   color: #ffffff;
   text-shadow: 0px 0px 35px rgba(255, 255, 255, 0.44);
@@ -34,7 +34,7 @@ const HeroTitle = styled.h1`
 
 const FundLink = styled.a`
   display: inline-block;
-  margin-top: 30px;
+  margin-top: 20px;
   color: #1ff5c9;
   font-size: 45px;
   line-height: 1.5em;
@@ -78,13 +78,9 @@ const HeroBg = styled.img`
 const Hero = () => (
   <Main>
     <Left>
-      <HeroTitle>Welcome</HeroTitle>
-      <HeroTitle>Developers!</HeroTitle>
-      <FundLink href="/suggestion">Fund Your New Project Here</FundLink>
-      <HeroText>
-        If you plan to use Elastos' core tech in your dApp or project, you can
-        apply for funds from the Elastos ecosystem DAO - Cyber Republic.
-      </HeroText>
+      <HeroTitle>{I18N.get('funding.hero.welcome')}</HeroTitle>
+      <FundLink href="/suggestion">{I18N.get('funding.hero.link')}</FundLink>
+      <HeroText>{I18N.get('funding.hero.description')}</HeroText>
     </Left>
     <Right>
       <HeroBg src="/assets/images/heroBg.svg" alt="bg" />

@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import I18N from '@/I18N'
 import Twitter from '@/assets/svg/twitter'
 import Discord from '../../../assets/svg/discord'
 import Reddit from '../../../assets/svg/reddit'
 
 const JoinCommunity = () => (
   <Wrapper>
-    <Title>Join the CR Community</Title>
+    <Title>{I18N.get('funding.join')}</Title>
     <Icons>
       <Icon href="https://discord.gg/elastos">
         <Discord fill="#ffffff" />

@@ -6,9 +6,10 @@ import proposal from './zh/proposal'
 import suggestion from './zh/suggestion'
 import getting_started from './en/getting_started'
 import whitepaper from './zh/whitepaper'
-import elip from './zh/elip'
+// import elip from './zh/elip'
 import area from './zh/area'
 import milestone from './zh/milestone'
+import funding from './zh/funding'
 
 const zh = {
   council,
@@ -18,9 +19,10 @@ const zh = {
   suggestion,
   getting_started,
   whitepaper,
-  elip,
+  // elip,
   area,
   milestone,
+  funding,
   // Header
   '0000': 'ALPHA版本',
   '0001': '奖励计划',

@@ -1,27 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
+import I18N from '@/I18N'
 import VideoPlayer from './VideoPlayer'
 
 const FundingProcess = () => (
   <Wrapper>
-    <Intro>
-      To apply for funds, you first have to go through the DAO Suggestion and
-      Proposal process where a 12-seat Council will vote on your plan with input
-      from the Elastos community.
-    </Intro>
+    <Intro>{I18N.get('funding.apply')}</Intro>
     <VideoPlayer
       src={`https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/create_suggestion.mp4`}
     />
-    <Title>The Suggestion and Proposal Process</Title>
+    <Title>{I18N.get('funding.partOne.title')}</Title>
     <List>
-      <li>Create a Suggestion on cyberrepublic.org</li>
-      <li>Council member makes the suggestion a Proposal</li>
-      <li>Council votes. 8 of 12 votes are required for Proposal to pass</li>
-      <li>Funding starts</li>
+      <li>{I18N.get('funding.partOne.step0')}</li>
+      <li>{I18N.get('funding.partOne.step1')}</li>
+      <li>{I18N.get('funding.partOne.step2')}</li>
+      <li>{I18N.get('funding.partOne.step3')}</li>
+      <li>{I18N.get('funding.partOne.step4')}</li>
     </List>
     <Contact>
-      If you have a question about the process, email
-      <Email>secretariat@cyberrepublic.org</Email>
+      {I18N.get('funding.partOne.contact')}
+      <Email> secretariat@cyberrepublic.org</Email>
     </Contact>
     <Img src="https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/funding_process.jpg" />
   </Wrapper>
@@ -63,7 +61,7 @@ const List = styled.ol`
 const Contact = styled.div`
   margin-top: 100px;
 `
-const Email = styled.div`
+const Email = styled.span`
   color: #23aa8c;
 `
 const Img = styled.img`

@@ -1,9 +1,7 @@
 import React from 'react'
 
 const HomePage = React.lazy(() => import('@/module/page/Home/Container'))
-const FundingPage = React.lazy(() =>
-  import('@/module/page/landing_page/Container')
-)
+const FundingPage = React.lazy(() => import('@/module/page/funding/Container'))
 const SSOPage = React.lazy(() => import('@/module/page/sso/Container'))
 const DeveloperPage = React.lazy(() =>
   import('@/module/page/developer/Container')
