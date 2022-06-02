@@ -55,6 +55,7 @@ const zh = {
       }
     },
     whitepaper: '白皮书',
+    funding: '基金',
     suggestion: '建议',
     elips: 'ELIPs',
     proposal: '提案',

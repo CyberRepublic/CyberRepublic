@@ -55,6 +55,7 @@ const en = {
       }
     },
     whitepaper: 'Whitepaper',
+    funding: 'Funding',
     suggestion: 'Suggestions',
     elips: 'ELIPs',
     proposal: 'Proposals',

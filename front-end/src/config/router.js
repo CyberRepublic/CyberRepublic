@@ -1,6 +1,7 @@
 import React from 'react'
 
-const HomePage = React.lazy(() =>
+const HomePage = React.lazy(() => import('@/module/page/Home/Container'))
+const FundingPage = React.lazy(() =>
   import('@/module/page/landing_page/Container')
 )
 const SSOPage = React.lazy(() => import('@/module/page/sso/Container'))
@@ -14,17 +15,17 @@ const DeveloperSearchPage = React.lazy(() =>
   import('@/module/page/developer/search/Container')
 )
 const LeaderPage = React.lazy(() => import('@/module/page/leader/Container'))
-const Cr100Page = React.lazy(() => import('@/module/page/cr_100/Container'))
-const Ambassadors = React.lazy(() =>
-  import('@/module/page/ambassadors/Container')
-)
-const CrVideo = React.lazy(() =>
-  import('@/module/page/static/cr-video/Container')
-)
+// const Cr100Page = React.lazy(() => import('@/module/page/cr_100/Container'))
+// const Ambassadors = React.lazy(() =>
+//   import('@/module/page/ambassadors/Container')
+// )
+// const CrVideo = React.lazy(() =>
+//   import('@/module/page/static/cr-video/Container')
+// )
 
-const PrivacyPage = React.lazy(() =>
-  import('@/module/page/static/privacy/Container')
-)
+// const PrivacyPage = React.lazy(() =>
+//   import('@/module/page/static/privacy/Container')
+// )
 const TermsPage = React.lazy(() =>
   import('@/module/page/static/terms/Container')
 )
@@ -42,15 +43,15 @@ const TaskDetailPage = React.lazy(() =>
 const TaskApplicationPage = React.lazy(() =>
   import('@/module/page/task_application/Container')
 )
-const ProjectDetailPage = React.lazy(() =>
-  import('@/module/page/project_detail/Container')
-)
+// const ProjectDetailPage = React.lazy(() =>
+//   import('@/module/page/project_detail/Container')
+// )
 const TeamDetailPage = React.lazy(() =>
   import('@/module/page/team_detail/Container')
 )
-const CircleDetailPage = React.lazy(() =>
-  import('@/module/page/circle_detail/Container')
-)
+// const CircleDetailPage = React.lazy(() =>
+//   import('@/module/page/circle_detail/Container')
+// )
 
 const LoginPage = React.lazy(() => import('@/module/page/login/Container'))
 const RegisterPage = React.lazy(() =>
@@ -63,20 +64,20 @@ const ResetPasswordPage = React.lazy(() =>
   import('@/module/page/reset_password/Container')
 )
 
-const HelpPage = React.lazy(() => import('@/module/page/static/help/Container'))
-const FAQPage = React.lazy(() => import('@/module/page/static/faq/Container'))
-const AboutPage = React.lazy(() =>
-  import('@/module/page/static/about/Container')
-)
-const SlackPage = React.lazy(() =>
-  import('@/module/page/static/slack/Container')
-)
-const EventsPage = React.lazy(() =>
-  import('@/module/page/static/events/Container')
-)
-const EventPage = React.lazy(() =>
-  import('@/module/page/static/details/Container')
-)
+// const HelpPage = React.lazy(() => import('@/module/page/static/help/Container'))
+// const FAQPage = React.lazy(() => import('@/module/page/static/faq/Container'))
+// const AboutPage = React.lazy(() =>
+//   import('@/module/page/static/about/Container')
+// )
+// const SlackPage = React.lazy(() =>
+//   import('@/module/page/static/slack/Container')
+// )
+// const EventsPage = React.lazy(() =>
+//   import('@/module/page/static/events/Container')
+// )
+// const EventPage = React.lazy(() =>
+//   import('@/module/page/static/details/Container')
+// )
 const VisionPage = React.lazy(() => import('@/module/page/vision/Container'))
 
 const ProfileInfoPage = React.lazy(() =>
@@ -214,17 +215,21 @@ export default [
     page: WhitepaperPage
   },
   {
+    path: '/funding',
+    page: FundingPage
+  },
+  {
     path: '/sso/login',
     page: SSOPage
   },
-  {
-    path: '/cr100',
-    page: Cr100Page
-  },
-  {
-    path: '/ambassadors',
-    page: Ambassadors
-  },
+  // {
+  //   path: '/cr100',
+  //   page: Cr100Page
+  // },
+  // {
+  //   path: '/ambassadors',
+  //   page: Ambassadors
+  // },
   {
     path: '/developer',
     page: DeveloperPage
@@ -303,42 +308,42 @@ export default [
     * Minor Pages
     ********************************************************************************
       */
-  {
-    path: '/help',
-    page: HelpPage
-  },
-  {
-    path: '/faq',
-    page: FAQPage
-  },
-  {
-    path: '/about',
-    page: AboutPage
-  },
-  {
-    path: '/slack',
-    page: SlackPage
-  },
-  {
-    path: '/events',
-    page: EventsPage
-  },
-  {
-    path: '/events/:eventId',
-    page: EventPage
-  },
+  // {
+  //   path: '/help',
+  //   page: HelpPage
+  // },
+  // {
+  //   path: '/faq',
+  //   page: FAQPage
+  // },
+  // {
+  //   path: '/about',
+  //   page: AboutPage
+  // },
+  // {
+  //   path: '/slack',
+  //   page: SlackPage
+  // },
+  // {
+  //   path: '/events',
+  //   page: EventsPage
+  // },
+  // {
+  //   path: '/events/:eventId',
+  //   page: EventPage
+  // },
   {
     path: '/vision',
     page: VisionPage
   },
-  {
-    path: '/join-cr',
-    page: CrVideo
-  },
-  {
-    path: '/privacy',
-    page: PrivacyPage
-  },
+  // {
+  //   path: '/join-cr',
+  //   page: CrVideo
+  // },
+  // {
+  //   path: '/privacy',
+  //   page: PrivacyPage
+  // },
   {
     path: '/terms',
     page: TermsPage

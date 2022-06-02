@@ -7,7 +7,7 @@ import './style'
 import _ from 'lodash'
 import I18N from '@/I18N'
 
-import { USER_LANGUAGE } from '@/constant'
+// import { USER_LANGUAGE } from '@/constant'
 
 const { analytics, location } = window
 
@@ -18,29 +18,29 @@ export default class extends BaseComponent {
     if (
       _.includes(
         [
-          'cr100',
-          'crcles',
-          'ambassadors',
+          // 'cr100',
+          // 'crcles',
+          // 'ambassadors',
           'login',
           'register',
           'signup',
           'profile/info',
-          'profile/teams',
-          'developer',
-          'developer/learn',
-          'community',
-          'help',
-          'about',
-          'faq',
-          'contact',
+          // 'profile/teams',
+          // 'developer',
+          // 'developer/learn',
+          // 'community',
+          // 'help',
+          // 'about',
+          // 'faq',
+          // 'contact',
           'suggestion',
           'proposals',
-          'constitution/1',
+          'funding',
+          // 'constitution/1',
           'whitepaper',
           'council',
-          'candidates',
-          'what-is-new'
-          // 'elips'
+          'candidates'
+          // 'what-is-new',
         ],
         key
       )
@@ -114,11 +114,13 @@ export default class extends BaseComponent {
                 {I18N.get('navigation.whitepaper')}
               </Menu.Item>
 
+              <Menu.Item key="funding">
+                {I18N.get('navigation.funding')}
+              </Menu.Item>
+
               <Menu.Item key="suggestion">
                 {I18N.get('navigation.suggestion')}
               </Menu.Item>
-
-              {/* <Menu.Item key="elips">{I18N.get('navigation.elips')}</Menu.Item> */}
 
               <Menu.Item key="proposals">
                 {I18N.get('navigation.proposal')}
