@@ -6,7 +6,7 @@ import proposal from './en/proposal'
 import suggestion from './en/suggestion'
 import getting_started from './en/getting_started'
 import whitepaper from './en/whitepaper'
-// import elip from './en/elip'
+import elip from './en/elip'
 import area from './en/area'
 import milestone from './en/milestone'
 import funding from './en/funding'
@@ -18,7 +18,7 @@ const en = {
   proposal,
   suggestion,
   getting_started,
-  // elip,
+  elip,
   whitepaper,
   area,
   milestone,

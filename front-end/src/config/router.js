@@ -1,18 +1,18 @@
 import React from 'react'
 
-const HomePage = React.lazy(() => import('@/module/page/Home/Container'))
+const HomePage = React.lazy(() => import('@/module/page/home/Container'))
 const FundingPage = React.lazy(() => import('@/module/page/funding/Container'))
 const SSOPage = React.lazy(() => import('@/module/page/sso/Container'))
-const DeveloperPage = React.lazy(() =>
-  import('@/module/page/developer/Container')
-)
-const DeveloperLearnPage = React.lazy(() =>
-  import('@/module/page/developer/learn/Container')
-)
-const DeveloperSearchPage = React.lazy(() =>
-  import('@/module/page/developer/search/Container')
-)
-const LeaderPage = React.lazy(() => import('@/module/page/leader/Container'))
+// const DeveloperPage = React.lazy(() =>
+//   import('@/module/page/developer/Container')
+// )
+// const DeveloperLearnPage = React.lazy(() =>
+//   import('@/module/page/developer/learn/Container')
+// )
+// const DeveloperSearchPage = React.lazy(() =>
+//   import('@/module/page/developer/search/Container')
+// )
+// const LeaderPage = React.lazy(() => import('@/module/page/leader/Container'))
 // const Cr100Page = React.lazy(() => import('@/module/page/cr_100/Container'))
 // const Ambassadors = React.lazy(() =>
 //   import('@/module/page/ambassadors/Container')
@@ -29,24 +29,24 @@ const TermsPage = React.lazy(() =>
 )
 
 // this is the leaders link in the header
-const DirectoryPage = React.lazy(() =>
-  import('@/module/page/directory/Container')
-)
+// const DirectoryPage = React.lazy(() =>
+//   import('@/module/page/directory/Container')
+// )
 
-const TeamsPage = React.lazy(() => import('@/module/page/teams/Container'))
-const TasksPage = React.lazy(() => import('@/module/page/tasks/Container'))
-const TaskDetailPage = React.lazy(() =>
-  import('@/module/page/task_detail/Container')
-)
-const TaskApplicationPage = React.lazy(() =>
-  import('@/module/page/task_application/Container')
-)
+// const TeamsPage = React.lazy(() => import('@/module/page/teams/Container'))
+// const TasksPage = React.lazy(() => import('@/module/page/tasks/Container'))
+// const TaskDetailPage = React.lazy(() =>
+//   import('@/module/page/task_detail/Container')
+// )
+// const TaskApplicationPage = React.lazy(() =>
+//   import('@/module/page/task_application/Container')
+// )
 // const ProjectDetailPage = React.lazy(() =>
 //   import('@/module/page/project_detail/Container')
 // )
-const TeamDetailPage = React.lazy(() =>
-  import('@/module/page/team_detail/Container')
-)
+// const TeamDetailPage = React.lazy(() =>
+//   import('@/module/page/team_detail/Container')
+// )
 // const CircleDetailPage = React.lazy(() =>
 //   import('@/module/page/circle_detail/Container')
 // )
@@ -97,9 +97,9 @@ const ProfileSuggestionListPage = React.lazy(() =>
 const MemberPage = React.lazy(() => import('@/module/page/member/Container'))
 
 // admin pages
-const TeamListPage = React.lazy(() =>
-  import('@/module/page/admin/teams/TeamListPage')
-)
+// const TeamListPage = React.lazy(() =>
+//   import('@/module/page/admin/teams/TeamListPage')
+// )
 const AdminSuggestionPage = React.lazy(() =>
   import('@/module/page/admin/suggestion/list/Container')
 )
@@ -116,19 +116,19 @@ const AdminFormsPage = React.lazy(() =>
   import('@/module/page/admin/forms/Container')
 )
 
-const CountryCommunitiesPage = React.lazy(() =>
-  import('@/module/page/admin/community/CountryCommunities/Container')
-)
-const CommunityDetailPage = React.lazy(() =>
-  import('@/module/page/admin/community/CommunityDetail/Container')
-)
+// const CountryCommunitiesPage = React.lazy(() =>
+//   import('@/module/page/admin/community/CountryCommunities/Container')
+// )
+// const CommunityDetailPage = React.lazy(() =>
+//   import('@/module/page/admin/community/CommunityDetail/Container')
+// )
 
-const PublicCountryCommunitiesPage = React.lazy(() =>
-  import('@/module/page/community/PublicCountryCommunities/Container')
-)
-const PublicCommunityDetailPage = React.lazy(() =>
-  import('@/module/page/community/PublicCommunityDetail/Container')
-)
+// const PublicCountryCommunitiesPage = React.lazy(() =>
+//   import('@/module/page/community/PublicCountryCommunities/Container')
+// )
+// const PublicCommunityDetailPage = React.lazy(() =>
+//   import('@/module/page/community/PublicCommunityDetail/Container')
+// )
 
 const TaskCreatePage = React.lazy(() =>
   import('@/module/page/task_create/Container')
@@ -228,58 +228,58 @@ export default [
   //   path: '/ambassadors',
   //   page: Ambassadors
   // },
-  {
-    path: '/developer',
-    page: DeveloperPage
-  },
-  {
-    path: '/developer/learn',
-    page: DeveloperLearnPage
-  },
-  {
-    path: '/developer/search',
-    page: DeveloperSearchPage
-  },
-  {
-    path: '/developer/country/:country',
-    page: DeveloperPage
-  },
-  {
-    path: '/developer/country/:country/region/:region',
-    page: DeveloperPage
-  },
-  {
-    path: '/leader',
-    page: LeaderPage
-  },
-  {
-    path: '/directory',
-    page: DirectoryPage
-  },
-  {
-    path: '/teams',
-    page: TeamsPage
-  },
-  {
-    path: '/tasks',
-    page: TasksPage
-  },
-  {
-    path: '/task-detail/:taskId',
-    page: TaskDetailPage
-  },
-  {
-    path: '/admin/task-detail/:taskId',
-    page: TaskDetailPage
-  },
-  {
-    path: '/task-app/:taskId/:applicantId',
-    page: TaskApplicationPage
-  },
-  {
-    path: '/task-create',
-    page: TaskCreatePage
-  },
+  // {
+  //   path: '/developer',
+  //   page: DeveloperPage
+  // },
+  // {
+  //   path: '/developer/learn',
+  //   page: DeveloperLearnPage
+  // },
+  // {
+  //   path: '/developer/search',
+  //   page: DeveloperSearchPage
+  // },
+  // {
+  //   path: '/developer/country/:country',
+  //   page: DeveloperPage
+  // },
+  // {
+  //   path: '/developer/country/:country/region/:region',
+  //   page: DeveloperPage
+  // },
+  // {
+  //   path: '/leader',
+  //   page: LeaderPage
+  // },
+  // {
+  //   path: '/directory',
+  //   page: DirectoryPage
+  // },
+  // {
+  //   path: '/teams',
+  //   page: TeamsPage
+  // },
+  // {
+  //   path: '/tasks',
+  //   page: TasksPage
+  // },
+  // {
+  //   path: '/task-detail/:taskId',
+  //   page: TaskDetailPage
+  // },
+  // {
+  //   path: '/admin/task-detail/:taskId',
+  //   page: TaskDetailPage
+  // },
+  // {
+  //   path: '/task-app/:taskId/:applicantId',
+  //   page: TaskApplicationPage
+  // },
+  // {
+  //   path: '/task-create',
+  //   page: TaskCreatePage
+  // },
   /*
     ********************************************************************************
     * Login/Register
@@ -514,22 +514,22 @@ export default [
     path: '/admin/forms',
     page: AdminFormsPage
   },
-  {
-    path: '/admin/community',
-    page: CountryCommunitiesPage
-  },
-  {
-    path: '/admin/community/country/:country',
-    page: CountryCommunitiesPage
-  },
-  {
-    path: '/admin/community/:community/country/:country',
-    page: CommunityDetailPage
-  },
-  {
-    path: '/admin/community/:community/country/:country/region/:region',
-    page: CommunityDetailPage
-  },
+  // {
+  //   path: '/admin/community',
+  //   page: CountryCommunitiesPage
+  // },
+  // {
+  //   path: '/admin/community/country/:country',
+  //   page: CountryCommunitiesPage
+  // },
+  // {
+  //   path: '/admin/community/:community/country/:country',
+  //   page: CommunityDetailPage
+  // },
+  // {
+  //   path: '/admin/community/:community/country/:country/region/:region',
+  //   page: CommunityDetailPage
+  // },
   {
     path: '/admin/suggestion',
     page: AdminSuggestionPage
@@ -543,35 +543,35 @@ export default [
     * Community
     ********************************************************************************
       */
-  {
-    path: '/community',
-    page: PublicCountryCommunitiesPage
-  },
-  {
-    path: '/community/country/:country',
-    page: PublicCountryCommunitiesPage
-  },
-  {
-    path: '/community/:community/country/:country',
-    page: PublicCommunityDetailPage
-  },
-  {
-    path: '/community/:community/country/:country/region/:region',
-    page: PublicCommunityDetailPage
-  },
+  // {
+  //   path: '/community',
+  //   page: PublicCountryCommunitiesPage
+  // },
+  // {
+  //   path: '/community/country/:country',
+  //   page: PublicCountryCommunitiesPage
+  // },
+  // {
+  //   path: '/community/:community/country/:country',
+  //   page: PublicCommunityDetailPage
+  // },
+  // {
+  //   path: '/community/:community/country/:country/region/:region',
+  //   page: PublicCommunityDetailPage
+  // },
   /*
     ********************************************************************************
     * TODO
     ********************************************************************************
       */
-  {
-    path: '/admin/teams',
-    page: TeamListPage
-  },
-  {
-    path: '/admin/teams/:teamId',
-    page: TeamDetailPage
-  },
+  // {
+  //   path: '/admin/teams',
+  //   page: TeamListPage
+  // },
+  // {
+  //   path: '/admin/teams/:teamId',
+  //   page: TeamDetailPage
+  // },
 
   // council
   {
