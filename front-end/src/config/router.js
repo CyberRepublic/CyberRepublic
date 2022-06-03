@@ -130,9 +130,9 @@ const AdminFormsPage = React.lazy(() =>
 //   import('@/module/page/community/PublicCommunityDetail/Container')
 // )
 
-const TaskCreatePage = React.lazy(() =>
-  import('@/module/page/task_create/Container')
-)
+// const TaskCreatePage = React.lazy(() =>
+//   import('@/module/page/task_create/Container')
+// )
 
 // external forms
 const FormTraining1Page = React.lazy(() =>

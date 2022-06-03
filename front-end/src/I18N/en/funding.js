@@ -2,7 +2,7 @@ export default {
   hero: {
     welcome: `Welcome Developers!`,
     link: `Fund Your New Project Here`,
-    description: `If you plan to use Elastos' core tech in your dApp or project, you can apply for funds from the Elastos ecosystem DAO - Cyber Republic.`
+    description: `If you plan to use Elastos' core tech in your DApp or project, you can apply for funds from the Elastos ecosystem DAO - Cyber Republic.`
   },
   apply: `To apply for funds, you first have to go through the DAO Suggestion and Proposal process where a 12-seat Council will vote on your plan with input from the Elastos community.`,
   partOne: {
