@@ -2,21 +2,20 @@ import React from 'react'
 import Footer from '@/module/layout/Footer/Container'
 import I18N from '@/I18N'
 import styled from 'styled-components'
-import './style.scss'
 import MediaQuery from 'react-responsive'
 import { Row, Col } from 'antd'
-import {LG_WIDTH} from '../../../config/constant'
+import { LG_WIDTH } from '../../../config/constant'
 import StandardPage from '../StandardPage'
 import CRC from './CRC'
 import { images } from './images'
+import './style.scss'
 
 export default class extends StandardPage {
-
   constructor(props) {
     super(props)
 
     this.state = {
-      selectedBox: 0,
+      selectedBox: 0
     }
   }
 
@@ -33,17 +32,17 @@ export default class extends StandardPage {
   ord_renderContent() {
     return (
       <div className="c_Home">
-        <MediaQuery minWidth={LG_WIDTH}>
-          {this.renderDesktop()}
-        </MediaQuery>
+        <MediaQuery minWidth={LG_WIDTH}>{this.renderDesktop()}</MediaQuery>
         <MediaQuery maxWidth={LG_WIDTH}>
           <CRLogoMobContainer>
             <Logo src={images.CRLogo} />
             <CRLogoMobText>
               {I18N.get('home.mob.logo.title')}
-              <br/>
-              <br/>
-              <a target="_blank" href="https://www.elastos.org">{I18N.get('home.mob.logo.subtitle')}</a>
+              <br />
+              <br />
+              <a target="_blank" href="https://www.elastos.org">
+                {I18N.get('home.mob.logo.subtitle')}
+              </a>
             </CRLogoMobText>
           </CRLogoMobContainer>
 
@@ -53,7 +52,7 @@ export default class extends StandardPage {
             </InfoImgContainerCR>
             <InfoDesc>
               {I18N.get('home.hero.cr.fund.1')}
-              <br/>
+              <br />
               {I18N.get('home.hero.cr.fund.2')}
             </InfoDesc>
           </InfoRowMob>
@@ -85,23 +84,23 @@ export default class extends StandardPage {
           <LogoContainer>
             {/* Be nice if this opened a modal explaining Elastos first */}
             <a target="_blank" href="https://www.elastos.org">
-              <Logo src={images.ElaLogo}/>
+              <Logo src={images.ElaLogo} />
             </a>
           </LogoContainer>
           <ElaRow>
             <InfoCol span={8}>
               <InfoImgContainer>
-                <InfoImg src={images.ElaBlockchainImg}/>
+                <InfoImg src={images.ElaBlockchainImg} />
               </InfoImgContainer>
               <InfoDesc>{I18N.get('home.hero.ela.blockchain')}</InfoDesc>
             </InfoCol>
             <InfoColMid span={8}>
               <InfoImgContainer>
-                <InfoImg src={images.ElaApplicationImg}/>
+                <InfoImg src={images.ElaApplicationImg} />
               </InfoImgContainer>
               <InfoDesc>
                 {I18N.get('home.hero.ela.application.1')}
-                <br/>
+                <br />
                 {I18N.get('home.hero.ela.application.2')}
               </InfoDesc>
             </InfoColMid>
@@ -112,15 +111,15 @@ export default class extends StandardPage {
               </InfoImgContainer>
               <InfoDesc>
                 {I18N.get('home.hero.ela.sidechain')}
-                <br/>
-(ETH, NEO, DID)
+                <br />
+                (ETH, NEO, DID)
               </InfoDesc>
             </InfoColRight>
           </ElaRow>
         </ElaContainer>
         <CRContainer>
           <LogoContainer>
-            <Logo src={images.CRLogo}/>
+            <Logo src={images.CRLogo} />
           </LogoContainer>
           <CRRow>
             <InfoCol span={9}>
@@ -129,7 +128,7 @@ export default class extends StandardPage {
               </InfoImgContainerCR>
               <InfoDesc>
                 {I18N.get('home.hero.cr.fund.1')}
-                <br/>
+                <br />
                 {I18N.get('home.hero.cr.fund.2')}
               </InfoDesc>
             </InfoCol>
@@ -147,7 +146,7 @@ export default class extends StandardPage {
             </InfoCol>
           </CRRow>
         </CRContainer>
-        <ClearFix/>
+        <ClearFix />
       </MainContainer>
     )
   }
@@ -155,45 +154,71 @@ export default class extends StandardPage {
   renderWhatIsCR() {
     const selectedBox = this.state.selectedBox
     const title = I18N.get(`home.box_${(selectedBox + 1).toString()}.title`)
-    const description1 = I18N.get(`home.explanation_${(selectedBox + 1).toString()}.part_1`)
-    const description2 = I18N.get(`home.explanation_${(selectedBox + 1).toString()}.part_2`)
+    const description1 = I18N.get(
+      `home.explanation_${(selectedBox + 1).toString()}.part_1`
+    )
+    const description2 = I18N.get(
+      `home.explanation_${(selectedBox + 1).toString()}.part_2`
+    )
 
     return (
       <div>
         <div className="mid-section">
           <div className="decoration-2">
-            <img className="upper-left" src="/assets/images/training_green_slashed_box.png"/>
+            <img
+              className="upper-left"
+              src="/assets/images/training_green_slashed_box.png"
+            />
           </div>
           <div className="inner-box">
             <div className="decoration-3">
-              <img className="upper-left" src="/assets/images/training_green_slashed_box.png"/>
+              <img
+                className="upper-left"
+                src="/assets/images/training_green_slashed_box.png"
+              />
             </div>
             <h3>{title}</h3>
             <p className="synthese">{I18N.get('home.crc.explanation')}</p>
             <p className="synthese">{description2}</p>
           </div>
-          <div className="rectangle-1" />
+          {/* <div className="rectangle-1" />
           <div className="rectangle-2" />
-          <div className="rectangle-3" />
+          <div className="rectangle-3" /> */}
         </div>
-        <div className="stay-updated">
+        {/* <div className="stay-updated">
           <div className="form-wrap footer-email">
             <p>{I18N.get('landing.footer.note')}</p>
-            <form id="footer-form" className="signup-form" name="mailing-list" action="https://cyberrepublic.us19.list-manage.com/subscribe/post-json?u=acb5b0ce41bfe293d881da424&id=272f303492"
-                  method="get">
+            <form
+              id="footer-form"
+              className="signup-form"
+              name="mailing-list"
+              action="https://cyberrepublic.us19.list-manage.com/subscribe/post-json?u=acb5b0ce41bfe293d881da424&id=272f303492"
+              method="get"
+            >
               <div className="email-wrap">
-                <input type="email" name="EMAIL" data-type="req" placeholder={I18N.get('landing.footer.email')}/>
+                <input
+                  type="email"
+                  name="EMAIL"
+                  data-type="req"
+                  placeholder={I18N.get('landing.footer.email')}
+                />
                 <button type="submit" className="arrow-submit">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 34">
-                    <polygon points="0 0 0 33.487 16.744 16.744 0 0" style={{fill: '#1de9b6'}}/>
-                    <polygon points="0 24.579 7.835 16.744 0 8.91 0 24.579" className="small-tri"/>
+                    <polygon
+                      points="0 0 0 33.487 16.744 16.744 0 0"
+                      style={{ fill: '#1de9b6' }}
+                    />
+                    <polygon
+                      points="0 24.579 7.835 16.744 0 8.91 0 24.579"
+                      className="small-tri"
+                    />
                   </svg>
                 </button>
               </div>
             </form>
           </div>
-        </div>
-        <Footer/>
+        </div> */}
+        <Footer />
       </div>
     )
   }
@@ -228,8 +253,7 @@ const ElaContainer = styled.div`
   float: left;
 `
 
-const Logo = styled.img`
-`
+const Logo = styled.img``
 
 const ElaRow = styled(Row)`
   background-color: rgba(124, 127, 134, 0.1);
@@ -239,15 +263,14 @@ const ElaRow = styled(Row)`
 `
 
 const CRRow = styled(ElaRow)`
-  background-color: #F6F9FD;;
+  background-color: #f6f9fd;
 `
 
 const CRContainer = styled.div`
   overflow: hidden;
 `
 
-const InfoCol = styled(Col)`
-`
+const InfoCol = styled(Col)``
 
 const InfoColRight = styled(InfoCol)`
   background-position: center left;
