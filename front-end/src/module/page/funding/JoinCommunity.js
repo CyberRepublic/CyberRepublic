@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import I18N from '@/I18N'
 import Twitter from '@/assets/svg/twitter'
-import Discord from '../../../assets/svg/discord'
-import Reddit from '../../../assets/svg/reddit'
+import Discord from '@/assets/svg/discord'
+import Reddit from '@/assets/svg/reddit'
 
 const JoinCommunity = () => (
   <Wrapper>

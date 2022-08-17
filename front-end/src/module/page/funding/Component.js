@@ -11,7 +11,7 @@ import MobileMenu from '@/module/page/mobile/side_menu/Container'
 import FundingProcess from './FundingProcess'
 import AddSuggestionDoc from './AddSuggestionDoc'
 import Footer from '@/module/layout/Footer/Container'
-import JoinCommunity from './JoinCommunity'
+// import JoinCommunity from './JoinCommunity'
 import Hero from './Hero'
 
 export default class extends BasePage {
@@ -92,7 +92,7 @@ export default class extends BasePage {
         <Main>
           <FundingProcess />
           <AddSuggestionDoc />
-          <JoinCommunity />
+          {/* <JoinCommunity /> */}
         </Main>
         <Footer />
       </div>
