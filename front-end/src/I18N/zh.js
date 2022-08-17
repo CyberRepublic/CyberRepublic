@@ -277,6 +277,7 @@ const zh = {
   'suggestion.viewAll': '查看所有',
   'suggestion.viewArchived': '查看已归档',
   'suggestion.viewSigned': '查看已签名',
+  'suggestion.viewUnsigned': '查看未签名',
   'suggestion.mySuggestions': '我的建议',
   'suggestion.all': '所有',
   'suggestion.addedByMe': '我添加的',

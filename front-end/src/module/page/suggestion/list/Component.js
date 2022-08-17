@@ -78,10 +78,10 @@ export default class extends StandardPage {
     // we use the props from the redux store if its retained
     this.state = {
       showForm: uri.hasQuery('create'),
-      showSigned: false,
-      showArchived: false,
+      showSigned: undefined,
+      // showArchived: false,
       showDidModal: uri.hasQuery('create'),
-      showOldData: false,
+      // showOldData: false,
       // named status since we eventually want to use a struct of statuses to filter on
       referenceStatus,
       infoNeeded,
@@ -108,9 +108,6 @@ export default class extends StandardPage {
     const initPage = localStorage.getItem('suggestion-page')
     if (!initPage) {
       localStorage.setItem('suggestion-page', 1)
-    }
-    if (this.props.location.query) {
-      this.viewOldData()
     }
     this.refetch()
   }
@@ -271,39 +268,33 @@ export default class extends StandardPage {
             </Col>
           </Row>
           {isVisitableFilter && filterPanel}
-          <Row
-            type="flex"
-            justify="space-between"
-            align="middle"
-            style={{ borderBottom: '1px solid #E5E5E5' }}
-          >
-            <Col md={24} xl={12} style={{ paddingBottom: 24 }}>
-              {sortActionsNode}
-            </Col>
-            <Col
-              md={24}
-              xl={12}
-              style={{ paddingBottom: 24, textAlign: 'right' }}
-            >
+          <ButtonWrapper>
+            <div className="button-list">
               <Button
+                style={{ paddingLeft: 0 }}
                 type="link"
                 className="btn-link"
-                onClick={this.toggleSignedList}
+                onClick={() => this.toggleSignedList(true)}
               >
-                {this.state.showSigned === false
-                  ? I18N.get('suggestion.viewSigned')
-                  : I18N.get('suggestion.viewAll')}
+                {I18N.get('suggestion.viewSigned')}
               </Button>
               <SplitLabel />
               <Button
                 type="link"
                 className="btn-link"
-                onClick={this.toggleArchivedList}
+                onClick={() => this.toggleSignedList(false)}
               >
-                {this.state.showArchived === false
-                  ? I18N.get('suggestion.viewArchived')
-                  : I18N.get('suggestion.viewAll')}
+                {I18N.get('suggestion.viewUnsigned')}
               </Button>
+              <SplitLabel />
+              <Button
+                type="link"
+                className="btn-link"
+                onClick={this.viewAllData}
+              >
+                {I18N.get('suggestion.viewAll')}
+              </Button>
+
               {isSecretary && <SplitLabel />}
               {isSecretary && (
                 <Button
@@ -314,18 +305,9 @@ export default class extends StandardPage {
                   {I18N.get('elip.button.exportAsCSV')}
                 </Button>
               )}
-              <SplitLabel />
-              <Button
-                type="link"
-                className="btn-link"
-                onClick={this.viewOldData}
-              >
-                {this.state.showOldData === false
-                  ? I18N.get('suggestion.btn.viewOldData')
-                  : I18N.get('suggestion.btn.viewNewData')}
-              </Button>
-            </Col>
-          </Row>
+            </div>
+            {sortActionsNode}
+          </ButtonWrapper>
           <Row gutter={24} style={{ marginTop: 32 }}>
             <Col span={24}>{listNode}</Col>
           </Row>
@@ -429,10 +411,9 @@ export default class extends StandardPage {
     this.setState({ showForm: false })
   }
 
-  toggleArchivedList = async () => {
+  toggleSignedList = async (value) => {
     await this.setState((prevState) => ({
-      showArchived: !prevState.showArchived,
-
+      showSigned: value,
       // go back to page 1 on toggle
       page: 1,
       results: 10,
@@ -442,22 +423,9 @@ export default class extends StandardPage {
     this.refetch()
   }
 
-  toggleSignedList = async () => {
+  viewAllData = async () => {
     await this.setState((prevState) => ({
-      showSigned: !prevState.showSigned,
-
-      // go back to page 1 on toggle
-      page: 1,
-      results: 10,
-      total: 0
-    }))
-
-    this.refetch()
-  }
-
-  viewOldData = async () => {
-    await this.setState((state) => ({
-      showOldData: !state.showOldData,
+      showSigned: undefined,
       // go back to page 1 on toggle
       page: 1,
       results: 10,
@@ -825,10 +793,6 @@ export default class extends StandardPage {
     }
     let included = ''
 
-    if (this.state.showOldData) {
-      query.old = true
-    }
-
     if (infoNeeded) {
       included = SUGGESTION_TAG_TYPE.INFO_NEEDED
     }
@@ -854,12 +818,8 @@ export default class extends StandardPage {
       query.status = status
     }
 
-    if (this.state.showArchived) {
-      query.status = SUGGESTION_STATUS.ARCHIVED
-    }
-
-    if (this.state.showSigned) {
-      query.signed = true
+    if (this.state.showSigned === false || this.state.showSigned === true) {
+      query.signed = this.state.showSigned
     }
 
     if (!_.isEmpty(budgetRequested) && budgetRequested > 0) {
@@ -1073,5 +1033,20 @@ const SplitLabel = styled.span`
   color: rgba(3, 30, 40, 0.3);
   :after {
     content: '|';
+  }
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 24px;
+  @media only screen and (max-width: ${breakPoint.mobile}) {
+    flex-direction: column;
+  }
+  .button-list {
+    @media only screen and (max-width: ${breakPoint.mobile}) {
+      padding-bottom: 24px;
+    }
   }
 `

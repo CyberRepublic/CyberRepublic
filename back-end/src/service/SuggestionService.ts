@@ -634,8 +634,13 @@ export default class extends Base {
     }
 
     // signature is existed
-    if (param.signed) {
+    if (param.signed === 'true') {
       query['signature.data'] = { $exists: true }
+      delete query.signed
+    }
+
+    if (param.signed === 'false') {
+      query['signature.data'] = { $exists: false }
       delete query.signed
     }
 
