@@ -7,7 +7,6 @@ import {
   Col,
   Button,
   Select,
-  Input,
   DatePicker,
   Checkbox,
   Icon,
@@ -112,9 +111,6 @@ export default class extends BaseComponent {
     if (!initPage) {
       localStorage.setItem('proposal-page', 1)
     }
-    if (this.props.location.query) {
-      this.viewOldData()
-    }
     this.loadPage(localStorage.getItem('proposal-page') || 1, 10)
     this.refetch()
   }
@@ -206,22 +202,6 @@ export default class extends BaseComponent {
       type,
       endsDate
     })
-    this.refetch()
-  }
-
-  viewOldData = async () => {
-    let page
-    if (this.props.location.query) {
-      page = localStorage.getItem('proposal-page')
-    }
-    await this.setState((state) => ({
-      showOldData: !state.showOldData,
-      // go back to page 1 on toggle
-      page,
-      results: 10,
-      total: 0
-    }))
-
     this.refetch()
   }
 
@@ -408,12 +388,6 @@ export default class extends BaseComponent {
                 {I18N.get('elip.button.exportAsCSV')}
               </CSVLink>
             )}
-            {isSecretary && <SplitLabel />}
-            <ViewOldDataBtn onClick={this.viewOldData}>
-              {this.state.showOldData === false
-                ? I18N.get('proposal.btn.viewOldData')
-                : I18N.get('proposal.btn.viewNewData')}
-            </ViewOldDataBtn>
           </Row>
           <Table
             columns={columns}
