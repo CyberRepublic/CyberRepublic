@@ -39,13 +39,13 @@ import {
   FilterItemLabel,
   FilterClearBtn,
   CheckboxText,
-  SplitLabel,
-  ViewOldDataBtn,
   CurrentHeight,
   CurrentHeightImg,
   CurrentHeightTitle,
   CurrentHeightContent,
-  CurrentHeightFooter
+  CurrentHeightFooter,
+  LegendWrapper,
+  StatusWrapper
 } from './style'
 
 const { RangePicker } = DatePicker
@@ -286,16 +286,21 @@ export default class extends BaseComponent {
     }
 
     const statusIndicator = (
-      <List>
-        <Item status={CVOTE_RESULT.SUPPORT} />
-        <span>{I18N.get('council.voting.type.support')}</span>
-        <Item status={CVOTE_RESULT.REJECT} />
-        <span>{I18N.get('council.voting.type.reject')}</span>
-        <Item status={CVOTE_RESULT.ABSTENTION} />
-        <span>{I18N.get('council.voting.type.abstention')}</span>
-        <ItemUndecided status={CVOTE_RESULT.UNDECIDED} />
-        <span>{I18N.get('council.voting.type.undecided')}</span>
-      </List>
+      <StatusWrapper>
+        <div style={{ paddingRight: 8 }}>
+          {I18N.get('council.voting.type.legend')}
+        </div>
+        <List>
+          <Item status={CVOTE_RESULT.SUPPORT} />
+          <span>{I18N.get('council.voting.type.support')}</span>
+          <Item status={CVOTE_RESULT.REJECT} />
+          <span>{I18N.get('council.voting.type.reject')}</span>
+          <Item status={CVOTE_RESULT.ABSTENTION} />
+          <span>{I18N.get('council.voting.type.abstention')}</span>
+          <ItemUndecided status={CVOTE_RESULT.UNDECIDED} />
+          <span>{I18N.get('council.voting.type.undecided')}</span>
+        </List>
+      </StatusWrapper>
     )
 
     // no one can see this button
@@ -333,11 +338,7 @@ export default class extends BaseComponent {
         />
       </Col>
     )
-    const btns = (
-      <Col lg={8} md={8} sm={12} xs={24}>
-        {statusIndicator}
-      </Col>
-    )
+
     const filterBtns = (
       <FilterLabel>
         <Row
@@ -362,15 +363,7 @@ export default class extends BaseComponent {
         <Container>
           {currentHeight}
           {createBtn}
-          <Row
-            type="flex"
-            align="bottom"
-            justify="space-between"
-            style={{ marginTop: 20 }}
-          >
-            {title}
-            {btns}
-          </Row>
+          <Row style={{ marginTop: 20 }}>{title}</Row>
           <Row
             type="flex"
             align="middle"
@@ -382,24 +375,27 @@ export default class extends BaseComponent {
             {filterBtns}
           </Row>
           {isVisitableFilter && filterPanel}
-          <Row type="flex" align="middle" justify="end">
+          <LegendWrapper>
             {isSecretary && (
-              <CSVLink data={this.state.alllist} style={{ marginBottom: 16 }}>
+              <CSVLink data={this.state.alllist}>
                 {I18N.get('elip.button.exportAsCSV')}
               </CSVLink>
             )}
-          </Row>
+            {statusIndicator}
+          </LegendWrapper>
           <Table
             columns={columns}
             loading={loading}
             dataSource={list}
             rowKey={(record) => record._id}
-            pagination={{
-              current: page,
-              pageSize: 10,
-              total, // list && list.length,
-              onChange: this.onPageChange
-            }}
+            pagination={
+              {
+                current: page,
+                pageSize: 10,
+                total,
+                onChange: this.onPageChange
+              } // list && list.length,
+            }
           />
           {createBtn}
         </Container>

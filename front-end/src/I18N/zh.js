@@ -825,6 +825,7 @@ const zh = {
   'council.voting.chainStatus.unchain': '未上链',
   'council.voting.chainStatus.failed': '上链失败',
 
+  'council.voting.type.legend': '投票结果图例',
   'council.voting.type.support': '赞成',
   'council.voting.type.reject': '否决',
   'council.voting.type.abstention': '弃权',

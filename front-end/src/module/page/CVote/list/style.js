@@ -18,12 +18,10 @@ export const Container = styled.div`
 export const List = styled.div`
   display: flex;
   align-items: center;
-  flex: 0 1 300px;
   font-size: 14px;
-  justify-content: flex-end;
-  @media only screen and (max-width: ${grid.sm}) {
-    justify-content: flex-start;
-  }
+  width: 280px;
+  flex-shrink: 1;
+  justify-content: flex-start;
 `
 
 export const Item = styled.div`
@@ -31,21 +29,22 @@ export const Item = styled.div`
   height: 10px;
   box-sizing: border-box;
   margin-right: 2px;
-  margin-left: ${props => (props.status === CVOTE_RESULT.SUPPORT ? 0 : '10px')};
-  background-color: ${props => CVOTE_RESULT_COLOR[props.status]};
+  margin-left: ${(props) =>
+    props.status === CVOTE_RESULT.SUPPORT ? 0 : '10px'};
+  background-color: ${(props) => CVOTE_RESULT_COLOR[props.status]};
 `
 
 export const ItemUndecided = styled(Item)`
   position: relative;
   overflow: hidden;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    background: url("/assets/images/bg-line.png") 0 0 repeat;
+    background: url('/assets/images/bg-line.png') 0 0 repeat;
   }
 `
 
@@ -71,7 +70,7 @@ export const VoteFilter = styled.div`
 `
 
 export const FilterLabel = styled(Col)`
-  color: #008D85;
+  color: #008d85;
   cursor: pointer;
 `
 
@@ -84,8 +83,8 @@ export const FilterPanel = styled.div`
     margin-bottom: 58px;
   }
   .filter-input {
-    width: ${props => (props.isCouncil ? '60%' : '50%')};
-    ${props => (props.isCouncil ? 'padding-right: 15px;' : '')}
+    width: ${(props) => (props.isCouncil ? '60%' : '50%')};
+    ${(props) => (props.isCouncil ? 'padding-right: 15px;' : '')};
   }
 `
 
@@ -97,7 +96,6 @@ export const FilterClearBtn = styled.div`
   color: rgba(3, 30, 40, 0.3);
   cursor: pointer;
 `
-
 
 export const FilterItem = styled.div`
   display: flex;
@@ -116,12 +114,12 @@ export const FilterItem = styled.div`
   }
 `
 export const FilterContent = styled.div`
-  background: #F6F9FD;
+  background: #f6f9fd;
   height: 100%;
 `
 
 export const FilterItemLabel = styled.div`
-  width: ${props => (props.isCouncil ? '40%' : '25%')};;
+  width: ${(props) => (props.isCouncil ? '40%' : '25%')};
   font-family: Synthese;
   font-size: 14px;
   line-height: 20px;
@@ -136,23 +134,6 @@ export const CheckboxText = styled.span`
   margin-left: 10px;
 `
 
-export const SplitLabel = styled.span`
-  padding: 0 16px;
-  margin-bottom: 16px;
-  color: rgba(3, 30, 40, 0.3);
-  :after {
-    content: '|';
-  }
-`
-
-export const ViewOldDataBtn = styled.div`
-  margin-bottom: 16px;
-  color: #43af92;
-  &:hover {
-    cursor: pointer;
-    color: #388582;
-  }
-`
 export const CurrentHeight = styled.div`
   width: 100%;
   height: 80px;
@@ -167,7 +148,7 @@ export const CurrentHeightTitle = styled.div`
   font-family: komu-a;
   font-size: 24px;
   line-height: 24px;
-  color: #031E28;
+  color: #031e28;
 `
 export const CurrentHeightImg = styled.img`
   position: absolute;
@@ -185,7 +166,7 @@ export const CurrentHeightContent = styled.div`
   font-size: 70px;
   line-height: 75px;
   z-index: 10;
-  color: #0F2631;
+  color: #0f2631;
 `
 export const CurrentHeightFooter = styled.div`
   position: absolute;
@@ -193,5 +174,19 @@ export const CurrentHeightFooter = styled.div`
   height: 8px;
   bottom: 0;
   z-index: -1;
-  background: #1DE9B6;
+  background: #1de9b6;
+`
+export const LegendWrapper = styled.div`
+  display: flex;
+  justify-content: space-btween;
+  margin: 32px 0 8px;
+  align-items: center;
+`
+export const StatusWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  @media only screen and (max-width: ${grid.sm}) {
+    flex-direction: column;
+    align-items: unset;
+  }
 `

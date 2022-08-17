@@ -850,12 +850,12 @@ const en = {
   'council.voting.chainStatus.unchain': 'UnChain',
   'council.voting.chainStatus.failed': 'Failed',
 
+  'council.voting.type.legend': 'Voting Result Legend',
   'council.voting.type.support': 'Yes',
   'council.voting.type.reject': 'No',
   'council.voting.type.abstention': 'Abstained',
   'council.voting.type.undecided': 'Undecided',
-  'council.voting.ifConflicted':
-    'Potential Conflict with Existing Constitution',
+  'council.voting.ifConflicted': `Potential Conflict with Existing Constitution`,
 
   'council.voting.btnText.yes': 'Vote Yes',
   'council.voting.btnText.no': 'Oppose with a Reason',
