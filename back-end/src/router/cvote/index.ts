@@ -1,13 +1,13 @@
 import Base from '../Base'
 
-import create_draft from './create_draft'
-import update_draft from './update_draft'
-import delete_draft from './delete_draft'
-import create from './create'
+// import create_draft from './create_draft'
+// import update_draft from './update_draft'
+// import delete_draft from './delete_draft'
+// import create from './create'
 import list from './list'
 import list_public from './list_public'
 import get from './get'
-import update from './update'
+// import update from './update'
 import vote from './vote'
 import finish from './finish'
 import unfinish from './unfinish'
@@ -27,26 +27,26 @@ import walletVote from './wallet_vote'
 import getCustomizedIDList from './get_customized_id_list'
 
 export default Base.setRouter([
-  {
-    path: '/create_draft',
-    router: create_draft,
-    method: 'post'
-  },
-  {
-    path: '/update_draft',
-    router: update_draft,
-    method: 'post'
-  },
-  {
-    path: '/delete_draft',
-    router: delete_draft,
-    method: 'post'
-  },
-  {
-    path: '/create',
-    router: create,
-    method: 'post'
-  },
+  // {
+  //   path: '/create_draft',
+  //   router: create_draft,
+  //   method: 'post'
+  // },
+  // {
+  //   path: '/update_draft',
+  //   router: update_draft,
+  //   method: 'post'
+  // },
+  // {
+  //   path: '/delete_draft',
+  //   router: delete_draft,
+  //   method: 'post'
+  // },
+  // {
+  //   path: '/create',
+  //   router: create,
+  //   method: 'post'
+  // },
   {
     path: '/list_public',
     router: list_public,
@@ -62,11 +62,11 @@ export default Base.setRouter([
     router: get,
     method: 'get'
   },
-  {
-    path: '/update',
-    router: update,
-    method: 'post'
-  },
+  // {
+  //   path: '/update',
+  //   router: update,
+  //   method: 'post'
+  // },
   {
     path: '/vote',
     router: vote,

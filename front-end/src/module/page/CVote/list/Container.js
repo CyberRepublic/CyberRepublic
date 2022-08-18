@@ -3,7 +3,7 @@ import { createContainer } from '@/util'
 import Component from './Component'
 import CVoteService from '@/service/CVoteService'
 
-const excludeFilters = (value, key) => (key !== 'search')
+const excludeFilters = (value, key) => key !== 'search'
 
 const defaultFilters = {
   voteResult: 'all',
@@ -15,10 +15,10 @@ const defaultFilters = {
   creationDate: [],
   author: '',
   type: '',
-  endsDate: [],
+  endsDate: []
 }
 
-const mapState = state => ({
+const mapState = (state) => ({
   user: state.user,
   currentUserId: state.user.current_user_id,
   isLogin: state.user.is_login,
@@ -31,9 +31,9 @@ const mapState = state => ({
   isVisitableFilter: _.isEmpty(state.cvote.filters)
     ? false
     : !_.isEqual(
-      _.filter(defaultFilters, excludeFilters),
-      _.filter(state.cvote.filters, excludeFilters)
-    )
+        _.filter(defaultFilters, excludeFilters),
+        _.filter(state.cvote.filters, excludeFilters)
+      )
 })
 
 const mapDispatch = () => {
@@ -43,7 +43,7 @@ const mapDispatch = () => {
       return defaultFilters
     },
     async updateFilters(filters) {
-      return service.updateFilters({...defaultFilters, ...filters})
+      return service.updateFilters({ ...defaultFilters, ...filters })
     },
     async clearFilters() {
       return this.updateFilters({})
@@ -51,15 +51,12 @@ const mapDispatch = () => {
     async listData(param, isCouncil) {
       return service.listData(param, isCouncil)
     },
-    async createDraft(param) {
-      return service.createDraft(param)
-    },
     async getCurrentheight() {
       return service.getCurrentheight()
     },
     async getAllAuthor(param) {
       return service.getAllAuthor(param)
-    },
+    }
   }
 }
 

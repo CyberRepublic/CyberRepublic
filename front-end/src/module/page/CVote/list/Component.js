@@ -9,7 +9,6 @@ import {
   Select,
   DatePicker,
   Checkbox,
-  Icon,
   Spin
 } from 'antd'
 import rangePickerLocale from 'antd/es/date-picker/locale/zh_CN'
@@ -30,7 +29,6 @@ import {
   List,
   Item,
   ItemUndecided,
-  StyledButton,
   StyledSearch,
   FilterLabel,
   FilterPanel,
@@ -206,8 +204,7 @@ export default class extends BaseComponent {
   }
 
   ord_render() {
-    const { canManage, isSecretary, isCouncil } = this.props
-    const canCreateProposal = !isCouncil && !isSecretary
+    const { isSecretary } = this.props
     const { isVisitableFilter } = this.state
 
     const columns = [
@@ -277,14 +274,6 @@ export default class extends BaseComponent {
       }
     ]
 
-    if (canManage) {
-      columns.splice(1, 0, {
-        dataIndex: 'published',
-        render: (published, item, index) =>
-          published ? <Icon type="eye" /> : <Icon type="eye-invisible" />
-      })
-    }
-
     const statusIndicator = (
       <StatusWrapper>
         <div style={{ paddingRight: 8 }}>
@@ -302,21 +291,6 @@ export default class extends BaseComponent {
         </List>
       </StatusWrapper>
     )
-
-    // no one can see this button
-    const createBtn = canManage &&
-      canCreateProposal && (
-        <Row type="flex" align="middle" justify="end">
-          <Col lg={8} md={12} sm={24} xs={24} style={{ textAlign: 'right' }}>
-            <StyledButton
-              onClick={this.createAndRedirect}
-              className="cr-btn cr-btn-primary"
-            >
-              {I18N.get('from.CVoteForm.button.add')}
-            </StyledButton>
-          </Col>
-        </Row>
-      )
 
     const title = (
       <Col lg={8} md={8} sm={12} xs={24}>
@@ -362,7 +336,6 @@ export default class extends BaseComponent {
         <Meta title="Cyber Republic - Elastos" />
         <Container>
           {currentHeight}
-          {createBtn}
           <Row style={{ marginTop: 20 }}>{title}</Row>
           <Row
             type="flex"
@@ -397,7 +370,6 @@ export default class extends BaseComponent {
               } // list && list.length,
             }
           />
-          {createBtn}
         </Container>
       </div>
     )
@@ -429,30 +401,6 @@ export default class extends BaseComponent {
       isChangeNext: true
     })
     this.loadPage(page, pageSize)
-  }
-
-  createAndRedirect = async () => {
-    sessionStorage.removeItem('proposalPage')
-
-    const { user } = this.props
-    const fullName = userUtil.formatUsername(user)
-    const { createDraft } = this.props
-
-    const param = {
-      title: 'New Proposal',
-      proposedBy: fullName,
-      proposer: user._id
-    }
-
-    this.ord_loading(true)
-
-    try {
-      const res = await createDraft(param)
-      this.ord_loading(false)
-      this.toEditPage(res._id)
-    } catch (error) {
-      this.ord_loading(false)
-    }
   }
 
   getQuery = () => {

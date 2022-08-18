@@ -28,17 +28,6 @@ export default class extends BaseService {
     this.dispatch(this.selfRedux.actions.data_update(undefined))
   }
 
-  async createDraft(param) {
-    const path = `${this.prefixPath}/create_draft`
-
-    const rs = await api_request({
-      path,
-      method: 'post',
-      data: param
-    })
-    return rs
-  }
-
   async updateDraft(param) {
     const path = `${this.prefixPath}/update_draft`
 
