@@ -1,5 +1,5 @@
-@import "@/style/variable";
-@import "@/style/color";
+@import '@/style/variable';
+@import '@/style/color';
 
 .p_SuggestionList {
   .ant-btn {
@@ -33,13 +33,13 @@
   }
   .item-container {
     padding: 30px 0 15px;
-    
+
     @media only screen and (max-width: $mobile-width) {
       padding-bottom: 8px;
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid #E5E5E5;
+      border-bottom: 1px solid #e5e5e5;
     }
   }
   .list-container .title {
@@ -65,9 +65,8 @@
 .suggestion-header {
   .title {
     font-size: 96px;
-
     @media only screen and (max-width: $mobile-width) {
-      font-size: 20vw;
+      font-size: 12vw;
     }
   }
 }

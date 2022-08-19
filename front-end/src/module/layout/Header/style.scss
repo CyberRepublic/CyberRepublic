@@ -1,8 +1,27 @@
 @import '../../../style/variable';
 @import '../../../style/color';
 
+.page_layout_header .page_links {
+  display: flex;
+  justify-content: center;
+  background-color: #000000;
+  color: #ffffff;
+  border-bottom: none;
+  @media only screen and (max-width: $mobile-width) {
+    display: none;
+  }
+  .ant-menu-item > a {
+    display: block;
+    color: #ffffff;
+  }
+  .ant-menu-item-selected {
+    color: #43af92;
+    border-bottom: 4px solid #43af92;
+  }
+}
+
 .c_Header {
-  height: auto !important;
+  // height: auto !important;
   width: 100%;
   .top-toast {
     background: $cr_dark_color;
@@ -118,11 +137,11 @@
   }
 }
 
-.ant-menu-vertical .ant-menu-item.mobile-language-dropdown {
-  @media only screen and (min-width: $mobile-width) {
-    display: none;
-  }
-}
+// .ant-menu-vertical .ant-menu-item.mobile-language-dropdown {
+//   @media only screen and (min-width: $mobile-width) {
+//     display: none;
+//   }
+// }
 
 @media only screen and (max-width: 992px) {
   .ant-menu-horizontal > .ant-menu-item:hover {

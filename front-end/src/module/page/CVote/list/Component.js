@@ -38,10 +38,12 @@ import {
   FilterClearBtn,
   CheckboxText,
   CurrentHeight,
+  CurrentHeightDesc,
+  CurrentHeightNum,
   CurrentHeightImg,
   CurrentHeightTitle,
   CurrentHeightContent,
-  CurrentHeightFooter,
+  CurrentHeightUnderline,
   LegendWrapper,
   StatusWrapper
 } from './style'
@@ -277,7 +279,7 @@ export default class extends BaseComponent {
     const statusIndicator = (
       <StatusWrapper>
         <div style={{ paddingRight: 8 }}>
-          {I18N.get('council.voting.type.legend')}
+          {I18N.get('council.voting.type.legend')}:
         </div>
         <List>
           <Item status={CVOTE_RESULT.SUPPORT} />
@@ -381,14 +383,18 @@ export default class extends BaseComponent {
     if (currentHeight) {
       currentHeightDiv = (
         <CurrentHeight>
-          <CurrentHeightContent>
-            <CurrentHeightImg src={'/assets/images/Elastos_Logo.png'} />
-            <CurrentHeightTitle>
-              {I18N.get('proposal.fields.currentHeight')}:
-            </CurrentHeightTitle>
-            {currentHeight ? currentHeight.toLocaleString() : 0}
-            <CurrentHeightFooter />
-          </CurrentHeightContent>
+          <div>
+            <CurrentHeightDesc>
+              <CurrentHeightImg src={'/assets/images/Elastos_Logo.png'} />
+              <CurrentHeightTitle>
+                {I18N.get('proposal.fields.currentHeight')}:
+              </CurrentHeightTitle>
+            </CurrentHeightDesc>
+            <CurrentHeightNum>
+              {currentHeight ? currentHeight.toLocaleString() : 0}
+              <CurrentHeightUnderline />
+            </CurrentHeightNum>
+          </div>
         </CurrentHeight>
       )
     }
@@ -779,7 +785,7 @@ export default class extends BaseComponent {
     return (
       <FilterPanel isCouncil={isCouncil}>
         <Row type="flex" gutter={10} className="filter">
-          <Col span={colSpan} className="filter-panel">
+          <Col span={colSpan} className="filter-panel" lg={8} md={8} xs={24}>
             <FilterContent>
               <FilterItem>
                 <FilterItemLabel isCouncil={isCouncil}>
@@ -829,7 +835,7 @@ export default class extends BaseComponent {
             </FilterContent>
           </Col>
           {isCouncil && (
-            <Col span={colSpan} className="filter-panel">
+            <Col span={colSpan} className="filter-panel" lg={8} md={8} xs={24}>
               <FilterContent>
                 <FilterItem>
                   <Checkbox
@@ -843,7 +849,7 @@ export default class extends BaseComponent {
               </FilterContent>
             </Col>
           )}
-          <Col span={colSpan} className="filter-panel">
+          <Col span={colSpan} className="filter-panel" lg={8} md={8} xs={24}>
             <FilterContent>
               <FilterItem>
                 <FilterItemLabel isCouncil={isCouncil}>
@@ -863,8 +869,7 @@ export default class extends BaseComponent {
                 <div className="filter-input">
                   <Select
                     showSearch
-                    // labelInValue
-                    value={this.state.author}
+                    value={author}
                     style={{ width: '100%' }}
                     showArrow={false}
                     filterOption={false}
@@ -888,19 +893,10 @@ export default class extends BaseComponent {
                   onChange={this.handleTypeChange}
                 >
                   {_.map(PROPOSAL_TYPE, (value, key) => {
-                    const rs = _.includes(
-                      [
-                        PROPOSAL_TYPE.MOTION_AGAINST,
-                        PROPOSAL_TYPE.ANYTHING_ELSE
-                      ],
-                      value
-                    )
                     return (
-                      !rs && (
-                        <Select.Option key={key} value={value}>
-                          {I18N.get(`proposal.type.${value}`)}
-                        </Select.Option>
-                      )
+                      <Select.Option key={key} value={value}>
+                        {I18N.get(`proposal.type.${value}`)}
+                      </Select.Option>
                     )
                   })}
                 </Select>

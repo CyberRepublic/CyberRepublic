@@ -9,9 +9,20 @@ const Search = Input.Search
 
 export const Container = styled.div`
   background: #ffffff;
-  margin: 50px 108px 80px 108px;
+  margin: 50px 90px 80px 90px;
+  @media (min-width: ${grid.sm}) and (max-width: ${grid.xl}) {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
   @media only screen and (max-width: ${grid.sm}) {
-    margin: 15px;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  .ant-table-wrapper {
+    @media only screen and (max-width: ${grid.lg}) {
+      overflow-x: scroll;
+    }
   }
 `
 
@@ -72,6 +83,7 @@ export const VoteFilter = styled.div`
 export const FilterLabel = styled(Col)`
   color: #008d85;
   cursor: pointer;
+  margin-top: 5px;
 `
 
 export const FilterPanel = styled.div`
@@ -124,7 +136,6 @@ export const FilterItemLabel = styled.div`
   font-size: 14px;
   line-height: 20px;
   color: #000;
-
   :after {
     content: ':';
   }
@@ -135,51 +146,53 @@ export const CheckboxText = styled.span`
 `
 
 export const CurrentHeight = styled.div`
-  width: 100%;
-  height: 80px;
-  margin-left: 0px;
-`
-export const CurrentHeightTitle = styled.div`
-  position: absolute;
-  width: 157px;
-  height: 24px;
-  top: -30px;
-  left: 40px;
-  font-family: komu-a;
-  font-size: 24px;
-  line-height: 24px;
-  color: #031e28;
-`
-export const CurrentHeightImg = styled.img`
-  position: absolute;
-  width: 24px;
-  height: 22px;
-  top: -30px;
-`
-export const CurrentHeightContent = styled.div`
-  position: absolute;
-  height: 76px;
-  right: 108px;
-  top: 191px;
+  display: flex;
+  justify-content: flex-end;
   font-family: Synthese;
   font-weight: bold;
   font-size: 70px;
   line-height: 75px;
-  z-index: 10;
   color: #0f2631;
+  @media only screen and (max-width: ${grid.sm}) {
+    font-size: 50px;
+    line-height: 55px;
+  }
 `
-export const CurrentHeightFooter = styled.div`
+
+export const CurrentHeightImg = styled.img`
+  width: 24px;
+  height: 22px;
+`
+
+export const CurrentHeightTitle = styled.div`
+  font-family: komu-a;
+  font-size: 24px;
+  line-height: 24px;
+  color: #031e28;
+  padding-left: 16px;
+`
+
+export const CurrentHeightDesc = styled.div`
+  display: flex;
+`
+
+export const CurrentHeightNum = styled.span`
+  position: relative;
+  display: inline-block;
+`
+
+export const CurrentHeightUnderline = styled.div`
   position: absolute;
   width: 100%;
   height: 8px;
   bottom: 0;
-  z-index: -1;
   background: #1de9b6;
 `
+
 export const LegendWrapper = styled.div`
   display: flex;
   justify-content: space-btween;
-  margin: 32px 0 8px;
+  margin: 32px 0 10px;
   align-items: center;
 `
 export const StatusWrapper = styled.div`

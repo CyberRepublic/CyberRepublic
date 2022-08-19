@@ -169,11 +169,11 @@ export default {
   },
   type: {
     [PROPOSAL_TYPE.NEW_MOTION]: 'New Motion',
-    [PROPOSAL_TYPE.MOTION_AGAINST]: 'Motion Against',
-    [PROPOSAL_TYPE.ANYTHING_ELSE]: 'Anything Else',
-    [PROPOSAL_TYPE.STANDARD_TRACK]: 'Standards Tracking ELIP',
-    [PROPOSAL_TYPE.PROCESS]: 'Process ELIP',
-    [PROPOSAL_TYPE.INFORMATIONAL]: 'Information ELIP',
+    // [PROPOSAL_TYPE.MOTION_AGAINST]: 'Motion Against',
+    // [PROPOSAL_TYPE.ANYTHING_ELSE]: 'Anything Else',
+    // [PROPOSAL_TYPE.STANDARD_TRACK]: 'Standards Tracking ELIP',
+    // [PROPOSAL_TYPE.PROCESS]: 'Process ELIP',
+    // [PROPOSAL_TYPE.INFORMATIONAL]: 'Information ELIP',
     [PROPOSAL_TYPE.CHANGE_PROPOSAL]: 'Motion to change a proposal',
     [PROPOSAL_TYPE.CHANGE_SECRETARY]:
       'Motion for new CR Council Secretary General',

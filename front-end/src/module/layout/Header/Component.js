@@ -235,7 +235,7 @@ export default class extends BaseComponent {
     const helpDropdown = this.buildHelpDropdown()
     const isLogin = this.props.isLogin
     return (
-      <div>
+      <div className="page_layout_header">
         <Header className="c_Header" style={{ backgroundColor: '#000000' }}>
           <Menu
             onClick={this.clickItem.bind(this)}
@@ -309,48 +309,48 @@ export default class extends BaseComponent {
             )}
           </Menu>
 
-          <Menu
-            onClick={this.clickItem.bind(this)}
-            className="c_Header_Menu pull-center"
-            selectedKeys={this.getSelectedKeys()}
-            mode="horizontal"
-          >
-            <Menu.Item className="c_MenuItem link" key="councils">
-              <Dropdown
-                overlay={this.buildCouncilDropdown()}
-                placement="bottomCenter"
-              >
-                <a className="ant-dropdown-link">
-                  {I18N.get('navigation.council.title')}
-                </a>
-              </Dropdown>
-            </Menu.Item>
-
-            <Menu.Item className="c_MenuItem link" key="whitepaper">
-              {I18N.get('navigation.whitepaper')}
-            </Menu.Item>
-
-            <Menu.Item className="c_MenuItem link" key="funding">
-              {I18N.get('navigation.funding')}
-            </Menu.Item>
-
-            <Menu.Item className="c_MenuItem link" key="suggestion">
-              {I18N.get('navigation.suggestion')}
-            </Menu.Item>
-
-            <Menu.Item className="c_MenuItem link" key="proposals">
-              {I18N.get('navigation.proposal')}
-            </Menu.Item>
-
-            <Menu.Item className="c_MenuItem link" key="blog">
-              {I18N.get('navigation.resources.submenu.blog')}
-            </Menu.Item>
-          </Menu>
           <div className="clearfix" />
           {this.renderProfileToast()}
           {this.renderCompleteProfileModal()}
           {this.renderDidModal()}
         </Header>
+        <Menu
+          onClick={this.clickItem.bind(this)}
+          className="page_links"
+          selectedKeys={this.getSelectedKeys()}
+          mode="horizontal"
+        >
+          <Menu.Item className="c_MenuItem link" key="councils">
+            <Dropdown
+              overlay={this.buildCouncilDropdown()}
+              placement="bottomCenter"
+            >
+              <a className="ant-dropdown-link">
+                {I18N.get('navigation.council.title')}
+              </a>
+            </Dropdown>
+          </Menu.Item>
+
+          <Menu.Item className="c_MenuItem link" key="whitepaper">
+            {I18N.get('navigation.whitepaper')}
+          </Menu.Item>
+
+          <Menu.Item className="c_MenuItem link" key="funding">
+            {I18N.get('navigation.funding')}
+          </Menu.Item>
+
+          <Menu.Item className="c_MenuItem link" key="suggestion">
+            {I18N.get('navigation.suggestion')}
+          </Menu.Item>
+
+          <Menu.Item className="c_MenuItem link" key="proposals">
+            {I18N.get('navigation.proposal')}
+          </Menu.Item>
+
+          <Menu.Item className="c_MenuItem link" key="blog">
+            {I18N.get('navigation.resources.submenu.blog')}
+          </Menu.Item>
+        </Menu>
       </div>
     )
   }
