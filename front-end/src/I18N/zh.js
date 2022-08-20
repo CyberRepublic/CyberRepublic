@@ -316,6 +316,7 @@ const zh = {
   'suggestion.form.fields.duplicate.button': '快速复制',
   // social share
   'socialShare.wechat.desc': `打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮。`,
+  'socialShare.shareTo': '分享到',
 
   // Suggestion Button Text
   'suggestion.btnText.edit': '编辑',

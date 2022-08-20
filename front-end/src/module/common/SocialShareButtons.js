@@ -32,6 +32,7 @@ class SocialShareButtons extends BaseComponent {
     const { shareQuote } = this.props
     return (
       <Wrapper>
+        <Text>{I18N.get('socialShare.shareTo')}:</Text>
         <FacebookShareButton url={window.location.href} quote={shareQuote}>
           <FacebookIcon size={32} round={true} />
         </FacebookShareButton>
@@ -67,6 +68,7 @@ export default SocialShareButtons
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
   margin-top: 8px;
   div {
     margin-right: 4px;
@@ -80,6 +82,10 @@ const Wrapper = styled.div`
 `
 const WeChatShareButton = styled.div`
   margin-left: 4px;
+`
+const Text = styled.div`
+  font-size: 16px;
+  padding-right: 6px;
 `
 const Desc = styled.div`
   font-size: 16px;
