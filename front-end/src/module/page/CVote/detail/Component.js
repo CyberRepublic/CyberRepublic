@@ -971,15 +971,11 @@ class C extends StandardPage {
         >
           <TabPane tab={this.renderTabTitle('budget')} key="budget">
             {this.renderTracking()}
+            {!_.isEmpty(dataList) && this.renderSummary()}
           </TabPane>
           <TabPane tab={this.renderTabTitle('status')} key="status">
             {this.renderTrackingMessage()}
           </TabPane>
-          {!_.isEmpty(dataList) ? (
-            <TabPane tab={this.renderTabTitle('summary')} key="summary">
-              {this.renderSummary()}
-            </TabPane>
-          ) : null}
         </Tabs>
       </StyledTabs>
     )
