@@ -79,6 +79,7 @@ export default class extends StandardPage {
     this.state = {
       showForm: uri.hasQuery('create'),
       showSigned: undefined,
+      showAll: true,
       // showArchived: false,
       showDidModal: uri.hasQuery('create'),
       // showOldData: false,
@@ -271,7 +272,11 @@ export default class extends StandardPage {
           <ButtonWrapper>
             <div className="button-list">
               <Button
-                style={{ paddingLeft: 0 }}
+                style={
+                  this.state.showSigned === true
+                    ? { paddingLeft: 0, color: '#d9d9d9' }
+                    : { paddingLeft: 0 }
+                }
                 type="link"
                 className="btn-link"
                 onClick={() => this.toggleSignedList(true)}
@@ -280,6 +285,9 @@ export default class extends StandardPage {
               </Button>
               <SplitLabel />
               <Button
+                style={
+                  this.state.showSigned === false ? { color: '#d9d9d9' } : null
+                }
                 type="link"
                 className="btn-link"
                 onClick={() => this.toggleSignedList(false)}
@@ -288,6 +296,9 @@ export default class extends StandardPage {
               </Button>
               <SplitLabel />
               <Button
+                style={
+                  this.state.showAll === true ? { color: '#d9d9d9' } : null
+                }
                 type="link"
                 className="btn-link"
                 onClick={this.viewAllData}
@@ -414,6 +425,7 @@ export default class extends StandardPage {
   toggleSignedList = async (value) => {
     await this.setState((prevState) => ({
       showSigned: value,
+      showAll: false,
       // go back to page 1 on toggle
       page: 1,
       results: 10,
@@ -426,6 +438,7 @@ export default class extends StandardPage {
   viewAllData = async () => {
     await this.setState((prevState) => ({
       showSigned: undefined,
+      showAll: true,
       // go back to page 1 on toggle
       page: 1,
       results: 10,
@@ -1040,7 +1053,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 24px;
+  padding-bottom: 8px;
   @media only screen and (max-width: ${breakPoint.mobile}) {
     flex-direction: column;
   }
