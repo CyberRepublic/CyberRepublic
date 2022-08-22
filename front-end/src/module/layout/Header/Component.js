@@ -495,8 +495,8 @@ export default class extends BaseComponent {
       })
 
       let linkToBlog = 'https://blog.cyberrepublic.org'
-
-      window.open(linkToBlog, '_blank')
+      // window.open(linkToBlog, '_blank')
+      window.open(linkToBlog, '_self')
     } else if (_.includes(['en', 'zh'], key)) {
       analytics.track('LANGUAGE_CHANGED', {
         language: e.key,
