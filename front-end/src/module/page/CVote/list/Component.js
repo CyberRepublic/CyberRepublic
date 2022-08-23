@@ -42,7 +42,6 @@ import {
   CurrentHeightNum,
   CurrentHeightImg,
   CurrentHeightTitle,
-  CurrentHeightContent,
   CurrentHeightUnderline,
   LegendWrapper,
   StatusWrapper

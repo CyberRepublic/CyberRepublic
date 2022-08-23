@@ -99,10 +99,10 @@ const Title = styled.div`
   margin-top: 2.2em;
   margin-bottom: 1.5em;
   font-weight: 700;
-  font-size: 50px;
+  font-size: 40px;
   line-height: 1.5em;
   @media (max-width: 768px) {
-    font-size: 40px;
+    font-size: 30px;
   }
 `
 const List = styled.ol`
@@ -198,7 +198,6 @@ const Desc = styled.div`
   padding-top: 20px;
   font-size: 14px;
   line-height: 1.75em;
-  letter-spacing: 1px;
   @media (max-width: 768px) {
     padding-top: 0;
     padding-left: 36px;

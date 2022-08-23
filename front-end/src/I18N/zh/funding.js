@@ -1,6 +1,6 @@
 export default {
   hero: {
-    welcome: `欢迎，开发者们!`,
+    welcome: `欢迎,开发者们!`,
     link: `让我们为您的项目提供资金支持`,
     description: `如果您计划在 DApp 或项目中使用 Elastos 核心技术，可以向 Elastos 生态系统社区自治组织 Cyber Republic 申请资金支持。`
   },

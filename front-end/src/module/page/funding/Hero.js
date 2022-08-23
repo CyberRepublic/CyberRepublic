@@ -25,6 +25,9 @@ const HeroTitle = styled.h1`
   font-weight: 700;
   font-size: 80px;
   line-height: 1.2em;
+  @media (min-width: 768px) and (max-width: 1200px) {
+    font-size: 65px;
+  }
   @media (max-width: 768px) {
     font-size: 45px;
   }
@@ -36,7 +39,7 @@ const FundLink = styled.a`
   display: inline-block;
   margin-top: 20px;
   color: #1ff5c9;
-  font-size: 45px;
+  font-size: 32px;
   line-height: 1.5em;
   font-weight: 400;
   @media (max-width: 768px) {

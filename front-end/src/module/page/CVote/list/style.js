@@ -177,16 +177,14 @@ export const CurrentHeightDesc = styled.div`
 `
 
 export const CurrentHeightNum = styled.span`
-  position: relative;
   display: inline-block;
 `
 
 export const CurrentHeightUnderline = styled.div`
-  position: absolute;
   width: 100%;
   height: 8px;
-  bottom: 0;
   background: #1de9b6;
+  margin-top: -6px;
 `
 
 export const LegendWrapper = styled.div`

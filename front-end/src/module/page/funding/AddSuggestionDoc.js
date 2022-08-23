@@ -102,11 +102,11 @@ const Title = styled.div`
   margin-top: 2.2em;
   margin-bottom: 1.5em;
   font-weight: 700;
-  font-size: 50px;
+  font-size: 40px;
   line-height: 1.5em;
   color: #050717;
   @media (max-width: 768px) {
-    font-size: 40px;
+    font-size: 30px;
   }
 `
 const Step = styled.div`
