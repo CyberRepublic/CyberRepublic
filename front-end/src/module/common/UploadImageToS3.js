@@ -43,7 +43,7 @@ class UploadImageToS3 extends BaseComponent {
         />
         <label htmlFor={name}>
           <figure>
-            <Icon type="cloud-upload" />
+            <Icon type="picture" />
           </figure>
         </label>
       </Wrapper>
