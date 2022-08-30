@@ -133,7 +133,7 @@ const en = {
 
   'meta.postedBy': 'Posted By',
   'image.upload.type.error': 'The upload file is not an image.',
-  'image.upload.size.error': 'The maximum upload file size is less than 10M.',
+  'image.upload.size.error': 'The maximum upload image size is less than 200k.',
 
   comments: 'Comments',
   'comments.posts': 'Posts',

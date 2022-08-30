@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import I18N from '@/I18N'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import BaseComponent from '@/model/BaseComponent'
 import 'codemirror/mode/gfm/gfm'
@@ -54,7 +55,7 @@ class Component extends BaseComponent {
 
   ord_render() {
     const { show, value } = this.state
-    const { name, autofocus, upload } = this.props
+    const { name, upload } = this.props
     return (
       <Wrapper>
         <Toolbar>
@@ -86,6 +87,7 @@ class Component extends BaseComponent {
             <MarkdownPreview content={value} />
           </Preview>
         )}
+        <Note>{I18N.get('image.upload.size.error')}</Note>
       </Wrapper>
     )
   }
@@ -133,9 +135,11 @@ const Toolbar = styled.div`
   margin-bottom: -24px;
   justify-content: flex-end;
 `
-
 const Preview = styled.div`
   min-height: 200px;
   padding: 20px;
   background: rgba(204, 204, 204, 0.2);
+`
+const Note = styled.div`
+  color: #cccccc;
 `
