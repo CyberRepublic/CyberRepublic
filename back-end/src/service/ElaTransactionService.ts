@@ -27,6 +27,10 @@ export default class extends Base {
     const allTransactions = []
     for (let height = preHeight + 1; height <= currentHeight; height++) {
       const transactions = await ela.getTransactionsByHeight(height)
+      if (!transactions) {
+        console.log('undefined tx height...', height)
+        break
+      }
       transactions.forEach((e: any) => {
         if (
           e &&
