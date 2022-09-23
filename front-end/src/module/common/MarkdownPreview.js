@@ -1,19 +1,35 @@
 import React from 'react'
+import { Modal } from 'antd'
 import styled from 'styled-components'
 import { convertMarkdownToHtml } from '@/util/markdown-it'
+import BaseComponent from '@/model/BaseComponent'
 
-function MarkedPreview({ content, style }) {
-  return (
-    <Wrapper
-      dangerouslySetInnerHTML={{
-        __html: convertMarkdownToHtml(content)
-      }}
-      innerStyle={style}
-    />
-  )
+class MarkdownPreview extends BaseComponent {
+  hideModal = () => {
+    this.props.showModal()
+  }
+  ord_render() {
+    return (
+      <Modal
+        maskClosable={false}
+        visible={this.props.show}
+        onCancel={this.hideModal}
+        width={670}
+        footer={null}
+        wrapClassName="md-preview-modal-wrap"
+      >
+        <Wrapper
+          dangerouslySetInnerHTML={{
+            __html: convertMarkdownToHtml(this.props.content)
+          }}
+          innerStyle={this.props.style}
+        />
+      </Modal>
+    )
+  }
 }
 
-export default MarkedPreview
+export default MarkdownPreview
 
 const Wrapper = styled.div`
   overflow-wrap: break-word;

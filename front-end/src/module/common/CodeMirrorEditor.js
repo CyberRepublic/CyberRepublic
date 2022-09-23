@@ -83,9 +83,11 @@ class Component extends BaseComponent {
             onChange={this.onChange}
           />
         ) : (
-          <Preview>
-            <MarkdownPreview content={value} />
-          </Preview>
+          <MarkdownPreview
+            content={value}
+            show={show}
+            showModal={this.togglePreview}
+          />
         )}
         <Note>{I18N.get('image.upload.size.error')}</Note>
       </Wrapper>

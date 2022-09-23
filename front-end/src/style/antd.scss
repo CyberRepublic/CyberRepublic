@@ -1,6 +1,6 @@
-@import "./color";
-@import "./variable";
-@import "./typography";
+@import './color';
+@import './variable';
+@import './typography';
 
 // Helpers IMPROVEME make separate helper scss
 .no-margin {
@@ -32,8 +32,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .halign-wrapper {
@@ -72,7 +72,7 @@ h3.one-line {
 }
 
 .ant-btn {
-  &.ant-btn-ebp{
+  &.ant-btn-ebp {
     &.ant-btn-sm {
       line-height: 0.9rem;
       font-size: 0.9rem;
@@ -129,7 +129,8 @@ h3.one-line {
 }
 
 .ant-table-wrapper.no-borders {
-  th, td {
+  th,
+  td {
     border-bottom: 0;
     background: initial;
   }
@@ -177,7 +178,7 @@ h3.one-line {
     position: relative;
     margin-bottom: 0;
     height: 100%;
-    margin-right: $rightBoxWidth + 2*$gap_2;
+    margin-right: $rightBoxWidth + 2 * $gap_2;
   }
 
   .ignore-right-box {
@@ -195,7 +196,7 @@ h3.one-line {
     position: absolute;
     height: 100%;
     width: $rightBoxWidth;
-    right: -($rightBoxWidth + 2*$gap_2);
+    right: -($rightBoxWidth + 2 * $gap_2);
     top: 0;
 
     .pull-up {
@@ -330,5 +331,16 @@ h3.one-line {
 
   &:hover {
     border-color: #66bda3 !important;
+  }
+}
+
+.ant-modal-wrap.md-preview-modal-wrap {
+  overflow: hidden;
+  .ant-modal {
+    height: 100%;
+  }
+  .ant-modal-content {
+    max-height: calc(100% - 200px);
+    overflow-y: auto;
   }
 }
