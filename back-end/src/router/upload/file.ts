@@ -9,6 +9,7 @@ export default class UploadFile extends Base {
       throw 'invalid upload file'
     }
     const url = await uploadService.saveFile(this.req['files'].file)
+    console.log('uploaded image url...', url)
     return this.result(1, { url })
   }
 }

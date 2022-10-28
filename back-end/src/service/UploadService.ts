@@ -49,6 +49,7 @@ export default class extends Base {
           console.error('unable to upload:', err)
           reject(err)
         }
+        console.log('uploaded image callback data', data)
         // remove the uploaded file
         fs.unlinkSync(path + file_name)
         // get public url

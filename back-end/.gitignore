@@ -51,3 +51,4 @@ issues.json
 .data
 .upload
 google-translation-service-acct.json
+scripts/change_suggestion_comments.js
