@@ -204,7 +204,7 @@ const ela = {
     const startTime = await this.getTimestampByHeight(height)
     const proposedEnds = mProposed + startTime * 1000
     const notificationEnds = mNotification + startTime * 1000
-    return { proposedEnds, notificationEnds }
+    return { proposedTime: startTime * 1000, proposedEnds, notificationEnds }
   }
 }
 export default ela

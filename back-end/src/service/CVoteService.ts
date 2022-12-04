@@ -163,9 +163,8 @@ export default class extends Base {
     const result = await getProposalData(proposalHash)
     const registerHeight = result && result.data.registerheight
     const txHash = result && result.data.txhash
-    const { proposedEnds, notificationEnds } = await ela.calHeightTime(
-      registerHeight
-    )
+    const { proposedTime, proposedEnds, notificationEnds } =
+      await ela.calHeightTime(registerHeight)
     let proposedEndsHeight = registerHeight + STAGE_BLOCKS
     let notificationEndsHeight = registerHeight + STAGE_BLOCKS * 2
     const doc: any = {
@@ -186,6 +185,7 @@ export default class extends Base {
       registerHeight,
       proposedEndsHeight,
       notificationEndsHeight,
+      proposedAt: new Date(proposedTime),
       proposedEnds: new Date(proposedEnds),
       notificationEnds: new Date(notificationEnds),
       txHash
@@ -237,11 +237,11 @@ export default class extends Base {
       doc.elaAddress = constant.ELA_BURN_ADDRESS
       doc.budgetAmount = '0'
     }
+
     const councilMembers = await db_user.find({
       role: constant.USER_ROLE.COUNCIL
     })
     const voteResult = []
-    doc.proposedAt = Date.now()
     _.each(councilMembers, (user) =>
       voteResult.push({
         votedBy: user._id,
@@ -249,7 +249,6 @@ export default class extends Base {
       })
     )
     doc.voteResult = voteResult
-
     try {
       const res: any = await db_cvote.save(doc)
       await db_suggestion.update(
@@ -263,7 +262,7 @@ export default class extends Base {
       this.notifyCouncil(res)
       return { _id: res._id, vid: res.vid }
     } catch (error) {
-      logger.error(error)
+      console.error(error)
       return
     }
   }
