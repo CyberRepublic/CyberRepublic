@@ -10,7 +10,7 @@ export const ELIP_DESC_MAX_WORDS = 3000
 
 export const CR_LINKS = {
   FACEBOOK: 'https://www.facebook.com/ElastosCyberRepublic',
-  GITHUB: 'https://github.com/cyber-republic',
+  GITHUB: 'https://github.com/CyberRepublic/CyberRepublic',
   INSTAGRAM: 'https://www.instagram.com/cyberrepublic',
   LINKEDIN: 'https://www.linkedin.com/company/cyber-republic',
   REDDIT: 'https://www.reddit.com/r/CyberRepublic',
@@ -21,7 +21,7 @@ export const CR_LINKS = {
 
 export const ELASTOS_LINKS = {
   EXPLORER: 'https://blockchain.elastos.org/status',
-  GITHUB: 'https://github.com/cyber-republic',
+  GITHUB: 'https://github.com/CyberRepublic/CyberRepublic',
   NEWS: 'https://news.elastos.org',
   WALLET: ' https://www.trinity-tech.io ',
   WWW: 'https://www.elastos.org'
