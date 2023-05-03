@@ -70,4 +70,4 @@ blocks:
 # https://docs.semaphoreci.com/article/50-pipeline-yaml#promotions
 promotions:
   - name: Deploy Server
-    pipeline_file: Server-deploy.yml
+    pipeline_file: server-deploy.yml
