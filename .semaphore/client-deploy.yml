@@ -1,0 +1,31 @@
+# This pipeline runs after semaphore.yml
+version: v1.0
+name: Client deploy
+agent:
+  machine:
+    # Use a machine type with more RAM and CPU power for faster container
+    # builds:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy
+    task:
+      # For info on creating secrets, see:
+      # https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
+      # Mounting the secret with the private SSH key ~/.ssh/id_rsa_semaphore_ci.
+      secrets:
+        - name: cr-deploy-private-key
+      jobs:
+        - name: Deploy to server
+          commands:
+            # Restore build from cache.
+            - cache restore client-build-$SEMAPHORE_WORKFLOW_ID
+            - echo $SEMAPHORE_WORKFLOW_ID
+            # Using `ssh-keyscan` you specify that your-server.com is a trusted domain
+            # and bypass an interactive confirmation step that would block the job.
+            - ssh-keyscan -H ubuntu@3.0.53.209 >> ~/.ssh/known_hosts
+            - chmod 600 ~/.ssh/id_rsa_semaphore_ci
+            # Adding the private SSH key to the local SSH agent so it will be available while executing Git push.
+            - ssh-add ~/.ssh/id_rsa_semaphore_ci
+            - ls dist
+            - scp -r -o StrictHostKeyChecking=no dist ubuntu@3.0.53.209:/home/ubuntu/workspace/semaphore/client
