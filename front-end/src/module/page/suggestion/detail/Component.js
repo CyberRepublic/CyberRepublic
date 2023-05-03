@@ -169,7 +169,7 @@ export default class extends StandardPage {
   }
 
   ord_renderContent() {
-    const { detail, loading } = this.props
+    const { detail, loading, currentUserId } = this.props
     if (loading || (!loading && _.isEmpty(detail))) {
       return (
         <div className="center">
@@ -197,6 +197,7 @@ export default class extends StandardPage {
 
     const uri = URI(this.props.location.search || '')
     const signature = _.get(detail, 'signature.data')
+    const isOwner = currentUserId === _.get(detail, 'createdBy._id')
 
     return (
       <div>
@@ -258,14 +259,13 @@ export default class extends StandardPage {
             </Row>
           </MediaQuery>
           {editForm}
-          {uri.hasQuery('new') &&
-            !signature && (
-              <SignSuggestionModal
-                id={detail._id}
-                getSignatureUrl={this.props.getSignatureUrl}
-                getSignature={this.props.getSignature}
-              />
-            )}
+          {uri.hasQuery('new') && !signature && isOwner && (
+            <SignSuggestionModal
+              id={detail._id}
+              getSignatureUrl={this.props.getSignatureUrl}
+              getSignature={this.props.getSignature}
+            />
+          )}
         </Container>
         <Footer />
       </div>
@@ -815,6 +815,7 @@ export default class extends StandardPage {
   }
 
   renderCouncilActionsNode() {
+    // prettier-ignore
     const {
       isCouncil,
       isAdmin,
@@ -868,17 +869,15 @@ export default class extends StandardPage {
       )
 
     const { invoting } = this.state
-    const invotingPanel = invoting &&
-      isCouncil &&
-      !isReference && (
-        <Row style={{ marginBottom: 30 }} type="flex" justify="center">
-          <Col span={24}>
-            <CreateProposalText>
-              {I18N.get('suggestion.label.invoting')}
-            </CreateProposalText>
-          </Col>
-        </Row>
-      )
+    const invotingPanel = invoting && isCouncil && !isReference && (
+      <Row style={{ marginBottom: 30 }} type="flex" justify="center">
+        <Col span={24}>
+          <CreateProposalText>
+            {I18N.get('suggestion.label.invoting')}
+          </CreateProposalText>
+        </Col>
+      </Row>
+    )
 
     const res = (
       <BtnGroup>
