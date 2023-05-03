@@ -212,7 +212,7 @@ export const getSuggestionDraftHash = async (suggetion: any) => {
     // the size of a zip file should be less than 1M
     if (rs.content && rs.content.length >= 1048576) {
       return {
-        error: `The size of this suggestion's zip data is bigger than 1M`
+        error: `The size of this suggestion's zip data is bigger than 1 MB`
       }
     }
     const hash0 = sha256(rs.content)

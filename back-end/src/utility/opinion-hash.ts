@@ -34,7 +34,7 @@ export const getOpinionHash = async (reason: any) => {
     // the size of a zip file should be less than 1M
     if (rs.content && rs.content.length >= 1048576) {
       return {
-        error: `The size of this opinion's zip data is bigger than 1M`
+        error: `The size of this opinion's zip data is bigger than 1 MB`
       }
     }
     const hash0 = sha256(rs.content)
