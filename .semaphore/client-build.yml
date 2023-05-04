@@ -44,12 +44,14 @@ blocks:
           - node --version
           - npm --version
           - npm install -g typescript@3.4.1
+      secrets:
+        - name: server-addresses
       jobs:
         # First parallel job:
         - name: client build and cache
           commands:
             - cd front-end
-
+            - echo $SERVER_ADDRESS_ONE
             # Restore dependencies from cache.
             # For more info on caching, see https://docs.semaphoreci.com/article/68-caching-dependencies
             - cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master
