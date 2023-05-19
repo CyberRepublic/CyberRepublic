@@ -112,7 +112,7 @@ export default class extends StandardPage {
               <InfoDesc>
                 {I18N.get('home.hero.ela.sidechain')}
                 <br />
-                (ETH, NEO, DID)
+                (ETH, DID)
               </InfoDesc>
             </InfoColRight>
           </ElaRow>
