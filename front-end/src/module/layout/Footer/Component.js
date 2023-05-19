@@ -22,9 +22,6 @@ export default class extends BaseComponent {
                   {I18N.get('landing.footer.resources')}
                 </div>
                 <div className="footer-color-dark">
-                  <a href="/vision">{I18N.get('vision.00')}</a>
-                </div>
-                <div className="footer-color-dark">
                   <a href={ELASTOS_LINKS.GITHUB} target="_blank">
                     {I18N.get('landing.footer.github')}
                   </a>

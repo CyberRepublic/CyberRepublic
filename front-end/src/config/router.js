@@ -76,7 +76,6 @@ const ResetPasswordPage = React.lazy(() =>
 // const EventPage = React.lazy(() =>
 //   import('@/module/page/static/details/Container')
 // )
-const VisionPage = React.lazy(() => import('@/module/page/vision/Container'))
 
 const ProfileInfoPage = React.lazy(() =>
   import('@/module/page/profile/info/Container')
@@ -330,10 +329,6 @@ export default [
   //   path: '/events/:eventId',
   //   page: EventPage
   // },
-  {
-    path: '/vision',
-    page: VisionPage
-  },
   // {
   //   path: '/join-cr',
   //   page: CrVideo
