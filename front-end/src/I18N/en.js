@@ -65,7 +65,7 @@ const en = {
     resources: {
       title: 'Resources',
       submenu: {
-        supernodes: 'Supernodes',
+        supernodes: 'BPoS Validators',
         news: 'News',
         forum: 'Forum',
         blog: 'Blog',
@@ -133,7 +133,7 @@ const en = {
 
   'meta.postedBy': 'Posted By',
   'image.upload.type.error': 'The upload file is not an image.',
-  'image.upload.size.error': 'The maximum upload image size is less than 200 KB.',
+  'image.upload.size.error': `The maximum upload image size is less than 200 KB.`,
 
   comments: 'Comments',
   'comments.posts': 'Posts',

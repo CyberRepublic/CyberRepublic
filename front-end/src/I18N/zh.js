@@ -65,7 +65,7 @@ const zh = {
     resources: {
       title: '资源',
       submenu: {
-        supernodes: 'DPOS超级节点',
+        supernodes: 'BPoS 验证者',
         news: '新闻',
         forum: '论坛',
         blog: '博客',
