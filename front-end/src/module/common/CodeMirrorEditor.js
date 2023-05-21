@@ -6,7 +6,7 @@ import BaseComponent from '@/model/BaseComponent'
 import 'codemirror/mode/gfm/gfm'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/base16-light.css'
-import MarkdownPreview from '@/module/common/MarkdownPreview'
+import MarkdownDraftPreview from '@/module/common/MarkdownDraftPreview'
 import styled from 'styled-components'
 // import UploadBase64Image from '@/module/common/UploadBase64Image'
 import UploadImageToS3 from '@/module/common/UploadImageToS3'
@@ -83,7 +83,7 @@ class Component extends BaseComponent {
             onChange={this.onChange}
           />
         ) : (
-          <MarkdownPreview
+          <MarkdownDraftPreview
             content={value}
             show={show}
             showModal={this.togglePreview}
@@ -136,11 +136,6 @@ const Toolbar = styled.div`
   display: flex;
   margin-bottom: -24px;
   justify-content: flex-end;
-`
-const Preview = styled.div`
-  min-height: 200px;
-  padding: 20px;
-  background: rgba(204, 204, 204, 0.2);
 `
 const Note = styled.div`
   color: #cccccc;
