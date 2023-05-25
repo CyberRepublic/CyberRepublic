@@ -90,7 +90,6 @@ export default class extends Base {
       'councilMembers.cid',
       'councilMembers.avatar',
       'councilMembers.did',
-      'councilMembers.user.did',
       'councilMembers.location',
       'councilMembers.status',
       'councilMembers.impeachmentVotes'
@@ -100,7 +99,6 @@ export default class extends Base {
       'did',
       'didName',
       'avatar',
-      'user.did',
       'location',
       'startDate',
       'endDate',

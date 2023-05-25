@@ -200,7 +200,6 @@ export default class extends Base {
       'status',
       'councilMembers.didName',
       'councilMembers.avatar',
-      'councilMembers.user.did',
       'councilMembers.cid',
       'councilMembers.did',
       'councilMembers.address',
@@ -239,7 +238,6 @@ export default class extends Base {
 
     // query secretariat
     const secretariatFields = [
-      'user.did',
       'did',
       'address',
       'location',
