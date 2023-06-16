@@ -279,10 +279,8 @@ const checkDidNameFromChain = async (did: string, chain: string) => {
   const data = {
     jsonrpc: '2.0',
     method,
-    params: {
-      did,
-      all: false
-    }
+    id: '',
+    params: [{ did, all: false }]
   }
 
   try {
@@ -301,8 +299,11 @@ const checkDidNameFromChain = async (did: string, chain: string) => {
       if (!_.isEmpty(verifiableCredential)) {
         const verifiableCredentialById = _.keyBy(verifiableCredential, 'id')
         return (
-          verifiableCredentialById['#name'] &&
-          _.get(verifiableCredentialById['#name'], 'credentialSubject.name')
+          verifiableCredentialById[`${did}#name`] &&
+          _.get(
+            verifiableCredentialById[`${did}#name`],
+            'credentialSubject.name'
+          )
         )
       }
     }
