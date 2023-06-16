@@ -274,9 +274,11 @@ const checkDidNameFromChain = async (did: string, chain: string) => {
   const headers = {
     'Content-Type': 'application/json'
   }
+  // prettier-ignore
+  let method = chain === process.env.EID_SIDECHAIN_URL ? 'did_resolveDID' : 'resolvedid'
   const data = {
     jsonrpc: '2.0',
-    method: 'resolvedid',
+    method,
     params: {
       did,
       all: false
