@@ -1,5 +1,6 @@
 import Base from './Base'
 import { ela } from '../utility'
+import * as _ from 'lodash'
 
 export default class extends Base {
   private model: any
@@ -9,36 +10,47 @@ export default class extends Base {
 
   public async backupCandidateList() {
     const crRelatedStageStatus = await ela.getCrrelatedStage()
-    if (!crRelatedStageStatus) return
+    if (_.isEmpty(crRelatedStageStatus)) return
     // prettier-ignore
     const {
       invoting,
-      ondutystartheight,
       votingstartheight,
-      votingendheight
+      votingendheight,
+      currentsession,
     } = crRelatedStageStatus
     if (!invoting) return
 
     const candidatesList = await ela.currentCandidates()
-    if (!candidatesList) return
+    if (
+      _.isEmpty(candidatesList) ||
+      _.isEmpty(candidatesList.crcandidatesinfo)
+    ) {
+      return
+    }
 
+    const candidates = candidatesList.crcandidatesinfo.map((el) => {
+      el.votes = _.toNumber(el.votes)
+      return el
+    })
     const doc = await this.model.findOne({ votingstartheight })
     if (!doc) {
-      const historyTerm = await this.model.findOne(
-        { votingendheight: ondutystartheight },
-        ['term']
-      )
       const fields = {
-        term: historyTerm.term + 1,
+        term: currentsession + 1,
         votingstartheight,
         votingendheight,
-        members: candidatesList.crcandidatesinfo
+        members: candidates,
+        totalVotes: _.toNumber(candidatesList.totalvotes),
+        totalCounts: candidatesList.totalcounts
       }
       await this.model.save(fields)
     } else {
       await this.model.update(
         { votingstartheight },
-        { members: candidatesList.crcandidatesinfo }
+        {
+          members: candidates,
+          totalVotes: _.toNumber(candidatesList.totalvotes),
+          totalCounts: candidatesList.totalcounts
+        }
       )
     }
   }

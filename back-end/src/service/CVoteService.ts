@@ -1303,54 +1303,28 @@ export default class extends Base {
   public async listcrcandidates(param: { state: string }) {
     const { state } = param
     const crRelatedStageStatus = await ela.getCrrelatedStage()
-    if (!crRelatedStageStatus) return
-    // prettier-ignore
-    const {
-      invoting,
-      votingstartheight,
-    } = crRelatedStageStatus
-    if (!invoting) {
-      return null
+    if (_.isEmpty(crRelatedStageStatus)) return
+
+    const { invoting } = crRelatedStageStatus
+    if (!invoting) return
+
+    const candidatesList = await ela.currentCandidates(state)
+    if (
+      _.isEmpty(candidatesList) ||
+      _.isEmpty(candidatesList.crcandidatesinfo)
+    ) {
+      return
     }
 
-    const doc = await this.getDBModel('Candidate').findOne({
-      votingstartheight
+    const candidates = candidatesList.crcandidatesinfo.map((el) => {
+      el.votes = _.toNumber(el.votes)
+      return el
     })
 
-    if (!doc) {
-      const candidatesList = await ela.currentCandidates(state)
-      if (!candidatesList) {
-        return null
-      }
-      const totalvotes = candidatesList.crcandidatesinfo.reduce(
-        (sum: number, el) => {
-          if (el.votes) {
-            return sum + el.votes
-          }
-          return sum
-        },
-        0
-      )
-      return {
-        crcandidatesinfo: candidatesList.crcandidatesinfo,
-        totalvotes: totalvotes,
-        totalcounts: candidatesList.crcandidatesinfo.length
-      }
-    } else {
-      const members = doc.members.filter(
-        (el) => el.state.toLowerCase() === state
-      )
-      const totalvotes = members.reduce((sum: number, el) => {
-        if (el.votes) {
-          return sum + el.votes
-        }
-        return sum
-      }, 0)
-      return {
-        crcandidatesinfo: members,
-        totalvotes,
-        totalcounts: members.length
-      }
+    return {
+      crcandidatesinfo: candidates,
+      totalvotes: _.toNumber(candidatesList.totalvotes),
+      totalcounts: candidatesList.totalcounts
     }
   }
 

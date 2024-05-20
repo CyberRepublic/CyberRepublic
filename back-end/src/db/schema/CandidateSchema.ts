@@ -39,5 +39,7 @@ export const Candidate = {
   votingendheight: {
     type: Number
   },
-  members: [Members]
+  members: [Members],
+  totalVotes: Number,
+  totalCounts: Number
 }
