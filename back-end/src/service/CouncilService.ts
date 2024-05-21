@@ -661,9 +661,9 @@ export default class extends Base {
       const circulatingSupply = await ela.currentCirculatingSupply()
       let councils
       let doc = {
+        ..._.omit(data && data._doc, ['_id']),
         height,
-        circulatingSupply,
-        ..._.omit(data && data._doc, ['_id'])
+        circulatingSupply
       }
 
       // create a new council doc
