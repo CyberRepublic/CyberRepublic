@@ -552,11 +552,18 @@ export default class extends Base {
   public async eachCouncilJobPlus() {
     const crRelatedStageStatus = await ela.getCrrelatedStage()
     if (_.isEmpty(crRelatedStageStatus)) return
-    const { onduty, currentsession, ondutystartheight, votingstartheight } =
-      crRelatedStageStatus
+    const {
+      onduty,
+      invoting,
+      currentsession,
+      ondutystartheight,
+      ondutyendheight
+    } = crRelatedStageStatus
 
     const listCrs = await ela.currentCouncil()
-
+    const votingCrs = await this.model
+      .getDBInstance()
+      .findOne({ status: constant.TERM_COUNCIL_STATUS.VOTING })
     const currentCrs = await this.model
       .getDBInstance()
       .findOne({ status: constant.TERM_COUNCIL_STATUS.CURRENT })
@@ -659,36 +666,60 @@ export default class extends Base {
 
       const height = await ela.height()
       const circulatingSupply = await ela.currentCirculatingSupply()
-      let councils
+
       let doc = {
-        ..._.omit(data && data._doc, ['_id']),
         height,
         circulatingSupply
       }
 
-      // create a new council doc
-      if (_.isEmpty(data)) {
+      // start voting
+      if (status === constant.TERM_COUNCIL_STATUS.HISTORY) {
+        await this.model
+          .getDBInstance()
+          .update({ _id: data._id }, { ...doc, status })
+        return
+      }
+
+      // start voting
+      if (status === constant.TERM_COUNCIL_STATUS.VOTING) {
+        if (_.isEmpty(data)) return
+        await this.model
+          .getDBInstance()
+          .update({ _id: data._id }, { ...doc, status })
+        return
+      }
+
+      // end voting
+
+      if (status === constant.TERM_COUNCIL_STATUS.CURRENT) {
+        // save the new term of council members
         const startTime = await ela.getTimestampByHeight(ondutystartheight)
-        const endTime = await ela.getTimestampByHeight(votingstartheight)
         doc['index'] = currentsession
         doc['status'] = status
         doc['startDate'] = new Date(startTime * 1000)
-        doc['endDate'] = new Date(endTime * 1000)
+        doc['endDate'] = null
+        doc['onDutyStartHeight'] = ondutystartheight
+        doc['onDutyEndHeight'] = ondutyendheight
         doc['councilMembers'] = await updateUserInformation(newCouncilMembers)
         await this.model.getDBInstance().create(doc)
-        return
-      }
 
-      if (_.isEmpty(list) && !_.isEmpty(data)) {
-        await this.model
-          .getDBInstance()
-          .update(
+        // change the status of the last term of council
+        if (!_.isEmpty(data)) {
+          const endTime = await ela.getTimestampByHeight(data.onDutyEndHeight)
+          await this.model.getDBInstance().update(
             { _id: data._id },
-            { status: constant.TERM_COUNCIL_STATUS.HISTORY }
+            {
+              ...doc,
+              status: constant.TERM_COUNCIL_STATUS.HISTORY,
+              endDate: new Date(endTime * 1000)
+            }
           )
+        }
         return
       }
 
+      // on duty
+      let councils = newCouncilMembers
       if (!_.isEmpty(oldCouncilsByDID)) {
         // update IMPEACHED status
         if (data.status === constant.TERM_COUNCIL_STATUS.CURRENT) {
@@ -703,23 +734,42 @@ export default class extends Base {
         councils = _.map(oldCouncilsByDID, (v: any, k: any) =>
           _.merge(v._doc, newCouncilsByDID[k])
         )
-      } else {
-        councils = newCouncilMembers
       }
       doc['councilMembers'] = await updateUserInformation(councils)
       await this.model.getDBInstance().update({ _id: data._id }, { ...doc })
     }
 
     if (onduty) {
-      if (_.isEmpty(currentCrs)) {
-        // create a new council doc
+      if (invoting) {
         await updateInformation(
-          listCrs.crmembersinfo,
           null,
-          constant.TERM_COUNCIL_STATUS.CURRENT
+          currentCrs || votingCrs,
+          constant.TERM_COUNCIL_STATUS.VOTING
         )
-        await updateUserRole(listCrs.crmembersinfo, constant.USER_ROLE.COUNCIL)
-      } else if (currentsession > currentCrs.index) {
+      } else {
+        if (_.isEmpty(currentCrs)) {
+          // create a new council doc
+          await updateInformation(
+            listCrs.crmembersinfo,
+            votingCrs,
+            constant.TERM_COUNCIL_STATUS.CURRENT
+          )
+          await updateUserRole(
+            listCrs.crmembersinfo,
+            constant.USER_ROLE.COUNCIL
+          )
+          if (!_.isEmpty(votingCrs)) {
+            await updateUserRole(
+              votingCrs.councilMembers,
+              constant.USER_ROLE.MEMBER
+            )
+          }
+        }
+        await updateInformation(listCrs.crmembersinfo, currentCrs, null)
+        await updateUserRoleToNewDid()
+      }
+    } else {
+      if (!_.isEmpty(currentCrs)) {
         await updateInformation(
           null,
           currentCrs,
@@ -729,25 +779,19 @@ export default class extends Base {
           currentCrs.councilMembers,
           constant.USER_ROLE.MEMBER
         )
-        await updateInformation(
-          listCrs.crmembersinfo,
-          null,
-          constant.TERM_COUNCIL_STATUS.CURRENT
-        )
-        await updateUserRole(listCrs.crmembersinfo, constant.USER_ROLE.COUNCIL)
-      } else {
-        if (currentsession < currentCrs.index) return
-        await updateInformation(listCrs.crmembersinfo, currentCrs, null)
-        await updateUserRoleToNewDid()
       }
-    } else {
-      if (_.isEmpty(currentCrs)) return
-      await updateInformation(
-        null,
-        currentCrs,
-        constant.TERM_COUNCIL_STATUS.HISTORY
-      )
-      await updateUserRole(currentCrs.councilMembers, constant.USER_ROLE.MEMBER)
+      if (!_.isEmpty(votingCrs)) {
+        await updateInformation(
+          null,
+          votingCrs,
+          constant.TERM_COUNCIL_STATUS.HISTORY
+        )
+        await updateUserRole(
+          votingCrs.councilMembers,
+          constant.USER_ROLE.MEMBER
+        )
+      }
+
       await this.temporaryChangeUpdateStatus()
     }
   }

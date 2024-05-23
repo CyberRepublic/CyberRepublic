@@ -79,10 +79,12 @@ export const Council = {
     type: Number,
     required: true
   },
-  // height is the current block height, which represents the onduty end height of the current coucil members when the next election ends.
+  // height is the current block height
   height: {
     type: Number,
     required: true
   },
+  onDutyStartHeight: Number,
+  onDutyEndHeight: Number,
   councilMembers: [CouncilMembers]
 }
