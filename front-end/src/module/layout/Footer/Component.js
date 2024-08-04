@@ -4,9 +4,9 @@ import { Col, Row } from 'antd'
 import I18N from '@/I18N'
 import { ELASTOS_LINKS } from '@/constant'
 import Mail from '@/assets/svg/mail'
-import Twitter from '@/assets/svg/twitter'
+import X from '@/assets/svg/x'
 import Discord from '@/assets/svg/discord'
-import Reddit from '@/assets/svg/reddit'
+import Telegram from '@/assets/svg/telegram'
 import './style.scss'
 
 export default class extends BaseComponent {
@@ -43,14 +43,14 @@ export default class extends BaseComponent {
                   <a href="mailto:secretariat@cyberrepublic.org">
                     <Mail fill="#5E6C86" />
                   </a>
-                  <a href="https://twitter.com/cyber__republic">
-                    <Twitter fill="#5E6C86" />
+                  <a href="https://x.com/cyber__republic">
+                    <X fill="#5E6C86" />
                   </a>
                   <a href="https://discord.gg/elastos">
                     <Discord fill="#5E6C86" />
                   </a>
-                  <a href="https://reddit.com/r/Elastos">
-                    <Reddit fill="#5E6C86" />
+                  <a href="https://t.me/elastosgroup">
+                    <Telegram fill="#5E6C86" />
                   </a>
                 </div>
               </div>
