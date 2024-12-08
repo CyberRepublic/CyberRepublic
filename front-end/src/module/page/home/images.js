@@ -1,4 +1,4 @@
-import ElaLogo from '@/assets/images/home/ela-logo.png'
+import ElaLogo from '@/assets/images/home/elastos-logo.png'
 import CRLogo from '@/assets/images/home/cr-main.png'
 
 import ElaBlockchainImg from '@/assets/images/home/ela-blockchain.png'
@@ -60,5 +60,5 @@ export const images = {
   SiteImg,
   StripDarkImg,
   StripLightImg,
-  SuggestionImg,
+  SuggestionImg
 }

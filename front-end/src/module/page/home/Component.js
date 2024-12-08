@@ -83,8 +83,22 @@ export default class extends StandardPage {
         <ElaContainer>
           <LogoContainer>
             {/* Be nice if this opened a modal explaining Elastos first */}
-            <a target="_blank" href="https://www.elastos.org">
+            <a
+              target="_blank"
+              href="https://www.elastos.org"
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
               <Logo src={images.ElaLogo} />
+              <span
+                style={{
+                  fontSize: 48,
+                  color: '#0f2c43',
+                  opacity: 0.9,
+                  marginLeft: '-8px'
+                }}
+              >
+                Elastos
+              </span>
             </a>
           </LogoContainer>
           <ElaRow>
