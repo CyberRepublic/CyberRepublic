@@ -10,13 +10,13 @@ const FundingProcess = () => (
       src={`https://org-cyberrepublic-www.s3.ap-southeast-1.amazonaws.com/create_suggestion.mp4`}
     />
     <Title>{I18N.get('funding.partOne.title')}</Title>
-    <List>
-      <li>{I18N.get('funding.partOne.step0')}</li>
-      <li>{I18N.get('funding.partOne.step1')}</li>
-      <li>{I18N.get('funding.partOne.step2')}</li>
-      <li>{I18N.get('funding.partOne.step3')}</li>
-      <li>{I18N.get('funding.partOne.step4')}</li>
-    </List>
+    <div>
+      <div>{I18N.get('funding.partOne.step0')}</div>
+      <div>{I18N.get('funding.partOne.step1')}</div>
+      <div>{I18N.get('funding.partOne.step2')}</div>
+      <div>{I18N.get('funding.partOne.step3')}</div>
+      <div>{I18N.get('funding.partOne.step4')}</div>
+    </div>
     <Contact>
       {I18N.get('funding.partOne.contact')}
       <Email> secretariat@cyberrepublic.org</Email>
@@ -86,34 +86,21 @@ const Wrapper = styled.div`
   line-height: 1.75em;
   color: #5c5f7e;
   font-weight: 400;
-  font-size: 22px;
+  font-size: 14px;
   margin-top: 6em;
-  @media (max-width: 768px) {
-    font-size: 18px;
-  }
 `
 const Intro = styled.div`
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 `
 const Title = styled.div`
   margin-top: 2.2em;
   margin-bottom: 1.5em;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 20px;
   line-height: 1.5em;
-  @media (max-width: 768px) {
-    font-size: 30px;
-  }
-`
-const List = styled.ol`
-  padding-left: 33.81px;
-  @media (max-width: 768px) {
-    font-size: 18px;
-    padding-left: 21.69px;
-  }
 `
 const Contact = styled.div`
-  margin-top: 100px;
+  margin-top: 40px;
 `
 const Email = styled.span`
   color: #23aa8c;
@@ -130,11 +117,8 @@ const Process = styled.div`
   }
 `
 const Caption = styled.div`
-  font-size: 40px;
+  font-size: 20px;
   font-weight: 700;
-  @media (max-width: 414px) {
-    font-size: 28px;
-  }
 `
 const Steps = styled.div`
   display: flex;

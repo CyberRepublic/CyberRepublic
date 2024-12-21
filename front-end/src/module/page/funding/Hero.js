@@ -23,13 +23,10 @@ const HeroTitle = styled.h1`
   color: #ffffff;
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 80px;
+  font-size: 40px;
   line-height: 1.2em;
-  @media (min-width: 768px) and (max-width: 1200px) {
-    font-size: 65px;
-  }
   @media (max-width: 768px) {
-    font-size: 45px;
+    font-size: 28px;
   }
   color: #ffffff;
   text-shadow: 0px 0px 35px rgba(255, 255, 255, 0.44);
@@ -39,12 +36,9 @@ const FundLink = styled.a`
   display: inline-block;
   margin-top: 20px;
   color: #1ff5c9;
-  font-size: 32px;
+  font-size: 20px;
   line-height: 1.5em;
   font-weight: 400;
-  @media (max-width: 768px) {
-    font-size: 30px;
-  }
   text-decoration-line: underline;
   text-underline-offset: 8px;
   text-decoration-thickness: 2px;
@@ -53,11 +47,10 @@ const FundLink = styled.a`
 const HeroText = styled.div`
   margin-top: 3em;
   padding-right: 5em;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.75em;
   font-weight: 400;
   @media (max-width: 768px) {
-    font-size: 16px;
     padding-right: 0;
   }
   color: #b8bbd6;

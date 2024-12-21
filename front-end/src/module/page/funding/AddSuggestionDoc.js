@@ -26,7 +26,7 @@ const AddSuggestionDoc = () => (
       <div>{I18N.get('funding.partTwo.step4')}</div>
     </Step>
     <section>
-      <b>{I18N.get('funding.partTwo.type')}</b>{' '}
+      <b>{I18N.get('funding.partTwo.type')}</b>
       {I18N.get('funding.partTwo.typeDesc')}
     </section>
     <section>
@@ -72,69 +72,44 @@ const Wrapper = styled.div`
   font-family: 'Inter', sans-serif !important;
   font-style: normal;
   color: #5c5f7e;
-  font-size: 22px;
-  @media (max-width: 768px) {
-    font-size: 18px;
-  }
+  font-size: 14px;
   line-height: 1.75em;
   p {
-    margin-bottom: 42px;
+    margin-bottom: 16px;
   }
   p.paragraph {
     margin-bottom: 0;
   }
   section {
-    margin-bottom: 24px;
-    font-size: 18px;
-    opacity: 0.8;
-    @media (max-width: 768px) {
-      font-size: 16px;
-    }
+    margin-bottom: 16px;
+    opacity: 0.9;
+    margin-left: 32px;
   }
   .step4 {
-    margin-bottom: 24px;
-  }
-  .step1 {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 `
 const Title = styled.div`
   margin-top: 2.2em;
   margin-bottom: 1.5em;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 20px;
   line-height: 1.5em;
-  color: #050717;
-  @media (max-width: 768px) {
-    font-size: 30px;
-  }
+  color: #5c5f7e;
 `
 const Step = styled.div`
   display: flex;
+  align-items: center;
   line-height: 1.75em;
-  margin-bottom: 42px;
-  margin-left: -48px;
-  @media (max-width: 768px) {
-    margin-left: -26px;
-  }
+  margin-bottom: 16px;
 `
 const Marker = styled.div`
   flex-shrink: 0;
   margin-right: 8px;
-  margin-left: 4px;
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
-  font-size: 16px;
-  @media (max-width: 768px) {
-    margin-right: 4px;
-    margin-left: 4px;
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-    font-size: 10px;
-    margin-top: 6px;
-  }
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 12px;
   border-radius: 50%;
   text-align: center;
   color: #ffffff;
@@ -142,5 +117,5 @@ const Marker = styled.div`
   background: linear-gradient(to bottom, #1ff5c9, #1e8771);
 `
 const Conclusion = styled.div`
-  margin-bottom: 42px;
+  margin-bottom: 16px;
 `
