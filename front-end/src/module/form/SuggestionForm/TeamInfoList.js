@@ -20,59 +20,63 @@ class TeamInfoList extends BaseComponent {
     const { list, editable } = this.props
     const visible = editable === false ? editable : true
     return (
-      <StyledTable>
-        <StyledHead>
-          <StyledRow>
-            <th style={{ width: '15%' }}>
-              {I18N.get('suggestion.plan.teamMember')}
-            </th>
-            <th style={{ width: '22%' }}>{I18N.get('suggestion.plan.role')}</th>
-            <th>{I18N.get('suggestion.plan.responsibility')}</th>
-            <th>{I18N.get('suggestion.plan.moreInfo')}</th>
-            {visible && (
-              <th style={{ width: 110 }}>
-                {I18N.get('suggestion.plan.action')}
+      <div style={{ overflowX: 'auto', marginBottom: 48 }}>
+        <StyledTable>
+          <StyledHead>
+            <StyledRow>
+              <th style={{ minWidth: 150 }}>
+                {I18N.get('suggestion.plan.teamMember')}
               </th>
-            )}
-          </StyledRow>
-        </StyledHead>
-        <tbody>
-          {list &&
-            list.map((item, index) => {
-              return (
-                item && (
-                  <StyledRow key={index}>
-                    <td>{item.member}</td>
-                    <td>{item.role}</td>
-                    <td>
-                      <ShowLongText
-                        text={item.responsibility}
-                        id={'responsibility' + index}
-                      />
-                    </td>
-                    <td>
-                      <ShowLongText text={item.info} id={'info' + index} />
-                    </td>
-                    {visible && (
+              <th>{I18N.get('suggestion.plan.role')}</th>
+              <th>{I18N.get('suggestion.plan.responsibility')}</th>
+              <th style={{ minWidth: 110 }}>
+                {I18N.get('suggestion.plan.moreInfo')}
+              </th>
+              {visible && (
+                <th style={{ width: 110 }}>
+                  {I18N.get('suggestion.plan.action')}
+                </th>
+              )}
+            </StyledRow>
+          </StyledHead>
+          <tbody>
+            {list &&
+              list.map((item, index) => {
+                return (
+                  item && (
+                    <StyledRow key={index}>
+                      <td>{item.member}</td>
+                      <td>{item.role}</td>
                       <td>
-                        <EditSvgIcon
-                          type="edit"
-                          onClick={this.handleEdit.bind(this, index)}
-                          style={{ marginRight: 22, cursor: 'pointer' }}
-                        />
-                        <DeleteSvgIcon
-                          type="delete"
-                          onClick={this.handleDelete.bind(this, index)}
-                          style={{ cursor: 'pointer' }}
+                        <ShowLongText
+                          text={item.responsibility}
+                          id={'responsibility' + index}
                         />
                       </td>
-                    )}
-                  </StyledRow>
+                      <td>
+                        <ShowLongText text={item.info} id={'info' + index} />
+                      </td>
+                      {visible && (
+                        <td>
+                          <EditSvgIcon
+                            type="edit"
+                            onClick={this.handleEdit.bind(this, index)}
+                            style={{ marginRight: 22, cursor: 'pointer' }}
+                          />
+                          <DeleteSvgIcon
+                            type="delete"
+                            onClick={this.handleDelete.bind(this, index)}
+                            style={{ cursor: 'pointer' }}
+                          />
+                        </td>
+                      )}
+                    </StyledRow>
+                  )
                 )
-              )
-            })}
-        </tbody>
-      </StyledTable>
+              })}
+          </tbody>
+        </StyledTable>
+      </div>
     )
   }
 }
@@ -88,10 +92,8 @@ export default TeamInfoList
 
 const StyledTable = styled.table`
   margin-top: 16px;
-  margin-bottom: 48px;
-  width: 100%;
   font-size: 13px;
-  table-layout: fixed;
+  min-width: 800px;
 `
 const StyledHead = styled.thead`
   > tr {
@@ -104,13 +106,11 @@ const StyledHead = styled.thead`
   }
 `
 const StyledRow = styled.tr`
-  width: 100%;
   background: #f2f6fb;
   > td {
     line-height: 18px;
     padding: 8px 16px;
     color: #000;
-    overflow-wrap: break-word;
     > button {
       margin: 0 4px;
     }

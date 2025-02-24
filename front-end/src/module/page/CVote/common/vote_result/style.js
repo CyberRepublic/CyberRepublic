@@ -15,18 +15,17 @@ export const Container = styled.div`
 
 export const Label = styled.div`
   text-align: right;
-  margin-right: 50px;
-  flex: 0 0 90px;
-  @media only screen and (max-width: ${breakPoint.mobile}) {
-    flex: 0 0 60px;
-    margin-right: 3px;
-    font-size: 0.8em;
+  margin-right: 8px;
+  flex: 0 0 70px;
+  flex-shrink: 0;
+  @media only screen and (max-width: ${breakPoint.ipad}) {
+    font-size: 12px;
   }
 `
 
 export const List = styled.div`
   position: relative;
-  padding: 40px 20px;
+  padding: 40px 16px;
   display: block;
   align-items: center;
   box-sizing: border-box;
@@ -105,13 +104,27 @@ export const ResultRow = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
+  @media only screen and (max-width: ${breakPoint.ipad}) {
+    align-items: center;
+    flex-direction: column;
+  }
+`
+
+export const VoteContent = styled.div`
+  display: flex;
+  margin-right: 24px;
+  flex-grow: 1;
+  @media only screen and (max-width: ${breakPoint.ipad}) {
+    align-items: center;
+    flex-direction: column;
+    margin-right: 0;
+  }
 `
 
 export const Reason = styled.div`
-  margin-left: 25px;
-  margin-top: 10px;
-  @media only screen and (max-width: ${breakPoint.mobile}) {
-    margin-left: 10px;
-    margin-top: 0px;
+  margin-left: 16px;
+  margin-top: 8px;
+  @media only screen and (max-width: ${breakPoint.ipad}) {
+    margin-left: 8px;
   }
 `

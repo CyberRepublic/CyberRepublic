@@ -7,7 +7,15 @@ import ViewVoteHistoryButton from '../../detail/ViewVoteHistoryButton'
 import Translation from '@/module/common/Translation/Container'
 import { Avatar } from 'antd'
 import { USER_AVATAR_DEFAULT } from '@/constant'
-import { Container, ResultRow, Reason, Label, List, Item } from './style'
+import {
+  Container,
+  ResultRow,
+  Reason,
+  Label,
+  List,
+  Item,
+  VoteContent
+} from './style'
 
 const Component = ({
   label,
@@ -105,10 +113,10 @@ const Component = ({
 
     return (
       <ResultRow key={key}>
-        <div style={{ display: 'flex', marginRight: 24 }}>
+        <VoteContent>
           {userNode}
           {reasonNode}
-        </div>
+        </VoteContent>
 
         {isProposed &&
         isCouncil &&

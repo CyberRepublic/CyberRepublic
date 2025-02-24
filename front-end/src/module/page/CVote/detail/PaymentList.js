@@ -375,7 +375,6 @@ const StylePaymentActionBtn = styled.div`
 const StylePaymentHead = styled.div`
   display: flex;
   align-items: center;
-  height: 32px;
   margin-bottom: 20px;
 `
 const StylePaymentIndex = styled.div`
@@ -390,6 +389,7 @@ const StylePaymentIndex = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 14px;
+  flex-shrink: 0;
 `
 const StylePaymentAmmount = styled.div`
   display: flex;
@@ -397,45 +397,31 @@ const StylePaymentAmmount = styled.div`
   text-align: center;
   align-items: center;
   font-size: 22px;
-  margin-right: 40px;
+  margin-right: 8px;
 `
 const StylePaymentType = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 20px;
   color: #008d85;
   font-size: 12px;
-  height: 25px;
   background-color: #e4f8f3;
-  padding: 0px 10px 2px 10px;
+  padding: 0px 8px 2px 8px;
 `
 const StylePaymentStatus = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 20px;
   color: #a49939;
   font-size: 12px;
-  height: 25px;
   background-color: #f9f7cf;
-  padding: 0px 10px 2px 10px;
+  padding: 0px 8px 2px 8px;
 `
 const StyledTable = styled.table`
   margin-top: 16px;
   width: 100%;
   font-size: 13px;
   table-layout: fixed;
-`
-const StyledHead = styled.thead`
-  > tr {
-    background: #0f2631;
-  }
-  th {
-    line-height: 18px;
-    padding: 16px;
-    color: #fff;
-  }
 `
 const StyledRow = styled.tr`
   width: 100%;

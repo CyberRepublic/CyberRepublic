@@ -93,9 +93,7 @@ const Component = ({
   const newOwnerNode = (
     <Item>
       <Col span={6}>
-        <ItemTitle>
-          {I18N.get('proposal.fields.preambleSub.owner')}
-        </ItemTitle>
+        <ItemTitle>{I18N.get('proposal.fields.preambleSub.owner')}</ItemTitle>
       </Col>
       <Col span={18}>
         <ItemText>{`did:elastos:${newOwnerDID}`}</ItemText>
@@ -105,9 +103,7 @@ const Component = ({
   const newAddressNode = (
     <Item>
       <Col span={6}>
-        <ItemTitle>
-          {I18N.get('proposal.fields.preambleSub.address')}
-        </ItemTitle>
+        <ItemTitle>{I18N.get('proposal.fields.preambleSub.address')}</ItemTitle>
       </Col>
       <Col span={18}>
         <ItemText>{`did:elastos:${newAddress}`}</ItemText>
@@ -142,9 +138,7 @@ const Component = ({
   const refereeNode = (
     <Item>
       <Col span={6}>
-        <ItemTitle>
-          {I18N.get('proposal.fields.preambleSub.referee')}
-        </ItemTitle>
+        <ItemTitle>{I18N.get('proposal.fields.preambleSub.referee')}</ItemTitle>
       </Col>
       <Col span={18}>
         <PopoverProfile owner={createdBy} curUser={user} />
@@ -180,7 +174,14 @@ const Component = ({
         <ItemTitle>{I18N.get('proposal.fields.preambleSub.txHash')}</ItemTitle>
       </Col>
       <Col span={18}>
-        <ItemText><a href={`https://blockchain.elastos.org/tx/${txHash}`}>{txHash}</a></ItemText>
+        <ItemText>
+          <a
+            href={`https://blockchain.elastos.org/tx/${txHash}`}
+            style={{ wordBreak: 'break-word' }}
+          >
+            {txHash}
+          </a>
+        </ItemText>
       </Col>
     </Item>
   )
@@ -191,9 +192,9 @@ const Component = ({
         <ItemTitle>{I18N.get('proposal.fields.preambleSub.hash')}</ItemTitle>
       </Col>
       <Col span={18}>
-        <ItemText >
-          {proposalHash}
-          <CopyButton onClick={() => copyFun(proposalHash)} >
+        <ItemText>
+          <div style={{ wordBreak: 'break-word' }}>{proposalHash}</div>
+          <CopyButton onClick={() => copyFun(proposalHash)}>
             {I18N.get('suggestion.btn.copyHash')}
           </CopyButton>
         </ItemText>
@@ -209,9 +210,9 @@ const Component = ({
       {reference && reference.displayId ? refereeNode : null}
       {typeNode}
       {closeProposalNum ? closeProposalNode : null}
-      {targetProposalNum? targetProposalNode: null}
+      {targetProposalNum ? targetProposalNode : null}
       {newSecretaryDID ? newSecretaryNode : null}
-      {newOwnerDID ? newOwnerNode: null}
+      {newOwnerDID ? newOwnerNode : null}
       {newAddress ? newAddressNode : null}
       {statusNode}
       {createdNode}
@@ -253,7 +254,7 @@ const ItemText = styled.div`
 const CopyButton = styled.span`
   display: inline-block;
   font-weight: 200;
-  background: #008D85;
+  background: #008d85;
   width: 56px;
   height: 20px;
   margin-left: 30px;
@@ -261,6 +262,6 @@ const CopyButton = styled.span`
   font-size: 12px;
   text-align: center;
   line-height: 16px;
-  cursor:pointer;
+  cursor: pointer;
   color: #fff;
 `
