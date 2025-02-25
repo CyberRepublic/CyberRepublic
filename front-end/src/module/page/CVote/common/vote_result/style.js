@@ -16,7 +16,7 @@ export const Container = styled.div`
 export const Label = styled.div`
   text-align: right;
   margin-right: 8px;
-  flex: 0 0 70px;
+  flex: 0 0 80px;
   flex-shrink: 0;
   @media only screen and (max-width: ${breakPoint.ipad}) {
     font-size: 12px;
