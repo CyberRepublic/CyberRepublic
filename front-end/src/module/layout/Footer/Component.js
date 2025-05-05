@@ -43,7 +43,7 @@ export default class extends BaseComponent {
                   <a href="mailto:secretariat@cyberrepublic.org">
                     <Mail fill="#5E6C86" />
                   </a>
-                  <a href="https://x.com/cyber__republic">
+                  <a href="https://x.com/ElastosDAO">
                     <X fill="#5E6C86" />
                   </a>
                   <a href="https://discord.gg/elastos">

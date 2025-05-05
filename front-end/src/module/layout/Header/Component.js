@@ -494,7 +494,7 @@ export default class extends BaseComponent {
         url: location.href
       })
 
-      let linkToBlog = 'https://blog.cyberrepublic.org'
+      let linkToBlog = 'https://blog.elastos.com'
       // window.open(linkToBlog, '_blank')
       window.open(linkToBlog, '_self')
     } else if (_.includes(['en', 'zh'], key)) {
