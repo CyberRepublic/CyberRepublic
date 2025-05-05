@@ -68,8 +68,8 @@ export default {
     ela: {
       blockchain: '区块链开发核心',
       application: {
-        1: '应用SDK',
-        2: '开发者API'
+        1: '应用 SDK',
+        2: '开发者 API'
       },
       sidechain: '侧链整合'
     },
