@@ -68,7 +68,7 @@ const First = styled.div`
   width: 120px;
 `
 const Second = styled.div`
-  width: 120px;
+  width: 140px;
 `
 const Third = styled.div`
   width: 170px;

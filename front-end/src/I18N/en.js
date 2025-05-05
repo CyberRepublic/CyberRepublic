@@ -1563,7 +1563,7 @@ const en = {
   cs: {
     candidates: 'CANDIDATES',
     incumbent: 'INCUMBENT',
-    council: 'CYBER REPUBLIC COUNCIL',
+    council: 'Elastos COUNCIL',
     intro: 'INTRODUCTION',
     voting: 'VOTING',
     secretariat: {

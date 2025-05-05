@@ -230,8 +230,8 @@ export default {
   },
   header: {
     suggestion: '建议',
-    crCouncil: 'CR 委员会',
-    crProposalPage: 'CR 提案页面',
+    crCouncil: 'Elastos 委员会',
+    crProposalPage: 'DAO 提案页面',
     approvedProposal: '已批准的提案'
   },
   search: {

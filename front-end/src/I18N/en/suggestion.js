@@ -229,8 +229,8 @@ export default {
   },
   header: {
     suggestion: 'suggestion',
-    crCouncil: 'cr council',
-    crProposalPage: 'cr proposal page',
+    crCouncil: 'elastos council',
+    crProposalPage: 'DAO proposal page',
     approvedProposal: 'approved proposal'
   },
   search: {

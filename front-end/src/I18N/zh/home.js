@@ -1,5 +1,5 @@
 export default {
-  title: 'Elastos - Cyber Republic',
+  title: 'Elastos - Elastos DAO',
   developers: {
     title: '开发者',
     help_1: '编写代码，找出错误，获得ELA',
@@ -20,7 +20,7 @@ export default {
   summary_1: '我们是由领导者，开发者，组织者和设计师组成的一个多元化民主团体',
   summary_2: '宗旨是在我们的社区推广亦来云，我们欢迎所有人加入。',
   box_1: {
-    title: '什么是 Cyber Republic',
+    title: '什么是 Elastos DAO',
     description: `一个多元化的、强大的技能型小组构成的社区，其领导者、开发者和组织者共同努力在我们的社区推广亦来云。会员资格对所有人开放。`
   },
   explanation_1: {
@@ -83,15 +83,15 @@ export default {
     }
   },
   crc: {
-    title: 'CR 共识',
-    desc: `<p>CRC 是继 PoW 和 BPoS 之后亦来云的第三种共识，其目的是为 CR 提供一种基于共识的社区治理机制，以持续推动亦来云技术开发和生态发展，解决争议，管理社区资产，激励社区成员参与社区的治理和贡献。</p>
-    <p>CRC 可以看做是 CR 社区的顶层设计，但 CRC 无意于把社区变成一个传统意义上相对封闭、紧凑以及强制型自上而下管理的完整组织架构，因为社区的本质特性是开放、松散和自发型自底向上生长。CRC 让社区自底向上的生长过程有一个向心力的引导，以扶持和促进社区发展。</p>
-    <p>此外，CRC 也是亦来云发展 DApp 生态的基础设施，它为真正的去中心化应用提供一种通用的社区治理机制。</p>`,
-    explanation: `CR 是亦来云社区的统称，名字表达了对亦来云社区发展的美好愿景。CR 由亦来云持币人和 贡献者组成，包括创始团队亦来云基金会、生态合作伙伴以及其它愿意为亦来云技术和社区发 展做出贡献的个人和团队。`,
+    title: 'Elastos DAO 共识',
+    desc: `<p>Elastos DAO 共识(PoI)是继 PoW 和 BPoS 之后亦来云的第三种共识，其目的是为 DAO 提供一种基于共识的社区治理机制，以持续推动亦来云技术开发和生态发展，解决争议，管理社区资产，激励社区成员参与社区的治理和贡献。</p>
+    <p>PoI 可以看做是 DAO 社区的顶层设计，但 DAO 无意于把社区变成一个传统意义上相对封闭、紧凑以及强制型自上而下管理的完整组织架构，因为社区的本质特性是开放、松散和自发型自底向上生长。PoI 让社区自底向上的生长过程有一个向心力的引导，以扶持和促进社区发展。</p>
+    <p>此外，PoI 也是亦来云发展 DApp 生态的基础设施，它为真正的去中心化应用提供一种通用的社区治理机制。</p>`,
+    explanation: `Elastos DAO (DAO) 是亦来云社区的统称，名字表达了对亦来云社区发展的美好愿景。DAO 由亦来云持币人和贡献者组成，包括创始团队亦来云基金会、生态合作伙伴以及其它愿意为亦来云技术和社区发 展做出贡献的个人和团队。`,
     list: {
       1: {
         date: '2018年8月',
-        text: `在Elastos一周年纪念活动中，1600万ELA转移到了Cyber Republic（CR）名下。\n`
+        text: `在 Elastos 一周年纪念活动中，1600万 ELA 转移到了 Elastos DAO（DAO）名下。\n`
       },
       2: {
         date: '2018年12月',
@@ -100,7 +100,7 @@ export default {
       },
       3: {
         date: '2019年2月',
-        text: `为完善社区提出建议和理事会资助项目的流程，进一步改进了CR共识。想了解更多流程信息，`,
+        text: `为完善社区提出建议和理事会资助项目的流程，进一步改进了 DAO 共识。想了解更多流程信息，`,
         link: '请参考链接'
       },
       4: {
@@ -117,12 +117,12 @@ export default {
     flow: {
       member: '社区成员',
       suggestion: '建议',
-      submitProposal: '在 CR 网站上提交提案',
-      council: 'CRC 委员',
-      proposalPage: 'CR 提案页面',
+      submitProposal: '在 DAO 网站上提交提案',
+      council: 'Elastos 委员',
+      proposalPage: 'DAO 提案页面',
       approvedProposal: '已批准的提案',
       voting: '投票'
     },
-    regionalComm: 'CR 区域性社区'
+    regionalComm: 'DAO 区域性社区'
   }
 }
