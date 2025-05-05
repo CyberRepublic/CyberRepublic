@@ -18,157 +18,300 @@
 }
 
 .c_Header.ant-layout-header {
-  background: #fbfbfb;
-  height: $header_height;
-  @media only screen and (max-width: $mobile-width) {
-    height: 80px;
-  }
-  padding: 0;
-  text-align: center;
-  box-shadow: none;
-
-  .c_Affix_Menu {
-    .c_Affix_Menu_Item {
-      width: 156px;
-      height: 74px;
-      position: absolute;
-      &.hidden {
-        display: none;
-      }
-    }
-  }
-
+  background: rgba(0, 0, 0, 0.9);
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  position: relative;
+  z-index: 90;
+  
+  // Menu containers
   .c_Header_Menu.ant-menu {
-    padding-top: 0;
-    height: 80px;
+    background: transparent;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
   }
-
-  .c_Side_Menu {
-    border-right: 0;
-    .c_MenuItem.ant-menu-item-selected {
-      .ant-dropdown-link {
-        color: inherit;
-      }
-    }
-
-    .c_MenuItem.help {
-      padding-right: 48px;
-      padding-left: 8px;
-      height: 78px;
-    }
-
-    @media only screen and (max-width: $mobile-width) {
-      .c_MenuItem.help {
-        display: none;
-      }
-    }
-  }
-
-  .c_MenuItem {
-    font-size: 14px;
-    font-stretch: normal;
-    padding-top: 48px;
-    line-height: 20px;
-    margin: -1px 0 0 0;
-    font-weight: 200;
-
-    &.logo {
-      padding-top: 24px;
-
+  
+  // Left side (logo) - Move further left
+  .c_Header_Menu.pull-left {
+    margin-right: auto;
+    margin-left: -0.5rem; // Move logo further left
+    
+    .c_MenuItem.logo {
+      display: flex;
+      align-items: center;
+      padding-left: 0; // Remove any padding
+      
       > img {
-        margin-top: 8px;
-        height: 60px;
+        height: 2.5rem;
+        width: auto;
+        margin: 0;
       }
-
+      
       @media only screen and (max-width: $mobile-width) {
-        padding-top: 12px;
-
         > img {
-          height: 45px;
+          height: 2rem;
         }
       }
     }
-
-    &.link {
-      padding-bottom: 8px;
-    }
-
-    &.overview {
-      padding-top: 0;
-      padding-right: 4px;
-
-      > .ant-dropdown-link {
-        height: 73px;
-        padding-top: 24px;
-      }
-    }
-
-    &.mobile {
-      height: auto;
-    }
-
-    &.right-side {
-      float: right;
-
-      // account dropdown
-      &.account {
-        padding-right: 32px;
-      }
-    }
   }
-
-  .c_SubMenuItem {
-    &.link {
+  
+  // Ensure consistent height and vertical alignment for all right-side elements
+  .language-dropdown,
+  .c_Header_Menu.pull-right,
+  .c_Side_Menu.pull-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  // DESKTOP LAYOUT
+  @media only screen and (min-width: calc($mobile-width + 1px)) {
+    // Language dropdown (desktop) - push the group right
+    .language-dropdown {
+      order: 1;
+      margin-left: auto; // Push this and subsequent elements right
+      margin-right: 1rem; // Space before login
+      padding-top: 0; // Normalize padding
       padding-bottom: 0;
-
-      .ant-menu-submenu-title {
-        padding-bottom: 8px;
+      
+      // Ensure flag image aligns well with baseline
+      img {
+        vertical-align: middle; // Or try baseline if middle doesn't work
+      }
+    }
+    
+    // Login/profile menu (desktop)
+    .c_Header_Menu.pull-right {
+      order: 2;
+      margin-right: 1rem; // Default space before potential hamburger
+      padding-top: 0; // Normalize padding
+      padding-bottom: 0;
+      
+      .c_MenuItem.link {
+        padding: 0 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        
+        &:hover {
+          color: white;
+        }
+        
+        &.ant-menu-item-selected {
+          color: $brand-primary;
+        }
+        
+        &.login-button-style {
+          height: auto; // Allow button to have its own height
+          align-self: center; // Center button vertically if needed
+        }
+      }
+    }
+    
+    // Hamburger (desktop, only when logged in)
+    .c_Side_Menu.pull-right {
+      display: none;
+      order: 3;
+      margin-left: 0; // Spacing handled by previous element
+      margin-right: 0; // No margin needed at the end
+      
+      .c_MenuItem.mobile {
+        display: flex;
+        align-items: center;
+      }
+    }
+    
+    // When logged in, show hamburger on desktop
+    &.user-logged-in {
+      .c_Side_Menu.pull-right {
+        display: flex;
+      }
+      // Ensure login menu still has margin when hamburger appears
+      .c_Header_Menu.pull-right {
+        margin-right: 1rem;
+      }
+    }
+    
+    // When not logged in, remove margin from login menu
+    &:not(.user-logged-in) {
+      .c_Header_Menu.pull-right {
+        margin-right: 0;
+      }
+    }
+    
+    // Hide mobile language dropdown on desktop
+    .mobile-language-dropdown {
+      display: none !important;
+    }
+  }
+  
+  // MOBILE LAYOUT
+  @media only screen and (max-width: $mobile-width) {
+    // Hide desktop elements on mobile
+    .language-dropdown:not(.mobile),
+    .c_Header_Menu.pull-right {
+      display: none !important;
+    }
+    
+    // Show mobile elements
+    .c_Side_Menu.pull-right {
+      display: flex !important;
+      margin-left: auto;
+      justify-content: flex-end;
+      
+      // Flag comes first on mobile
+      .mobile-language-dropdown {
+        order: 1;
+        margin-right: 0.75rem;
+        display: flex !important; // ENSURE VISIBLE
+        align-items: center;
+        
+        img {
+          height: 16px;
+          width: auto;
+        }
+      }
+      
+      // Hamburger comes second on mobile
+      .c_MenuItem.mobile {
+        order: 2;
+        display: flex !important; // ENSURE VISIBLE
+        align-items: center;
       }
     }
   }
-
-  .ant-menu {
-    background: none;
-    padding-top: 24px;
-    border-bottom: none;
-    margin: 0 auto;
-  }
-
-  .d_li {
-    float: right;
-    font-size: 1.2rem;
-  }
-
-  .d_avatar {
-    margin-right: 12px;
-
-    i {
-      margin-right: 0;
+  
+  // STYLING FOR HAMBURGER
+  .c_MenuItem.mobile {
+    .anticon-menu-fold, .anticon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px !important;
+      color: white !important;
+    }
+    
+    svg {
+      width: 24px !important;
+      height: 18px !important;
+      fill: white !important;
     }
   }
+  
+  // STYLING FOR LOGIN BUTTON
+  .c_MenuItem.link.login-button-style {
+    border: 1px solid $brand-primary;
+    color: $brand-primary;
+    border-radius: 0.375rem;
+    padding: 0.4rem 1rem;
+    margin-left: 0.5rem;
+    
+    &:hover {
+      background-color: rgba(29, 183, 147, 0.1);
+    }
+  }
+  
+  // Remove all borders
+  .c_MenuItem, 
+  .mobile-language-dropdown,
+  .language-dropdown,
+  .c_Side_Menu,
+  .c_Header_Menu.ant-menu,
+  .ant-menu-item {
+    border: none !important;
+    
+    &::before, &::after {
+      display: none !important;
+    }
+  }
+  
+  // Language dropdown styling
+  .language-dropdown {
+    // Make language dropdown text white
+    color: white !important;
+    
+    .ant-dropdown-link {
+      color: white !important;
+      
+      .anticon {
+        color: white !important;
+      }
+    }
+    
+    // Ensure language text is white
+    span, div, a {
+      color: white !important;
+    }
+  }
+  
+  // Mobile language dropdown
+  .mobile-language-dropdown {
+    color: white !important;
+    
+    .ant-dropdown-link, span, div, a {
+      color: white !important;
+    }
+    
+    .anticon {
+      color: white !important;
+    }
+  }
+}
 
-  .c_MenuTopRight {
-    position: absolute;
-    top: 0;
-    right: 0;
-    line-height: 100%;
-
-    padding: 8px 16px;
-
-    margin-right: 100px;
-
-    > .ant-menu-item {
-      padding: 0 16px;
-      border-bottom: 0;
-
-      &.ant-menu-item-active:hover {
-        border-bottom: 0;
+// Secondary navigation menu
+.page_links {
+  background-color: $brand-bg-main;
+  padding: 0;
+  border-bottom: 1px solid $brand-border-subtle;
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  z-index: 89;
+  
+  @media only screen and (max-width: $mobile-width) {
+    display: none;
+  }
+  
+  &.ant-menu {
+    background: transparent;
+    border-bottom: none;
+    height: 100%;
+    
+    .c_MenuItem {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 0.25rem;
+      
+      &:hover {
+        color: white;
+        background-color: $brand-hover-bg;
+      }
+      
+      &.ant-menu-item-selected {
+        color: $brand-primary;
+        border-bottom: 2px solid $brand-primary;
+      }
+      
+      .ant-dropdown-link {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        color: inherit;
       }
     }
   }
 }
 
+// Content padding
 .c_Content.ant-layout-content {
+  padding-top: 0; // Remove fixed padding
 }
 
 .c_Header_Admin {
@@ -220,8 +363,7 @@
   }
   .c_Header.ant-layout-header {
     .c_Side_Menu {
-      // display: none;
-      display: unset;
+      display: none !important; // Force hide on desktop
     }
   }
 }
@@ -269,3 +411,290 @@
     z-index: 10;
   }
 }
+
+// Dropdown styling (consolidated)
+.ant-dropdown {
+  .ant-dropdown-menu {
+    background-color: $brand-bg-dropdown;
+    border: 1px solid $brand-border-accent;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    
+    .ant-dropdown-menu-item {
+      padding: 0.75rem 1rem;
+      color: $brand-text-secondary;
+      border-radius: 0.375rem;
+      
+      &:hover {
+        background-color: $brand-hover-bg;
+        color: $brand-text-primary;
+      }
+      
+      &:active {
+        background-color: $brand-active-bg;
+      }
+    }
+  }
+}
+
+// Special styling for login button
+.c_Header.ant-layout-header {
+  .c_MenuItem.link.login-button-style {
+    border: 1px solid $brand-primary;
+    color: $brand-primary;
+    border-radius: 0.375rem;
+    padding: 0.4rem 1rem;
+    margin-left: 0.5rem;
+    
+    &:hover {
+      background-color: rgba(29, 183, 147, 0.1);
+    }
+  }
+}
+
+// Fix the SVG hamburger icon
+.c_MenuItem.help, .c_MenuItem.mobile {
+  .ant-dropdown-link svg {
+    width: 20px;
+    height: 16px;
+    fill: rgba(255, 255, 255, 0.7); // lighter color for better visibility
+    transition: fill 0.2s ease;
+    
+    &:hover {
+      fill: white;
+    }
+  }
+  
+  // Fix Icon alignment
+  .anticon {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+// Add a fallback for the burger menu icon if SVG isn't rendering properly
+.c_MenuItem.mobile {
+  // Target the Ant Design icon used for mobile menu
+  .anticon-menu-fold, .anticon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px !important; // Slightly larger icon
+    color: white !important; // Pure white for better visibility
+    transition: color 0.2s ease;
+  }
+  
+  // Style for hamburger menu if using SVG
+  svg {
+    width: 24px !important;
+    height: 18px !important;
+    fill: white !important;
+    stroke: white !important;
+  }
+}
+
+// Ensure the SVG Hamburger component is properly styled
+svg[width="14"][height="11"] {
+  width: 20px !important;
+  height: 16px !important;
+  fill: rgba(255, 255, 255, 0.9) !important;
+}
+
+// Hide desktop language dropdown on mobile
+@media only screen and (max-width: $mobile-width) {
+  .pull-right.language-dropdown {
+    display: none;
+  }
+}
+
+// Mobile styles - move all mobile-specific styles into a single media query
+@media only screen and (max-width: $mobile-width) {
+  .c_Header.ant-layout-header {
+    // Hide desktop language dropdown and login menu
+    .language-dropdown:not(.mobile) {
+      display: none !important;
+    }
+    
+    .c_Header_Menu.pull-right {
+      display: none !important;
+    }
+    
+    // Make Side_Menu visible and properly ordered
+    .c_Side_Menu.pull-right {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      margin-left: auto !important;
+      height: 100% !important; // Full height for alignment
+      
+      // No additional adjustments needed here as we moved to parent
+    }
+    
+    // Logo sizing for mobile
+    .c_Header_Menu.pull-left {
+      .c_MenuItem.logo {
+        > img {
+          height: 2rem; // Match logo size in image
+        }
+      }
+    }
+  }
+}
+
+// Desktop styles - adjust to show hamburger when logged in
+@media only screen and (min-width: calc($mobile-width + 1px)) {
+  // For all desktop views
+  html body .c_Header.ant-layout-header {
+    // Always show desktop language dropdown and login menu
+    .language-dropdown:not(.mobile) {
+      display: flex !important;
+    }
+    
+    .c_Header_Menu.pull-right {
+      display: flex !important;
+    }
+    
+    // Mobile elements default display for desktop
+    .mobile-language-dropdown {
+      display: none !important;
+    }
+  }
+  
+  // Default state (not logged in) - hide hamburger menu on desktop
+  html body .c_Header.ant-layout-header:not(.user-logged-in) {
+    .c_Side_Menu.pull-right {
+      display: none !important;
+    }
+    
+    .c_MenuItem.mobile {
+      display: none !important;
+    }
+  }
+  
+  // Logged in state - show hamburger menu on desktop
+  html body .c_Header.ant-layout-header.user-logged-in {
+    .c_Side_Menu.pull-right {
+      display: flex !important;
+      align-items: center !important;
+      order: 3;
+      margin-left: 0 !important;
+      height: 100%;
+    }
+    
+    .c_MenuItem.mobile {
+      display: flex !important;
+      align-items: center !important;
+      height: 100%;
+    }
+  }
+}
+
+// Clear the problematic media query - adjust to respect logged in state
+@media only screen and (max-width: 1700px) {
+  .c_Header .c_MenuTopRight {
+    margin-right: 0;
+  }
+  // No longer force hide - allow logged in state to control display
+}
+
+// Remove the catch-all rule that conflicts with our logged-in states
+body:not(.mobile) .c_MenuItem.mobile,
+body:not(.mobile) .c_Side_Menu,
+html body .c_Side_Menu.pull-right svg,
+html body .c_MenuItem.mobile svg {
+  // Delete this rule as it conflicts with our logged-in display
+}
+
+// Ensure US flag has proper sizing
+.mobile-language-dropdown {
+  img {
+    width: auto;
+    height: 16px; // Match flag size in image
+  }
+}
+
+// Dropdown styling - ensure language items are white too
+.ant-dropdown {
+  // Target all potential language dropdown menus
+  .ant-dropdown-menu {
+    // Language dropdown menu items
+    .ant-dropdown-menu-item {
+      color: white !important;
+      
+      // Target all text elements inside dropdown items
+      span, div, a, p {
+        color: white !important;
+      }
+      
+      // Target specifically for language items
+      &.ant-dropdown-menu-item-selected,
+      &:hover {
+        color: white !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        
+        span, div, a, p {
+          color: white !important;
+        }
+      }
+    }
+  }
+  
+  // Ensure dropdown has appropriate background for white text
+  &.ant-dropdown-placement-bottomCenter,
+  &.ant-dropdown-placement-bottomLeft,
+  &.ant-dropdown-placement-bottomRight {
+    .ant-dropdown-menu {
+      background-color: rgba(0, 0, 0, 0.9) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+  }
+}
+
+// Additional specific targeting for language dropdown
+.language-flag-dropdown {
+  .ant-dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    
+    .ant-dropdown-menu-item {
+      color: white !important;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+      }
+      
+      span, a {
+        color: white !important;
+      }
+    }
+  }
+}
+
+// Override any other language/login spacing that might be causing issues
+@media only screen and (min-width: calc($mobile-width + 1px)) {
+  html body .c_Header.ant-layout-header {
+    .language-dropdown,
+    .c_Header_Menu.pull-right {
+      // Fixed height for header items to ensure alignment
+      height: 100%;
+      
+      // Fix vertical alignment for all links
+      a, .ant-dropdown-link, .c_MenuItem {
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
+      
+      // Center flag image vertically
+      img {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+
+

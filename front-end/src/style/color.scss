@@ -1,4 +1,3 @@
-
 $primary_color: #43af92;
 $primary_light_color: #64bebb;
 $primary_dark_color: #031E28;
@@ -42,3 +41,30 @@ $cr_btn_danger: #BE1313;
 
 $cr100_sky_blue: #18FFFF;
 $cr100_green: $primary_color;
+
+// New brand colors - 2025 update
+// Brand Colors
+$brand-primary: #1DB793;            // Main green
+$brand-primary-light: #22C080;      // Lighter green
+$brand-primary-dark: #1CA078;       // Darker green for hover
+
+// Text Colors
+$brand-text-primary: #FFFFFF;       // White text
+$brand-text-secondary: rgba(255, 255, 255, 0.7);  // Dimmed white
+$brand-text-muted: rgba(255, 255, 255, 0.6);      // More dimmed
+
+// Background Colors
+$brand-bg-main: #141414;            // Main app background
+$brand-bg-header: rgba(0, 0, 0, 0.9); // Header background
+$brand-bg-dropdown: rgba(0, 0, 0, 0.95); // Dropdown/panel
+$brand-bg-card: #1C1C1C;            // Slightly elevated elements
+
+// Border Colors
+$brand-border-subtle: rgba(255, 255, 255, 0.1);
+$brand-border-accent: rgba(29, 183, 147, 0.2);
+$brand-border-divider: rgba(255, 255, 255, 0.05);
+
+// State Colors
+$brand-hover-bg: rgba(29, 183, 147, 0.1);  // Hover background
+$brand-active-bg: rgba(29, 183, 147, 0.15); // Active/pressed background
+$brand-focus-outline: rgba(29, 183, 147, 0.4); // Focus ring
