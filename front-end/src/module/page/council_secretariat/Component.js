@@ -64,11 +64,11 @@ export default class extends StandardPage {
         <Row className="members">
           {councils &&
             councils.map((item) => {
-              let email = item.email
-                ? item.email
-                : item.user && item.user.email
-                  ? item.user.email
-                  : ''
+              // let email = item.email
+              //   ? item.email
+              //   : item.user && item.user.email
+              //     ? item.user.email
+              //     : ''
 
               const profile = item.user && item.user.profile
               let avatar = item.avatar
@@ -106,11 +106,11 @@ export default class extends StandardPage {
                           <Label>{I18N.get('cs.did')}:</Label> {item.did}
                         </Popover>
                       </Did>
-                      <Email>
+                      {/* <Email>
                         <Popover content={email} placement="topLeft">
                           <Label>{I18N.get('cs.contact')}:</Label> {email}
                         </Popover>
-                      </Email>
+                      </Email> */}
                     </div>
                   </div>
                 </Col>
