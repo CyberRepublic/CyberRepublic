@@ -132,11 +132,11 @@ export default class extends StandardPage {
         ? profile.avatar
         : ''
 
-    const email = secretariat.email
-      ? secretariat.email
-      : secretariat.user && secretariat.user.email
-        ? secretariat.user.email
-        : ''
+    // const email = secretariat.email
+    //   ? secretariat.email
+    //   : secretariat.user && secretariat.user.email
+    //     ? secretariat.user.email
+    //     : ''
 
     const firstname = profile && profile.firstName ? profile.firstName : ''
     const lastname = profile && profile.lastName ? profile.lastName : ''
@@ -162,11 +162,11 @@ export default class extends StandardPage {
                     <Label>{I18N.get('cs.did')}:</Label> {secretariat.did}
                   </Popover>
                 </Did>
-                <Email>
+                {/* <Email>
                   <Popover content={email} placement="topLeft">
                     <Label>{I18N.get('cs.contact')}:</Label> {email}
                   </Popover>
-                </Email>
+                </Email> */}
               </div>
             </div>
           </Col>
@@ -267,16 +267,16 @@ const Did = styled.div`
   opacity: 0.9;
   line-height: 20px;
 `
-const Email = styled.div`
-  position: absolute;
-  bottom: 17px;
-  width: 220px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0.9;
-  line-height: 20px;
-`
+// const Email = styled.div`
+//   position: absolute;
+//   bottom: 17px;
+//   width: 220px;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   opacity: 0.9;
+//   line-height: 20px;
+// `
 const Label = styled.span`
   font-weight: 500;
 `
