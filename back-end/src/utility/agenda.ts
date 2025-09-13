@@ -201,8 +201,6 @@ agenda.define(JOB_NAME.BACKUP_CANDIDATE_LIST, async (job: any, done: any) => {
 ;(async function () {
   console.log('------cron job starting------')
   await agenda.start()
-  await agenda.every('2 minutes', JOB_NAME.TRANSACTIONJOB)
-  await agenda.every('5 minutes', JOB_NAME.INTOPROPOSAL)
 
   if (process.env.SERVER_IP.includes(constant.SERVER_IP_LAST_NUM)) {
     await agenda.every('5 minutes', JOB_NAME.COUNCILREVIEWJOB)
@@ -211,10 +209,12 @@ agenda.define(JOB_NAME.BACKUP_CANDIDATE_LIST, async (job: any, done: any) => {
     await agenda.every('18 minutes', JOB_NAME.CVOTEJOB)
     await agenda.every('32 minutes', JOB_NAME.NOTIFICATIONCOUNCILVOTE)
     await agenda.every('1 hour', JOB_NAME.UPDATEMILESTONE)
+  } else {
+    await agenda.every('2 minutes', JOB_NAME.TRANSACTIONJOB)
+    await agenda.every('5 minutes', JOB_NAME.INTOPROPOSAL)
+    await agenda.every('30 days', JOB_NAME.USERJOB)
+
+    await agenda.every('1 day', JOB_NAME.COUNCILJOB)
+    // await agenda.every('2 minutes', JOB_NAME.BACKUP_CANDIDATE_LIST)
   }
-
-  await agenda.every('30 days', JOB_NAME.USERJOB)
-
-  await agenda.every('1 day', JOB_NAME.COUNCILJOB)
-  // await agenda.every('2 minutes', JOB_NAME.BACKUP_CANDIDATE_LIST)
 })()
