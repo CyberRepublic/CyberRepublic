@@ -547,10 +547,7 @@ export default class extends Base {
       .getDBInstance()
       .find({
         status: constant.CVOTE_STATUS.PROPOSED,
-        'voteResult.value': constant.CVOTE_RESULT.UNDECIDED,
-        old: {
-          $exists: false
-        }
+        'voteResult.value': constant.CVOTE_RESULT.UNDECIDED
       })
       .populate(
         'voteResult.votedBy',

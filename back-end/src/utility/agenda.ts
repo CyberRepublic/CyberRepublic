@@ -45,7 +45,9 @@ agenda.define(JOB_NAME.INTOPROPOSAL, async (job: any, done: any) => {
     const cvote = await DB.getModel('CVote')
     const cvoteService = new CVoteServive(DB, { user: undefined })
 
+    const date20DaysAgo = new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
     const suggestions = await DB.getModel('Suggestion').find({
+      createdAt: { $gte: date20DaysAgo },
       'signature.data': { $exists: true },
       proposalHash: { $exists: false }
     })
@@ -199,14 +201,20 @@ agenda.define(JOB_NAME.BACKUP_CANDIDATE_LIST, async (job: any, done: any) => {
 ;(async function () {
   console.log('------cron job starting------')
   await agenda.start()
-  await agenda.every('2 minutes', JOB_NAME.INTOPROPOSAL)
-  await agenda.every('3.5 minutes', JOB_NAME.CVOTEJOB)
-  await agenda.every('2.5 minutes', JOB_NAME.COUNCILJOB)
-  await agenda.every('30 minutes', JOB_NAME.USERJOB)
-  await agenda.every('4 minutes', JOB_NAME.UPDATEMILESTONE)
-  await agenda.every('3 minutes', JOB_NAME.COUNCILREVIEWJOB)
-  await agenda.every('1 minutes', JOB_NAME.TRANSACTIONJOB)
-  await agenda.every('10 minutes', JOB_NAME.NOTIFICATIONCOUNCILVOTE)
-  await agenda.every('1 minutes', JOB_NAME.SECRETARY_REVIEW_JOB)
-  await agenda.every('2 minutes', JOB_NAME.BACKUP_CANDIDATE_LIST)
+  await agenda.every('2 minutes', JOB_NAME.TRANSACTIONJOB)
+  await agenda.every('5 minutes', JOB_NAME.INTOPROPOSAL)
+
+  if (process.env.SERVER_IP.includes(constant.SERVER_IP_LAST_NUM)) {
+    await agenda.every('5 minutes', JOB_NAME.COUNCILREVIEWJOB)
+    await agenda.every('8 minutes', JOB_NAME.SECRETARY_REVIEW_JOB)
+
+    await agenda.every('18 minutes', JOB_NAME.CVOTEJOB)
+    await agenda.every('32 minutes', JOB_NAME.NOTIFICATIONCOUNCILVOTE)
+    await agenda.every('1 hour', JOB_NAME.UPDATEMILESTONE)
+  }
+
+  await agenda.every('30 days', JOB_NAME.USERJOB)
+
+  await agenda.every('1 day', JOB_NAME.COUNCILJOB)
+  // await agenda.every('2 minutes', JOB_NAME.BACKUP_CANDIDATE_LIST)
 })()

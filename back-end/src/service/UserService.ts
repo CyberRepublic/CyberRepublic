@@ -1057,14 +1057,16 @@ export default class extends Base {
   }
 
   public async eachJob() {
-    // find user exist did
+    // find user with a did
     const db_user = this.getDBModel('User')
     const result = await db_user.find({
       'did.id': { $exists: true },
-      role: { $nin: [constant.USER_ROLE.COUNCIL, constant.USER_ROLE.SECRETARY] }
+      'did.didName': { $exists: false }
+      // role: { $in: [constant.USER_ROLE.COUNCIL, constant.USER_ROLE.SECRETARY] }
     })
 
     const asyncForEach = async (array, callback) => {
+      console.log('the number of users without a did name: ', array.length)
       for (let index = 0; index < array.length; index++) {
         await callback(array[index], index, array)
       }

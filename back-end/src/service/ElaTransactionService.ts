@@ -25,8 +25,10 @@ export default class extends Base {
     }
 
     const allTransactions = []
+    let newHeight = preHeight
     for (let height = preHeight + 1; height <= currentHeight; height++) {
       const transactions = await ela.getTransactionsByHeight(height)
+      newHeight = height
       if (!transactions) {
         console.log('undefined tx height...', height)
         break
@@ -58,13 +60,13 @@ export default class extends Base {
 
     if (!currentConfig) {
       await this.configModel.getDBInstance().create({
-        height: currentHeight
+        height: newHeight
       })
     } else {
       await this.configModel.getDBInstance().update(
         { _id: currentConfig._id },
         {
-          height: currentHeight
+          height: newHeight
         }
       )
     }
